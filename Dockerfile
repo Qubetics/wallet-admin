@@ -1,23 +1,23 @@
 # Use official Node.js 18.18.0 image
 FROM node:18.18.0-alpine
 
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies with legacy peer deps to avoid conflict
+RUN npm install --legacy-peer-deps
 
-# Copy rest of the app files
+# Copy the rest of your code
 COPY . .
 
-# Build the frontend (optional - if using a build step)
+# Build the project (if applicable)
 RUN npm run build
 
-# Expose port (change as needed, e.g. 3000 or 80)
+# Expose port (adjust if needed)
 EXPOSE 3000
 
-# Start the frontend app
+# Start the app
 CMD ["npm", "start"]

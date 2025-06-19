@@ -115,7 +115,7 @@
   "scripts": {
     "start:dev": "env-cmd -f .env.development react-scripts start",
     "start:stage": "env-cmd -f .env.stage react-scripts start",
-    "start:prod": "env-cmd -f .env.production react-scripts start",
+    "start": "env-cmd -f .env.production react-scripts start",
     "build:local": "GENERATE_SOURCEMAP=false env-cmd -f .env.development react-scripts build",
     "build": "GENERATE_SOURCEMAP=false env-cmd -f .env.production react-scripts build",
     "build:prod": "GENERATE_SOURCEMAP=false env-cmd -f .env.production react-scripts build",

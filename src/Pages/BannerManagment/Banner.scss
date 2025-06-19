@@ -1,0 +1,30 @@
+.annoucementTable {
+    table {
+        :is(td,th) {
+            &:nth-child(4) {
+                min-width: 300px;
+                white-space: normal;
+                width: 300px;
+            }
+            &:nth-child(1) {
+                min-width: 100px;
+                white-space: normal;
+                width: 100px;
+                text-align: center;
+            }
+        }
+        
+    }
+
+}
+.annoucementTable table {
+    min-width: 1000px
+}
+.annocInput {
+    input{
+        padding: 4px 11px !important; 
+    }
+}
+.ant-modal-confirm-confirm {
+    width: 430px !important; 
+}

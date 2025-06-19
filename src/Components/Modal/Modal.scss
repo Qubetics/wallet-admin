@@ -1,0 +1,49 @@
+@import '../../styles/__vars.scss';
+@import '../../styles/__mixins.scss';
+
+
+
+.ant-modal-content {
+    border-radius: 30px;
+    background-color: $white;
+    border-radius: 12px;
+
+    .ant-modal-header {
+        color: $textColor;
+        border-radius: 12px 12px 0 0;
+        border-radius: 30px;
+
+    }
+
+    .ant-modal-body {
+        .ant-input-affix-wrapper {
+            border-radius: 30px;
+
+            .ant-input-suffix {
+                span.anticon svg {
+                    color: $textColor;
+                }
+            }
+        }
+
+        .ant-input {
+            border-radius: 30px;
+        }
+    }
+
+    span.anticon svg {
+        font-size: 12px;
+        color: $white !important;
+    }
+
+    .ant-modal-footer {
+        border-top: none;
+    }
+}
+
+.ant-modal-close {
+    color: $white;
+}
+.ant-modal-content .ant-input {
+  height: 40px;
+}

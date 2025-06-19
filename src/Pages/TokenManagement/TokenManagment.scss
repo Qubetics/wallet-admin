@@ -1,0 +1,409 @@
+@import "../../styles/__vars.scss";
+@import "../../styles/__mixins.scss";
+
+.select-width {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+
+  .ant-select {
+    width: 100%;
+  }
+}
+
+.mangTonkn {
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  // justify-content: initial;
+  .selectReactCmn {
+    width: 100%;
+    max-width: 200px;
+
+    .css-1fdsijx-ValueContainer {
+      text-align: left;
+    }
+  }
+}
+
+.searchInput {
+  // margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  flex-flow: wrap;
+
+  button {
+    width: 100px;
+  }
+}
+
+.addStyle_select {
+  .ant-select {
+    max-width: 160px;
+    width: 100%;
+    border-radius: 30px !important;
+
+    .ant-select-selection-placeholder {
+      display: flex;
+      justify-content: center;
+      font-size: 17px;
+      position: relative;
+
+      span {
+        position: absolute;
+        right: 10px;
+        top: 12px;
+      }
+    }
+
+    .ant-select-single .ant-select-selector .ant-select-selection-item:after,
+    .ant-select-single .ant-select-selector .ant-select-selection-placeholder:after,
+    .ant-select-single .ant-select-selector:after {
+      content: "f142" !important;
+    }
+
+    .ant-select-arrow {
+      display: none !important;
+    }
+  }
+}
+
+.main_page_outer {
+  // .ant-table-thead {
+  //     tr {
+  //         th {
+  //             &:last-child {
+  //                 // padding-left: 60px;
+  //             }
+  //         }
+
+  //     }
+  // }
+
+  td {
+    p {
+      margin: 0px;
+    }
+
+    .select-Design {
+      margin-bottom: 0px;
+      justify-content: center;
+    }
+
+    &:first-child {
+      p {
+        text-overflow: ellipsis;
+        width: 150px;
+        overflow-x: scroll;
+      }
+    }
+  }
+
+  .ant-spin {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    display: block;
+    height: 100%;
+    z-index: 111;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.topper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  margin-bottom: 30px;
+
+  input {
+    border-radius: 20px;
+  }
+
+  .headerTopSec {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    // width: 80%;
+  }
+
+  .reactDatePicker {
+    input {
+      height: 37px;
+      // padding: 6px 10px 10px;
+      width: 200px;
+    }
+  }
+
+  .searchBox {
+    input {
+      max-width: 300px;
+      width: 100%;
+      height: 37px;
+    }
+  }
+
+  &.Send-massage {
+    gap: unset;
+    max-width: 600px;
+
+    textarea {
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    .ant-input-affix-wrapper {
+      border-radius: 30px;
+    }
+  }
+}
+
+.calender {
+  cursor: pointer;
+  height: 33px;
+  border-radius: 5px;
+
+  svg {
+    color: grey;
+  }
+}
+
+.ant-picker {
+  border-radius: 5px;
+}
+
+.ant-picker-input {
+  cursor: pointer;
+
+  span {
+    svg {
+      color: grey !important;
+      cursor: pointer;
+    }
+  }
+}
+
+.tokenmanagementTable {
+  table {
+
+    th,
+    td {
+      &:nth-child(6) {
+        text-align: center;
+      }
+
+      &:nth-child(5) {
+        min-width: 150px !important;
+        text-align: center;
+
+        .ant-image {
+          width: 100% !important;
+          margin: 0 auto !important;
+          text-align: center;
+
+          img {
+            max-width: 80px;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.select-filter {
+  width: 200px;
+  margin-top: auto;
+
+  .css-1xc3v61-indicatorContainer {
+    color: white;
+
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.flexedItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  div {
+    width: 50%;
+  }
+}
+
+.numberInput {
+  padding-bottom: 25px;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .ant-input-number {
+    width: 100%;
+    height: 40px;
+  }
+}
+
+.modal-page-btnGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.addTokenInput {
+  input {
+    &::placeholder {
+      color: #000;
+    }
+  }
+}
+
+.soalanalink {
+  padding: 15px;
+
+  a {
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    color: black;
+    text-underline-offset: 2px;
+
+    &:hover,
+    &:focus {
+      color: #1890ff;
+    }
+  }
+}
+
+.sol_lbl {
+  display: flex;
+
+  img {
+    height: 25px;
+  }
+
+  .token_address {
+    padding-left: 10px;
+
+    @media (max-width: 991px) {
+      display: none;
+    }
+  }
+
+  .symbol {
+    text-transform: uppercase !important;
+    font-weight: 600;
+    padding-left: 10px;
+  }
+}
+
+// .ant-select-dropdown {
+//   max-width: 1200px !important;
+//   min-width: 500px !important;
+//   width: 700px !important;
+// }
+
+.ant-empty.ant-empty-normal.ant-empty-small {
+  width: 100% !important;
+}
+
+.ant-spin-nested-loading {
+  // z-index: 999999;
+}
+
+// .ant-select-selector {
+//   min-width: 700px;
+//   max-width: 1000px;
+//   position: relative;
+// }
+.no_data {
+  color: grey;
+  text-align: center;
+  margin-top: 30px;
+}
+
+span.anticon svg {
+  font-size: 15px;
+  color: white;
+}
+
+.send-usdt-panel-bg {
+  background: linear-gradient(135deg, #1a1333 0%, #2d1846 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+.panel-bg {
+  background: linear-gradient(135deg, #1a1333 0%, #2d1846 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+// Update button styles
+button,
+.ant-btn {
+  @include gradient-theme;
+  border: none;
+  
+  &:hover,
+  &:focus,
+  &:active {
+    @include gradient-theme-hover;
+  }
+}
+
+// Update dropdown styles
+.ant-select {
+  .ant-select-selector {
+    @include gradient-theme;
+    border: none;
+  }
+}
+
+.ant-dropdown-menu,
+.ant-select-dropdown {
+  @include gradient-theme;
+  
+  .ant-select-item,
+  .ant-dropdown-menu-item {
+    color: #fff;
+    
+    &:hover,
+    &-active,
+    &-selected {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+// Update card styles
+.ant-card {
+  @include gradient-theme;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  &-head {
+    color: #fff;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+}

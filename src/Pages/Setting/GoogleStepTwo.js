@@ -1,0 +1,193 @@
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Input, Modal } from "antd";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+// import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/settingApi";
+import { set2FaStatus } from "../../Redux/slice/userSlice";
+import * as yup from "yup";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
+import { setToast } from "../../Redux/slice/toastSlice";
+import { useNavigate } from "react-router-dom";
+const schema = yup
+  .object({
+    password: yup.string().required("Password is required"),
+    token: yup
+      .number("Code must be number")
+      .integer("Code must be integer")
+      .transform((value) => (isNaN(value) ? undefined : value))
+      .nullable(true)
+      .required("Code must be integer and required."),
+  })
+  .required();
+
+const GoogleStepTwo = ({
+  isOpenStepTwo,
+  googleSecretKeyData,
+  closeCardModal,
+}) => {
+  const dispatch = useDispatch();
+  const [hideShowDivOne, setHideShowDivOne] = useState(false);
+  const [hideShowDivTwo, setHideShowDivTwo] = useState(true);
+  const [disabledButton, setDisabledButton] = useState(false);
+
+  const userData = useSelector((state) => state?.userState?.user);
+  const [googleAuthEnableDisable, { isLoading }] =
+    useGoogleAuthEnableDisableMutation();
+
+  const {
+    handleSubmit,
+    control,
+    trigger,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const handleOk = () => {
+    closeCardModal();
+    resetModal();
+    // this is use for ok button loading
+  };
+
+  const resetModal = () => {
+    setHideShowDivOne(false);
+    setHideShowDivTwo(true);
+    if (errors?.password?.message) {
+      errors.password.message = "";
+    }
+    if (errors?.token?.message) {
+      errors.token.message = "";
+    }
+  };
+
+  const handleCancel = () => {
+    closeCardModal();
+    resetModal();
+    reset();
+  };
+
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    let validation = await trigger();
+    if (validation) {
+      data.action = 0;
+      data.token = data?.token?.toString();
+      data.googleSecretKey = googleSecretKeyData?.google_secret_key;
+
+      setDisabledButton(true);
+      googleAuthEnableDisable(data).then((res) => {
+        if (res.error) {
+          if (res?.error?.status == "FETCH_ERROR") {
+            dispatch(setToast({ message: "Network failed", status: false }));
+            setTimeout(() => {
+              setDisabledButton(false);
+            }, 3000);
+          } else {
+            // toast.error(res.error.data.data.message);
+            if (res?.error?.data?.data?.message) {
+              localStorage.setItem("google_2fa", "disabled");
+              dispatch(set2FaStatus(false));
+              dispatch(
+                setToast({
+                  message: `${res?.error?.data?.data?.message}`,
+                  status: false,
+                })
+              );
+            } else {
+              dispatch(
+                setToast({
+                  message: `${res?.error?.data?.message}`,
+                  status: false,
+                })
+              );
+            }
+            // dispatch(setToast({ message: `${res.error.data.data.message}`, status: false }));
+            setTimeout(() => {
+              setDisabledButton(false);
+            }, 3000);
+          }
+        } else {
+          /* toast.success(res.data.data.message); */
+          dispatch(setToast({ message: res.data.data.message, status: true }));
+          dispatch(set2FaStatus(false));
+          localStorage.setItem("google_2fa", "disabled");
+          setTimeout(() => {
+            dispatch(setToast({ message: null, status: false }));
+          }, 2000);
+          closeCardModal();
+          resetModal();
+        }
+      });
+    }
+  };
+
+  // useEffect(() => {});
+
+  return (
+    <>
+      <ToastContainer />
+      <Modal
+        title="Disable Google Authentication"
+        open={isOpenStepTwo}
+        onOk={handleOk}
+        // okText={false}
+        onCancel={handleCancel}
+        // cancelText="Disable"
+        footer={false}
+        maskClosable={false}
+      >
+        <form>
+          <div id="stepTwo" className={`stepTwo`}>
+            <div className="inputStyle" style={{ marginTop: 0 }}>
+              <label>Login password</label>
+              <Input
+                placeholder="Please enter password"
+                type="password"
+                onChange={(e) => {
+                  setValue("password", e.target.value);
+                  trigger("password");
+                  if (errors?.password?.message) {
+                    errors.password.message = "";
+                  }
+                }}
+              ></Input>
+              <p className="error">{errors.password?.message}</p>
+            </div>
+            <div className="inputStyle">
+              <label>Google authentication code</label>
+              <Input
+                placeholder="Enter authentication code"
+                onChange={(e) => {
+                  setValue("token", e.target.value);
+                  trigger("token");
+                  if (errors?.token?.message) {
+                    errors.token.message = "";
+                  }
+                }}
+              ></Input>
+              <p className="error">{errors.token?.message}</p>
+            </div>
+            <div className="disableButton">
+              <button
+                type="submit"
+                onClick={handleSubmit(onSubmit)}
+                disabled={disabledButton}
+                className="enable ant-btn ant-btn-default"
+              >
+                Disable
+              </button>
+            </div>
+          </div>
+        </form>
+      </Modal>
+    </>
+  );
+};
+
+export default GoogleStepTwo;

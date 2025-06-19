@@ -1,0 +1,177 @@
+@import "./styles/__vars.scss";
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  color: red;
+}
+
+.spiner {
+  width: 100%;
+  // position: absolute;
+  height: 100%;
+  text-align: center;
+  background-color: transparent;
+
+  .ant-space.ant-space-horizontal.ant-space-align-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 99;
+  }
+}
+
+.ant-select-dropdown {
+  .ant-select-item {
+    &:hover {
+      background-color: #9f53ff;
+      color: $white;
+    }
+  }
+}
+
+.select-Design {
+  .ant-select {
+    border-radius: 5px;
+  }
+
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    background-color: transparent;
+    color: white;
+  }
+
+  .ant-select-single.ant-select-open .ant-select-selection-item {
+    color: white;
+    border-radius: 5px;
+  }
+}
+
+span.anticon.anticon-down.ant-select-suffix {
+  color: white !important;
+}
+
+.whitefilter {
+  filter: brightness(0) invert(1);
+}
+
+.required__check {
+  display: flex;
+  gap: 10px;
+}
+
+.select__design_issu {
+  width: 50%;
+}
+
+.submit_modal {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.ant-modal-close-icon {
+  background: $btnColor;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.ant-modal-content span.anticon svg {
+  font-size: 12px;
+  color: #000 !important;
+}
+
+.revenue_card {
+  .ant-row {
+    text-align: center;
+  }
+
+  .user_number {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.center-container {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  /* Full viewport height */
+}
+
+.center-text {
+  text-align: center;
+}
+
+.referral_button {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.referral-table {
+  width: 100%;
+
+  tr {
+
+    th,
+    td {
+      div {
+        padding: 16px;
+      }
+
+    }
+
+    td {
+      div {
+        background: #fff;
+
+      }
+    }
+  }
+}
+
+.left-align {
+  text-align: left;
+}

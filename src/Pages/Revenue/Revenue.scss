@@ -1,0 +1,76 @@
+@import "../../styles/__mixins.scss";
+@import "../../styles/__vars.scss";
+
+.headingOfPage {
+  @include fluid-type(320px, 1920px, 14px, 18px);
+  color: $black;
+  font-weight: 600;
+}
+.selectRevenue {
+  //width: 200px;
+  // margin-top: auto;
+  // background-color: red;
+  width: 100%;
+  // max-width: 200px;
+  background: linear-gradient(
+    180deg,
+    rgb(0, 174, 239) 20%,
+    rgb(54, 124, 199) 80%
+  );
+  border: 0;
+  color: #fff;
+  border-radius: 6px !important;
+  .ant-select-arrow {
+    .anticon-down {
+      svg {
+        font-size: 12px;
+      }
+    }
+  }
+
+  // .css-1xc3v61-indicatorContainer {
+  //     color: white;
+
+  //     &:hover {
+  //         color: white;
+  //     }
+  // }
+}
+.revenueSec {
+  border-radius: 30px;
+  border: 1px solid #d7e0eb;
+  flex-direction: column;
+  gap: 25px;
+  background-color: #ffffff;
+  padding: 12px;
+  .revenueHeading {
+    display: flex;
+    // flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+  .headingOfPage {
+    margin: 0;
+  }
+}
+.swapRevenue {
+  margin-bottom: 20px;
+}
+.insect {
+  display: flex;
+  // gap: 5px;
+  justify-content: center;
+}
+.historydiv {
+  margin-bottom: 15px;
+  text-align: right;
+}
+.historyImg {
+  height: 30px;
+  width: 50px;
+}
+.backImg {
+  width: 50px;
+  height: 30px;
+  margin-bottom: 20px;
+}

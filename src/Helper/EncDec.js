@@ -12,6 +12,8 @@ import aes from "crypto-js/aes";
 //   };
 //   return JSON.stringify(dataa);
 // };
+
+
 export const encryptData = (data) => {
   let enc = CryptoJS.AES.encrypt(
     JSON.stringify(data),

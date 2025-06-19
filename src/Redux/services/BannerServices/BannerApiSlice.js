@@ -9,6 +9,13 @@ export const BannerApiSlice = apiSlice.injectEndpoints({
         body: { ...params },
       }),
     }),
+    updateBannerList: builder.mutation({
+      query: (params) => ({
+        url: "banner/updateBanner",
+        method: "POST",
+        body: { ...params },
+      }),
+    }),
     saveBanner: builder.mutation({
       query: (formData) => ({
         url: "banner/createBanner",
@@ -30,4 +37,5 @@ export const {
   useGetBannerListMutation,
   useSaveBannerMutation,
   useDeleteBannerMutation,
+  useUpdateBannerListMutation,
 } = BannerApiSlice;

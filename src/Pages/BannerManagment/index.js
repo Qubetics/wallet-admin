@@ -12,6 +12,8 @@ import {
   Modal,
   Upload,
   message,
+  Switch,
+  Tooltip,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +24,8 @@ import * as yup from "yup";
 import {
   useGetBannerListMutation,
   useSaveBannerMutation,
-  useDeleteBannerMutation
+  useDeleteBannerMutation,
+  useUpdateBannerListMutation
 } from "../../Redux/services/BannerServices/BannerApiSlice";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import moment from "moment";
@@ -44,6 +47,7 @@ const BannerManagement = () => {
   const [SaveBanner, {}] = useSaveBannerMutation();
   const [DeleteBanner, {}] = useDeleteBannerMutation();
   const [getBannerList, { isLoading }] = useGetBannerListMutation();
+  const [updateBannerList, {}] = useUpdateBannerListMutation();
   const [bannerList, setBannerList] = useState([]);
   const dispatch = useDispatch();
 
@@ -52,6 +56,36 @@ const BannerManagement = () => {
     apiUrl: CONFIG.API_URL,
     ipTrackUrl: CONFIG.IP_TRACK_URL,
   });
+
+  const updateBannerListFn = async (data) => {
+    const enc = await encryption(JSON.stringify(data));
+    const securedData = { dataString: enc };
+    await updateBannerList(securedData).then((res) => {
+      if (res?.data?.status) {
+        dispatch(
+          setToast({
+            message: "Banner status updated successfully",
+            status: true,
+          })
+        );
+        getAnnouncementListFn(); // Refresh the list
+      } else {
+        dispatch(
+          setToast({
+            message: res?.error?.data?.message || "Failed to update banner status",
+            status: false,
+          })
+        );
+      }
+    }).catch((error) => {
+      dispatch(
+        setToast({
+          message: "Failed to update banner status",
+          status: false,
+        })
+      );
+    });
+  };
 
   console.log("bannerList222222222222", process.env.REACT_APP_PUBLIC_BASE_URL);
 
@@ -109,31 +143,31 @@ const BannerManagement = () => {
   }, [reset]);
 
   const getAnnouncementListFn = async () => {
-    const enc = await encryption(JSON.stringify({ page: currentPage, limit: perPage }));
+    const enc = await encryption(
+      JSON.stringify({ page: currentPage, limit: perPage })
+    );
     const securedData = { dataString: enc };
-    await getBannerList(securedData).then(
-      (res, err) => {
-        if (res?.data?.data) {
-          console.log("res", res?.data?.data);
-          setBannerList(res?.data?.data?.banner_list);
-          // Update meta information for pagination
-          const meta = {
-            total_records: res?.data?.data?.total,
-            current_page: res?.data?.data?.page,
-            per_page: res?.data?.data?.per_page,
-            total_pages: res?.data?.data?.total_pages,
-          };
-          // dispatch(setAnnouncementListMeta(meta));
-        } else {
-          if (res?.error?.status == "FETCH_ERROR") {
-            setToast({
-              message: `${"Unable to fetch banner list"}`,
-              status: false,
-            })
-          }
+    await getBannerList(securedData).then((res, err) => {
+      if (res?.data?.data) {
+        console.log("res", res?.data?.data);
+        setBannerList(res?.data?.data?.banner_list);
+        // Update meta information for pagination
+        const meta = {
+          total_records: res?.data?.data?.total,
+          current_page: res?.data?.data?.page,
+          per_page: res?.data?.data?.per_page,
+          total_pages: res?.data?.data?.total_pages,
+        };
+        // dispatch(setAnnouncementListMeta(meta));
+      } else {
+        if (res?.error?.status == "FETCH_ERROR") {
+          setToast({
+            message: `${"Unable to fetch banner list"}`,
+            status: false,
+          });
         }
       }
-    );
+    });
   };
 
   useEffect(() => {
@@ -142,7 +176,7 @@ const BannerManagement = () => {
 
   const onFormSubmit = async (data) => {
     console.log("data", data);
-    
+
     // Check if bannerImage is provided
     if (!data.bannerImage) {
       dispatch(
@@ -153,7 +187,7 @@ const BannerManagement = () => {
       );
       return;
     }
-    
+
     try {
       setDisabled(true);
       const formData = new FormData();
@@ -184,9 +218,7 @@ const BannerManagement = () => {
         setBannerImage(null);
         setImageName("");
         getAnnouncementListFn();
-        dispatch(
-          setToast({ message: `${response?.message}`, status: true })
-        );
+        dispatch(setToast({ message: `${response?.message}`, status: true }));
       } else {
         setDisabled(false);
         dispatch(
@@ -289,7 +321,26 @@ const BannerManagement = () => {
       title: "Link",
       dataIndex: "link",
       key: "link",
-      render: (text) => <p>{text || "N/A"}</p>,
+      render: (text) => {
+        if (!text) return <p>N/A</p>;
+        
+        // Limit to 20 words
+        const words = text.split(' ');
+        const limitedText = words.slice(0, 20).join(' ');
+        const hasMoreWords = words.length > 20;
+        const displayText = hasMoreWords ? `${limitedText}...` : limitedText;
+        
+        return (
+          <Tooltip title={text}>
+            <p 
+              style={{ cursor: 'pointer', color: '#1890ff', textDecoration: 'underline' }}
+              onClick={() => window.open(text.startsWith('http') ? text : `https://${text}`, '_blank')}
+            >
+              {displayText}
+            </p>
+          </Tooltip>
+        );
+      },
     },
     {
       title: "Banner Image",
@@ -315,16 +366,6 @@ const BannerManagement = () => {
       ),
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => (
-        <p>
-          {status === "1" ? "Active" : "Inactive"}
-        </p>
-      ),
-    },
-    {
       title: "Date and Time",
       dataIndex: "created_at",
       key: "created_at",
@@ -335,6 +376,48 @@ const BannerManagement = () => {
             : "N/A"}
         </p>
       ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status, record) => {
+        return (
+          <div className="status-cell">
+            <span className="status-text">{status === "1" ? "Active" : "Inactive"}</span>
+            <Switch
+              checked={status === "1"}
+              onChange={() => {
+                const newStatus = status === "1" ? "0" : "1";
+                const statusText = newStatus === "1" ? "activate" : "deactivate";
+                
+                confirm({
+                  title: (
+                    <span style={{ color: "white", whiteSpace: "nowrap" }}>
+                      Do you want to {statusText} this banner?
+                    </span>
+                  ),
+                  icon: <ExclamationCircleFilled />,
+                  centered: true,
+                  okText: "Yes",
+                  cancelText: "No",
+                  onOk() {
+                    const data = {
+                      id: record?.id,
+                      status: newStatus
+                    }
+                    updateBannerListFn(data);
+                  },
+                  onCancel() {
+                    // Reset switch to original state
+                    getAnnouncementListFn();
+                  },
+                });
+              }}
+            />
+          </div>
+        );
+      },
     },
   ];
 

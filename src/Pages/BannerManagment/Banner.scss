@@ -28,3 +28,20 @@
 .ant-modal-confirm-confirm {
     width: 430px !important; 
 }
+
+.status-cell {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    white-space: nowrap !important;
+    
+    .status-text {
+        margin-right: 15px;
+        min-width: 50px;
+        display: inline-block;
+    }
+    
+    .ant-switch {
+        display: inline-flex !important;
+    }
+}

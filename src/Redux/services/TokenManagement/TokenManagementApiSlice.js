@@ -37,7 +37,7 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
     }),
     searchToken: builder.mutation({
       query: (data) => ({
-        url: `wallet/searchToken`,
+        url: `token/searchToken`,
         method: "POST",
         body:{...data},
       }),

@@ -9,7 +9,7 @@ index e465d8e..f428fb3 100644
 +      fallback: {
 +        "crypto": require.resolve("crypto-browserify"),
 +        "vm": require.resolve("vm-browserify"),
-+        "http": require.resolve("stream-http"),
++        "http": false,
 +        "https": require.resolve("https-browserify"),
 +        "url": require.resolve("url"),
 +        "url": require.resolve("url/"),

@@ -4,3 +4,4 @@ src_bk
 .env
 .env.prod
 .env*
+package-lock.json

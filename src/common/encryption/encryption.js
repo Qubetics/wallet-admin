@@ -1,5 +1,6 @@
 // import NodeRSA from 'node-rsa';
 import JSEncrypt from "jsencrypt";
+
 const RSAkey = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8T9YBBWhdZ8gZBGS7udG
 f+VC3h2w4yhVWhL4sI0zHdsAy9AFy8imswZTnCa4hdbKfYe4/S5iPIahI+iQ8NnZ
@@ -10,17 +11,24 @@ H4bPwfIWg6HmmNP+Mx/elPjg6ndB+6pH517gyEAdFd94lYhU4AuTETpuJNu/O3zq
 twIDAQAB
 -----END PUBLIC KEY-----`;
 
-// Assuming you're using JSEncrypt for encryption
-
-export const encryption = async (data) => {
+/**
+ * Encrypts data using JSEncrypt
+ * @param {string|object} data - Data to encrypt (string or object)
+ * @returns {string} - Encrypted data
+ */
+const encryption = async (data) => {
   try {
-    console.log("data of payload", data);
+    // Convert object to string if needed
+    const dataToEncrypt = typeof data === 'object' ? JSON.stringify(data) : String(data);
+    
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey(RSAkey);
-    const encStr = encrypt.encrypt(data);
+    const encStr = encrypt.encrypt(dataToEncrypt);
     return encStr;
   } catch (error) {
-    console.error(error);
-    throw error;
+    console.error("Encryption error:", error.message);
+    throw new Error(`Encryption failed: ${error.message}`);
   }
 };
+
+export default encryption;

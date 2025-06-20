@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { CONFIG, clearStorage } from "../../common/constant/constant";
-import { generateRandomNumber } from "../../Helper/EncDec";
+// import { generateRandomNumber } from "../../Helper/EncDec";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: CONFIG.API_URL,
@@ -9,9 +9,9 @@ const baseQuery = fetchBaseQuery({
     // const token = getState()?.userState?.user?.token;
     const token = localStorage.getItem("jwt_token");
     console.log("token",token)
-    const randomNumber = generateRandomNumber();
+    // const randomNumber = generateRandomNumber();
 
-    headers.set("aw-api-auth", randomNumber);
+    // headers.set("aw-api-auth", randomNumber);
     if (token) {
       // headers.set("authorization", `Bearer ${token}`)
       headers.set("Access-Control-Allow-Origin", "*");

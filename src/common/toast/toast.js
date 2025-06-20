@@ -26,12 +26,11 @@ const Toastify = () => {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
-        closeOnClick: false,
+        closeOnClick: true,
         pauseOnHover: true,
-        draggable: false,
+        draggable: true,
         progress: undefined,
         theme: "light",
-        closeButton: false,
         onClose: () => {
           toastIdRef.current = null;
           // Clear the toast state when toast closes
@@ -61,13 +60,12 @@ const Toastify = () => {
       limit={1}
       hideProgressBar={false}
       newestOnTop
-      closeOnClick={false}
+      closeOnClick
       rtl={false}
       pauseOnFocusLoss={false}
-      draggable={false}
+      draggable
       pauseOnHover
       theme="light"
-      closeButton={false}
     />
   );
 };

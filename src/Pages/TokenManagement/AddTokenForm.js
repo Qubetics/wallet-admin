@@ -23,7 +23,7 @@ import {
   useSearchTokenMutation,
   useAssetsByPolicyIdMutation,
 } from "../../Redux/services/TokenManagement/TokenManagementApiSlice";
-import { encryption } from "../../common/encryption/encryption";
+import  encryption  from "../../common/encryption/encryption";
 // import axios from "axios";
 import { setToast } from "../../Redux/slice/toastSlice";
 import { setAssetData } from "../../Redux/slice/TokenTableSlice";

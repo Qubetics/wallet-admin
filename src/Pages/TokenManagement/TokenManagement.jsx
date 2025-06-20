@@ -40,7 +40,7 @@ import { CONFIG } from "../../common/constant/constant";
 import { formatNumberUSD } from "../../Helper/FormatNumber";
 // import Utils from "./solana/walletConnector";
 // import Referral from "./solana/wallet/handleReferal";
-import { encryption } from "../../common/encryption/encryption";
+import  encryption  from "../../common/encryption/encryption";
 
 const { confirm } = Modal;
 
@@ -460,17 +460,7 @@ console.log("TokenId",TokenId)
         </Button>
       ),
     },
-    // {
-    //   title: "Add Token Referral Account",
-    //   key: "action",
-    //   render: (text, record) => (
-    //     <Referral
-    //       data={record}
-    //       setLoading={setLoading}
-    //       saveTokenReferralAccount={saveTokenReferralAccount}
-    //     />
-    //   ),
-    // },
+
   ];
 
   const getTokenDataFn = async (

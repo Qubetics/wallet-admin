@@ -32,7 +32,7 @@ import moment from "moment";
 import dayjs from "dayjs";
 import "./Banner.scss";
 import { CONFIG } from "../../common/constant/constant";
-import { encryption } from "../../common/encryption/encryption";
+import  encryption  from "../../common/encryption/encryption";
 const { confirm } = Modal;
 
 const BannerManagement = () => {
@@ -420,18 +420,14 @@ const BannerManagement = () => {
       },
     },
   ];
-
   // Add delete action column if user has permission
-  if (permission_type == "2") {
     columns.push({
       title: "Action",
       key: "action",
       render: (text, record) => (
         <Button
-          disabled={permission_type == "2" ? false : true}
           className="btn mr10"
           type="primary"
-          danger
           onClick={(e) => {
             confirm({
               title: (
@@ -485,7 +481,6 @@ const BannerManagement = () => {
         </Button>
       ),
     });
-  }
 
   return (
     <>

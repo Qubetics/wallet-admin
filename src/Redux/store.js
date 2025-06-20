@@ -20,11 +20,8 @@ import {
 import userReducer from "./slice/userSlice";
 import sidebarReducer from "./slice/sidebarSlice";
 import toastReducer from "./slice/toastSlice";
-import metamaskReducer from "./slice/metamaskSlice";
 import dashboardDetailsSliceReducer from "./slice/DashboardDetailsSlice";
-import RevenueTableDataReducer from "./slice/RevenueTableSlice";
 import AnnouncementReducer from "./slice/announcementSlice";
-import SubAdminReducer from "./slice/subAdminSlice";
 
 import { apiSlice } from "./slice/apiSlice";
 
@@ -41,14 +38,11 @@ const combinedReducer = combineReducers({
   toastState: toastReducer,
   userState: userReducer,
   sidebarState: sidebarReducer,
-  metamaskState: metamaskReducer,
   TransactionData: TransactionDataReducer,
   TokenTableData: getTokenTableDataReducer,
   TransactionList: TransactionRequestReducer,
   DashboardList: dashboardDetailsSliceReducer,
-  RevenueList: RevenueTableDataReducer,
   Announcement: AnnouncementReducer,
-  SubAdmin: SubAdminReducer,
 });
 export const rootReducers = (state, action) => {
   if (action.type === "userSlice/logout") {

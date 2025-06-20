@@ -19,7 +19,7 @@ import {
   select_blockchain,
 } from "../../common/constant/constant";
 import { formatNumberCrypto, formatNumberUSD } from "../../Helper/FormatNumber";
-import { encryption } from "../../common/encryption/encryption";
+import encryption  from "../../common/encryption/encryption";
 
 function TransactionDetails() {
   const [checked, setChecked] = useState(true);

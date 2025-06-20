@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CONFIG } from "../../common/constant/constant";
-import { generateRandomNumber } from "../../Helper/EncDec";
+// import { generateRandomNumber } from "../../Helper/EncDec";
 
 // const customFetchBaseQuery = (baseUrl) => {
 //   return async (args, api, extraOptions) => {
@@ -38,7 +38,7 @@ export const loginApi = createApi({
           "Content-Type": "application/json",
           // "Authorization": "dfadsfasf",
           Authorization: "",
-          "aw-api-auth": generateRandomNumber(), 
+          // "aw-api-auth": generateRandomNumber(), 
         },
       }),
       // transformResponse: (result) => result.data,

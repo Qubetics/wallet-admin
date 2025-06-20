@@ -30,7 +30,7 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import moment from "moment";
 import dayjs from "dayjs";
 import "./Announcement.scss";
-import { encryption } from "../../common/encryption/encryption";
+import encryption from "../../common/encryption/encryption";
 const { confirm } = Modal;
 
 const Announcement = () => {

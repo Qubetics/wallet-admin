@@ -10,7 +10,7 @@ import { useGetDeviceUserDataQuery } from "../../Redux/services/DashboardServicc
 import { setDeviceUsers } from "../../Redux/slice/DashboardDetailsSlice";
 import Tooltip from "antd/es/tooltip";
 import { formatNumberCrypto, formatNumberUSD } from "../../Helper/FormatNumber";
-import { encryption } from "../../common/encryption/encryption";
+import encryption from "../../common/encryption/encryption";
 
 function Dashboard() {
   const [getTransactionsData, { isLoading }] = useGetTransactionsDataMutation();
@@ -27,17 +27,18 @@ function Dashboard() {
   const dispatch = useDispatch();
 
   const getTransactionsDataFn = async () => {
-    const enc = await encryption(JSON.stringify({ page: 1, limit: 5 }));
-    const securedData = { dataString: enc };
-    await getTransactionsData(securedData).then((res, err) => {
-      if (res) {
+    try {
+      const enc = await encryption(JSON.stringify({ page: 1, limit: 5 }));
+      const securedData = { dataString: enc };
+      const res = await getTransactionsData(securedData);
+      if (res && res.data) {
         console.log("res?.data?.data >>.", res?.data?.data);
         setTransactionData(res?.data?.data?.transaction_history);
         // dispatch(setTransactionData(res?.data?.data));
-      } else {
-        console.log("error", err);
       }
-    });
+    } catch (err) {
+      console.error("Error fetching transaction data:", err);
+    }
   };
 
   useEffect(() => {

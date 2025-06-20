@@ -318,6 +318,7 @@ console.log("TokenId",TokenId);
             title={![1, 2, 4].includes(record?.coin_family) ? "Non-EVM token cannot be changed" : ""}
           >
             <Switch
+              style={{backgroundColor: record?.for_swap === 0 ? '#d9d9d9' : undefined}}
               checked={record?.for_swap === 1}
               disabled={![1, 2, 4].includes(record?.coin_family)}
               onChange={() => {

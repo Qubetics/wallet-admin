@@ -385,6 +385,9 @@ const BannerManagement = () => {
             <span className="status-text">{status === "1" ? "Active" : "Inactive"}</span>
             <Switch
               checked={status === "1"}
+              style={{
+                backgroundColor: status === "1" ? undefined : "#ffffff",
+              }}
               onChange={() => {
                 const newStatus = status === "1" ? "0" : "1";
                 const statusText = newStatus === "1" ? "activate" : "deactivate";
@@ -422,7 +425,7 @@ const BannerManagement = () => {
       key: "action",
       render: (text, record) => (
         <Button
-          disabled={permission_type == "2" ? false : true}
+          // disabled={permission_type == "2" ? false : true}
           className="btn mr10"
           type="primary"
           // danger

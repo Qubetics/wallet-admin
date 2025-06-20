@@ -40,21 +40,21 @@
   }
 }
 
-.switchDesign {
-  button[aria-checked="true"] {
-    background-color: green;
-  }
+// .switchDesign {
+//   button[aria-checked="true"] {
+//     background-color: green;
+//   }
 
-  button[aria-checked="false"] {
-    background-color: red;
-  }
+//   button[aria-checked="false"] {
+//     background-color: red;
+//   }
 
-  .ant-switch-checked {
-    &:focus {
-      box-shadow: none;
-    }
-  }
-}
+//   .ant-switch-checked {
+//     &:focus {
+//       box-shadow: none;
+//     }
+//   }
+// }
 
 .height32 {
   height: 32px;

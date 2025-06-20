@@ -587,11 +587,8 @@ function DefaultTokenManagement() {
           <Switch
             disabled={
               record?.token_type ? false : true
-              // !disableToggleSwap &&
-              // (record?.coin_family == 1 || record?.coin_family == 3)
-              //   ? false
-              //   : true
             }
+            {...((record?.allow_swap === "0" || record?.allow_swap == null) && {style:{backgroundColor:'rgba(0, 0, 0, 0.25)'}})}
             checked={
               record?.allow_swap !== null && record?.allow_swap !== "0"
                 ? true

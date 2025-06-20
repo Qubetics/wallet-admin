@@ -91,6 +91,7 @@ function ApplicationMaintenance() {
                     : itm?.type.split("_").join(" ")}
                 </span>
                 <Switch
+                  style={!itm?.is_maintenance ? {backgroundColor:'rgba(0, 0, 0, 0.1)'} : {}}
                   checked={itm?.is_maintenance}
                   disabled={permission_type == "2" ? false : true}
                   onChange={(e) => {

@@ -87,8 +87,6 @@ const BannerManagement = () => {
     });
   };
 
-  console.log("bannerList222222222222", process.env.REACT_APP_PUBLIC_BASE_URL);
-
   const AnnouncementDetails = useSelector(
     (state) => state?.Announcement?.announcementList
   );
@@ -419,11 +417,7 @@ const BannerManagement = () => {
         );
       },
     },
-  ];
-
-  // Add delete action column if user has permission
-  if (permission_type == "2") {
-    columns.push({
+    {
       title: "Action",
       key: "action",
       render: (text, record) => (
@@ -431,7 +425,7 @@ const BannerManagement = () => {
           disabled={permission_type == "2" ? false : true}
           className="btn mr10"
           type="primary"
-          danger
+          // danger
           onClick={(e) => {
             confirm({
               title: (
@@ -439,17 +433,19 @@ const BannerManagement = () => {
                   Do you want to delete this banner?
                 </span>
               ),
-              icon: <ExclamationCircleFilled />,
+              icon: <ExclamationCircleFilled style={{marginTop:'6px'}} />,
               centered: true,
               okText: "Delete",
               onOk() {
                 console.log("record", record);
                 DeleteBanner({ id: record?.id })
                   .then((res) => {
+                    console.log("res", res);
                     if (res?.data?.status) {
+                      console.log("res?.data?.data", res?.data);
                       dispatch(
                         setToast({
-                          message: `${res?.data?.data}`,
+                          message: `${res?.data?.message}`,
                           status: true,
                         })
                       );
@@ -484,8 +480,8 @@ const BannerManagement = () => {
           Delete
         </Button>
       ),
-    });
-  }
+    }
+  ];
 
   return (
     <>

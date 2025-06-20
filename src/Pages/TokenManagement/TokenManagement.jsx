@@ -12,6 +12,7 @@ import {
   Pagination,
   Switch,
   Dropdown,
+  Tooltip,
 } from "antd";
 import Select from "react-select";
 import { Link, useNavigate } from "react-router-dom";
@@ -81,7 +82,8 @@ const TokenManagement = () => {
   const swapRequestCount = useSelector(
     (state) => state?.TokenTableData?.swapRequestCount
   );
-console.log("TokenId",TokenId)
+console.log("TokenId",TokenId);
+
   const columns = [
     {
       title: "S.No.",
@@ -312,16 +314,21 @@ console.log("TokenId",TokenId)
       key: "action",
       render: (text, record) => (
         <p style={{ textAlign: "center", marginBottom: "0" }}>
-           <Switch
-            checked={record?.for_swap === 1}
-            onChange={() => {
-              const newStatus = record?.for_swap === 1 ? 0 : 1;
-              onChangeSwitch({ 
-                id: record?.coin_id, 
-                status: newStatus
-              });
-            }}
-          />
+          <Tooltip 
+            title={![1, 2, 4].includes(record?.coin_family) ? "Non-EVM token cannot be changed" : ""}
+          >
+            <Switch
+              checked={record?.for_swap === 1}
+              disabled={![1, 2, 4].includes(record?.coin_family)}
+              onChange={() => {
+                const newStatus = record?.for_swap === 1 ? 0 : 1;
+                onChangeSwitch({ 
+                  id: record?.coin_id, 
+                  status: newStatus
+                });
+              }}
+            />
+          </Tooltip>
         </p>
       ),
     },
@@ -405,18 +412,20 @@ console.log("TokenId",TokenId)
           // disabled={record?.added_by == "2"}
           className="btn mr10"
           type="primary"
+          style={{ color: "white" }}
           onClick={(e) => {
             const isToken = record?.coin_status === 1;
             const actionText = isToken ? "disable" : "enable";
             const statusValue = isToken ? 0 : 1;
             
             confirm({
+              icon: <ExclamationCircleFilled style={{marginTop:'6px'}}/>,
               title: (
-                <span style={{ color: "white" ,marginLeft:"15px" }}>
+                <span style={{ color: "white" ,marginLeft:"15px"}}>
                   Do you want to {actionText} this token?
                 </span>
               ),
-              icon: <ExclamationCircleFilled />,
+              
               centered: true,
               okText: isToken ? "Disable" : "Enable",
               okButtonProps: {

@@ -313,7 +313,7 @@ const Announcement = () => {
           onClick={(e) => {
             confirm({
               title: <span style={{color: "white"}}>Do you want to delete this announcement?</span>,
-              icon: <ExclamationCircleFilled />,  
+              icon: <ExclamationCircleFilled style={{marginTop:'6px'}}/>,  
               centered: true,
               okText: "Delete",
               onOk() {

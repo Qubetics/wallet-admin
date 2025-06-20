@@ -453,6 +453,8 @@ function TransactionDetails() {
                     `https://tronscan.org/#/address/${text}`,
                     "_blank"
                   )
+                : record.coin_family === 7
+                ? window.open(`https://ticsscan.com/tx/${text}`, "_blank")
                 : ""
             }
           >
@@ -498,6 +500,8 @@ function TransactionDetails() {
                     `https://tronscan.org/#/address/${text}`,
                     "_blank"
                   )
+                : record.coin_family === 7
+                ? window.open(`https://ticsscan.com/tx/${text}`, "_blank")
                 : ""
             }
           >
@@ -552,6 +556,8 @@ function TransactionDetails() {
                         `https://tronscan.org/#/transaction/${text}`,
                         "_blank"
                       )
+                    : record.coin_family === 7
+                    ? window.open(`https://ticsscan.com/tx/${text}`, "_blank")
                     : ""
                 }
               >

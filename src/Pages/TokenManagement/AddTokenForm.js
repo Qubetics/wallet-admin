@@ -11,12 +11,14 @@ import eth from "../../Images/eth.png";
 import bnb from "../../Images/bnb.png";
 import ada from "../../Images/ada.png";
 import matic from "../../Images/matic.png";
+import tron from "../../Images/Tron.png";
+import tics from "../../Images/qubetics.png";
 
 import avax from "../../Images/avax.png";
 import sol from "../../Images/solana.png";
 import cro from "../../Images/cronos.png";
 import pls from "../../Images/pls.png";
-import { select_blockchain ,COIN_FAMILY_TOKEN_TYPE } from "../../common/constant/constant";
+import {COIN_FAMILY_TOKEN_TYPE } from "../../common/constant/constant";
 import {
   useAddTokenImageMutation,
   useAddTokenMutation,
@@ -60,6 +62,95 @@ const schema = yup
       ),
   })
   .required();
+
+  const select_blockchain = [
+    { key: "key0", label: "Select any chain", value: 0 },
+    {
+      key: "key1",
+      label: (
+        <>
+          {" "}
+          <span>
+            <img src={eth} style={{ width: "20px" }} alt=""></img> ETH
+          </span>
+        </>
+      ),
+      value: 2,
+    },
+    // {
+    //   key: "key2",
+    //   label: (
+    //     <>
+    //       {" "}
+    //       <span>
+    //         <img src={btc} style={{ width: "20px" }} alt=""></img> BTC
+    //       </span>
+    //     </>
+    //   ),
+    //   value: 3,
+    // },
+    {
+      key: "key3",
+      label: (
+        <>
+          {" "}
+          <span>
+            <img src={bnb} style={{ width: "20px" }} alt=""></img> BNB
+          </span>
+        </>
+      ),
+      value: 1,
+    },
+    {
+      key: "key4",
+      label: (
+        <>
+          {" "}
+          <span>
+            <img src={sol} style={{ width: "20px" }} alt=""></img> SOL
+          </span>
+        </>
+      ),
+      value: 5,
+    },
+    {
+      key: "key6",
+      label: (
+        <>
+          {" "}
+          <span>
+            <img src={matic} style={{ width: "20px" }} alt=""></img> MATIC
+          </span>
+        </>
+      ),
+      value: 4,
+    },
+     {
+      key: "key7",
+      label: (
+        <>
+          {" "}
+          <span>
+            <img src={tron} style={{ width: "20px" }} alt=""></img> TRON
+          </span>
+        </>
+      ),
+      value: 6,
+    },
+    {
+      key: "key8",
+      label: (
+        <>
+          {" "}
+          <span>
+            <img src={tics} style={{ width: "20px" }} alt=""></img> TICS
+          </span>
+        </>
+      ),
+      value: 7,
+    },
+  
+  ];
 
 const AddTokenForm = ({ handleAddTokenCancel }) => {
   const ref = useRef();
@@ -258,48 +349,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
   const fetchCoinDataAndShow = async (tokenAddress, myCoinFamily) => {
     try {
       setConfirmLoading(true);
-      // if (myCoinFamily != "4" && myCoinFamily != "5") {
-      //   if (!isValidEthTokenAddress(tokenAddress)) {
-      //     setContractError(true);
-      //     dispatch(
-      //       setToast({
-      //         message: "Please enter valid contract address",
-      //         status: false,
-      //       })
-      //     );
-      //     setTimeout(() => {
-      //       dispatch(setToast({ message: null, status: false }));
-      //     }, 1000);
-      //     setConfirmLoading(false);
-
-      //     return;
-      //   } else {
-      //     setContractError(false);
-      //   }
-      // }
-      // const family = STATIC_COIN_FAMILY.find(
-      //   (el) => String(el.value) === String(myCoinFamily)
-      // );
-
-      // if (
-      //   myCoinFamily != "4" &&
-      //   myCoinFamily != "5" &&
-      //   family &&
-      //   !family.regex.test(tokenAddress)
-      // ) {
-      //   dispatch(
-      //     setToast({
-      //       message: "Please enter valid blockchain contract address",
-      //       status: false,
-      //     })
-      //   );
-      //   setTimeout(() => {
-      //     dispatch(setToast({ message: null, status: false }));
-      //   }, 1000);
-      //   setConfirmLoading(false);
-
-      //   return;
-      // }  
       const enc = await encryption(JSON.stringify({
         tokenAddress: tokenAddress,
         coinFamily: myCoinFamily,
@@ -466,6 +515,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
     console.log(`switch to ${checked}`);
     setChecked(checked);
   };
+
   const onPolicyIdChanged = (e) => {
     //alert(e.target.value);
     setValue("PolicyId", e.target.value);
@@ -519,15 +569,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
       });
     }
   };
-  // const setTokenRank = (value) => {
-
-  //   setRank(value)
-  // };
-
-  // const disabledDate = (current) => {
-  //   // Can not select days before today and today
-  //   return current.valueOf() < Date.now();
-  // };
 
   return (
     <div className="main_page_outer">
@@ -556,29 +597,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                 )}
               />
             </div>
-            {coinFamily == 5 && (
-              <div className="inputLabel">
-                <label>Enter Policy Id:</label>
-
-                <Controller
-                  name="PolicyId"
-                  control={control}
-                  render={({ field: { value } }) => (
-                    <Input
-                      placeholder="Enter policy id"
-                      onChange={(e) => onPolicyIdChanged(e)}
-                      value={value}
-                    />
-                  )}
-                />
-                {errors?.PolicyId?.message && (
-                  <div className="errorElement">
-                    <p style={{ color: "red" }}>{errors?.PolicyId?.message}</p>
-                  </div>
-                )}
-              </div>
-            )}
-            {coinFamily !== 5 && (
               <div className="inputLabel">
                 <label>Enter Contract Address:</label>
 
@@ -610,7 +628,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                   </div>
                 )}
               </div>
-            )}
             <div className="flexedItem">
               <div className="inputLabel addTokenInput">
                 <label> Enter Token Name:</label>

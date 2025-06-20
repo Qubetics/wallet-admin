@@ -266,12 +266,12 @@
   
   // Add the gradient theme mixin
   @mixin gradient-theme {
-    background: linear-gradient(135deg, #1a1333 0%, #2d1846 100%);
+    background: linear-gradient(rgb(57, 21, 102) 20%, rgb(159, 83, 255) 80%);
     color: #fff;
   }
   
   @mixin gradient-theme-hover {
-    background: linear-gradient(135deg, #2d1846 0%, #1a1333 100%);
+    background: linear-gradient(rgb(48, 10, 94) 20%, rgb(136, 81, 204) 80%);
     color: #fff;
   }
   

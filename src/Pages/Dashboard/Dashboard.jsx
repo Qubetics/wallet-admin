@@ -290,23 +290,23 @@ function Dashboard() {
       dataIndex: "blockchain_status",
       key: "status",
       render: (text) => {
-        let style;
+        let styleObj;
         if (text === "confirmed") {
-          style = { color: "green", fontWeight: "bold" };
+          styleObj = { color: "green", fontWeight: "bold" };
         } else if (text === "failed") {
-          style = { color: "red", fontWeight: "bold" };
+          styleObj = { color: "red", fontWeight: "bold" };
         } else if (text === "pending") {
-          style = { color: "orange", fontWeight: "bold" };
+          styleObj = { color: "orange", fontWeight: "bold" };
         } else {
-          style = { color: "black", fontWeight: "bold" };
+          styleObj = { color: "black", fontWeight: "bold" };
         } // Default color if none of the conditions match
 
         return (
-          <p style={style}>
+          <span className={`status-text ${text}`} style={styleObj}>
             {text === null
               ? "N/A"
               : text.charAt(0).toUpperCase() + text.slice(1)}{" "}
-          </p>
+          </span>
         );
       },
     },
@@ -433,6 +433,7 @@ function Dashboard() {
                 rowKey={"id"}
                 dataSource={transactionData}
                 bordered
+                className="dashboard-table"
               />
             </div>
           </div>

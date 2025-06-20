@@ -9,6 +9,8 @@ const baseQuery = fetchBaseQuery({
     // const token = getState()?.userState?.user?.token;
     const token = localStorage.getItem("jwt_token");
     console.log("token",token)
+
+    
     const randomNumber = generateRandomNumber();
 
     headers.set("aw-api-auth", randomNumber);

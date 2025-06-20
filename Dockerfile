@@ -1,11 +1,12 @@
 # Use official Node.js 18.18.0 image
-FROM node:18.20.8
+FROM node:18.18.0
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files and patches
 COPY package*.json ./
+COPY patches ./patches/
 
 # Install dependencies with legacy peer deps to avoid conflict
 RUN npm install --force

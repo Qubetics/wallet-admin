@@ -6,7 +6,6 @@ WORKDIR /app
 
 # Copy package files and patches
 COPY package*.json ./
-COPY patches ./patches/
 
 COPY patches ./patches
 

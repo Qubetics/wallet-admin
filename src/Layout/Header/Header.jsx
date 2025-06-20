@@ -125,11 +125,11 @@ function Header({ toggleSidebar, collapsed }) {
         <ModalComponent
           isModalOpen={modalOpen}
           handleCancel={() => setModalOpen(false)}
-          heading="Are you sure you want to logout ?"
+          heading={<span style={{color:'black'}}>Are you sure you want to logout ?</span>}
           maskClosable={false}
         >
           <div className="header__modal">
-            <h4 style={{color: "#fff"}}>Are you sure you want to logout ?</h4>
+            <h4 style={{color: "black"}}>Are you sure you want to logout ?</h4>
             <div className="header__modal__buttons">
               <button
                 className="btn ant-btn-primary"

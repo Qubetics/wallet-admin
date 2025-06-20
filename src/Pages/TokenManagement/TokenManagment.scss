@@ -352,6 +352,7 @@ span.anticon svg {
   color: #fff;
 }
 
+
 .panel-bg {
   background: linear-gradient(135deg, #1a1333 0%, #2d1846 100%);
   border-radius: 16px;
@@ -429,12 +430,5 @@ button,
     .anticon.anticon-exclamation-circle-filled {
       color: #000 !important;
     }
-  }
-}
-
-// Style for upload token form
-.inputLabel {
-  label {
-    color: #000 !important;
   }
 }

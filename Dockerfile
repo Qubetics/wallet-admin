@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
+COPY patches ./patches
+
 # Install dependencies with legacy peer deps to avoid conflict
 RUN npm install --force
 
@@ -17,7 +19,7 @@ COPY . .
 RUN npm run build
 
 # Expose port (adjust if needed)
-EXPOSE 3000
+EXPOSE 80
 
 # Start the app
 CMD ["npm", "start"]

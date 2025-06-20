@@ -407,3 +407,34 @@ button,
     border-bottom-color: rgba(255, 255, 255, 0.1);
   }
 }
+
+// Spin component styling
+.add_token_form_container {
+  .ant-spin {
+    color: #000 !important;
+    
+    .ant-spin-dot-item {
+      background-color: #000 !important;
+    }
+    
+    .ant-spin-text {
+      color: #000 !important;
+    }
+  }
+}
+
+// Make all ExclamationCircleFilled icons black in modals
+.ant-modal-confirm .ant-modal-confirm-body-wrapper {
+  .ant-modal-confirm-body {
+    .anticon.anticon-exclamation-circle-filled {
+      color: #000 !important;
+    }
+  }
+}
+
+// Style for upload token form
+.inputLabel {
+  label {
+    color: #000 !important;
+  }
+}

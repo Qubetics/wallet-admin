@@ -419,9 +419,9 @@ console.log("TokenId",TokenId);
             const statusValue = isToken ? 0 : 1;
             
             confirm({
-              icon: <ExclamationCircleFilled style={{marginTop:'6px'}}/>,
+              icon: <ExclamationCircleFilled style={{marginTop:'6px' ,color:'black'}}/>,
               title: (
-                <span style={{ color: "white" ,marginLeft:"15px"}}>
+                <span style={{ color: "black" ,marginLeft:"15px"}}>
                   Do you want to {actionText} this token?
                 </span>
               ),
@@ -579,8 +579,8 @@ console.log("TokenId",TokenId);
     confirm({
       title:
         value.status == 1
-          ? <span style={{color:'white'}}>Do you want to add this token to the swap?</span> 
-          : <span style={{color:'white'}}>Do you want to remove this token from the swap?</span>,
+          ? <span style={{color:'black'}}>Do you want to add this token to the swap?</span> 
+          : <span style={{color:'black'}}>Do you want to remove this token from the swap?</span>,
       icon: <ExclamationCircleFilled />,
       centered: true,
       async onOk() {
@@ -928,7 +928,7 @@ console.log("TokenId",TokenId);
     } else if (parsedValue) {
       setTokenId(parsedValue?.coin_id);
       setEditAction("edit_token_image");
-      setEditTokenTitle("Upload Token Image");
+      setEditTokenTitle(<span style={{color:'#080707'}}>Upload Token Image</span>);
       setEditModalOpen(true);
     }
   };

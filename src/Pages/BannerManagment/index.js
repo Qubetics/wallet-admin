@@ -391,7 +391,7 @@ const BannerManagement = () => {
                 
                 confirm({
                   title: (
-                    <span style={{ color: "white", whiteSpace: "nowrap" }}>
+                    <span style={{ color: "black", whiteSpace: "nowrap" }}>
                       Do you want to {statusText} this banner?
                     </span>
                   ),
@@ -429,7 +429,7 @@ const BannerManagement = () => {
           onClick={(e) => {
             confirm({
               title: (
-                <span style={{ color: "white", whiteSpace: "nowrap" }}>
+                <span style={{ color: "black", whiteSpace: "nowrap" }}>
                   Do you want to delete this banner?
                 </span>
               ),

@@ -292,6 +292,11 @@
   }
 }
 
+.ant-switch.custom-switch-off {
+  background-color: #ffffff !important;
+  border-color: #d9d9d9 !important;
+}
+
 .sol_lbl {
   display: flex;
 
@@ -371,6 +376,10 @@ button,
   &:focus,
   &:active {
     @include gradient-theme-hover;
+  }
+
+  &.custom-switch-off {
+    @include gradient-theme-unchecked;
   }
 }
 

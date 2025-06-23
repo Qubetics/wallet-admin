@@ -35,7 +35,7 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import UploadTokenModal from "./UploadTokenModal";
 import { setToast } from "../../Redux/slice/toastSlice";
 import not_image_available from "../../Images/not_image_available.jpg";
-import { select_blockchain} from "../../common/constant/constant";
+import { select_blockchain } from "../../common/constant/constant";
 import moment from "moment";
 import { CONFIG } from "../../common/constant/constant";
 import { formatNumberUSD } from "../../Helper/FormatNumber";
@@ -82,7 +82,7 @@ const TokenManagement = () => {
   const swapRequestCount = useSelector(
     (state) => state?.TokenTableData?.swapRequestCount
   );
-console.log("TokenId",TokenId);
+  console.log("TokenId", TokenId);
 
   const columns = [
     {
@@ -314,18 +314,22 @@ console.log("TokenId",TokenId);
       key: "action",
       render: (text, record) => (
         <p style={{ textAlign: "center", marginBottom: "0" }}>
-          <Tooltip 
-            title={![1, 2, 4].includes(record?.coin_family) ? "Non-EVM token cannot be changed" : ""}
+          <Tooltip
+            title={
+              ![1, 2, 4].includes(record?.coin_family)
+                ? "Non-EVM token cannot be changed"
+                : ""
+            }
           >
             <Switch
-              style={{backgroundColor: record?.for_swap === 0 ? '#d9d9d9' : undefined}}
+              className={record?.for_swap === 0 ? "custom-switch-off" : ""}
               checked={record?.for_swap === 1}
               disabled={![1, 2, 4].includes(record?.coin_family)}
               onChange={() => {
                 const newStatus = record?.for_swap === 1 ? 0 : 1;
-                onChangeSwitch({ 
-                  id: record?.coin_id, 
-                  status: newStatus
+                onChangeSwitch({
+                  id: record?.coin_id,
+                  status: newStatus,
                 });
               }}
             />
@@ -345,30 +349,6 @@ console.log("TokenId",TokenId);
                   menu={{
                     onClick: (e, data) => showConfirm(e, data),
                     items: [
-                      // {
-                      //   key: "1",
-                      //   value: record,
-                      //   label: "Active",
-                      //   disabled:
-                      //     record.added_by == 2 || record?.status === "active"
-                      //       ? true
-                      //       : false,
-                      //   onClick: (e) => {
-                      //     showConfirm(e, record);
-                      //   },
-                      // },
-                      // {
-                      //   key: "2",
-                      //   value: record,
-                      //   label: "Inactive",
-                      //   disabled:
-                      //     record.added_by == 2 || record?.status === "inactive"
-                      //       ? true
-                      //       : false,
-                      //   onClick: (e) => {
-                      //     showConfirm(e, record);
-                      //   },
-                      // },
                       {
                         key: "3",
                         value: record,
@@ -377,22 +357,6 @@ console.log("TokenId",TokenId);
                           showConfirm(e, record);
                         },
                       },
-                      // {
-                      //   key: "4",
-                      //   value: record,
-                      //   label: "Edit Name",
-                      //   onClick: (e) => {
-                      //     showConfirm(e, record);
-                      //   },
-                      // },
-                      // record?.added_by != "2" && {
-                      //   key: "5",
-                      //   value: record,
-                      //   label: "Add Into Default Token List",
-                      //   onClick: (e) => {
-                      //     showConfirm(e, record);
-                      //   },
-                      // },
                     ],
                   }}
                   placement="bottomRight"
@@ -418,23 +382,27 @@ console.log("TokenId",TokenId);
             const isToken = record?.coin_status === 1;
             const actionText = isToken ? "disable" : "enable";
             const statusValue = isToken ? 0 : 1;
-            
+
             confirm({
-              icon: <ExclamationCircleFilled style={{marginTop:'6px' ,color:'black'}}/>,
+              icon: (
+                <ExclamationCircleFilled
+                  style={{ marginTop: "6px", color: "black" }}
+                />
+              ),
               title: (
-                <span style={{ color: "black" ,marginLeft:"15px"}}>
+                <span style={{ color: "black", marginLeft: "15px" }}>
                   Do you want to {actionText} this token?
                 </span>
               ),
-              
+
               centered: true,
               okText: isToken ? "Disable" : "Enable",
               okButtonProps: {
                 style: { backgroundColor: "#1890ff", borderColor: "#1890ff" },
               },
               async onOk() {
-                let disableValue = { 
-                  id: record?.coin_id, 
+                let disableValue = {
+                  id: record?.coin_id,
                   status: statusValue,
                   // ip_address: IpData?.ip
                 };
@@ -443,7 +411,7 @@ console.log("TokenId",TokenId);
                 ActionEnableDisable(securedData).then((res, err) => {
                   SetAction("disable_token");
                   if (res?.data) {
-                    console.log("here we go",res?.data?.message)
+                    console.log("here we go", res?.data?.message);
                     dispatch(
                       setToast({
                         message: `${res?.data?.message}`,
@@ -470,17 +438,6 @@ console.log("TokenId",TokenId);
         </Button>
       ),
     },
-    // {
-    //   title: "Add Token Referral Account",
-    //   key: "action",
-    //   render: (text, record) => (
-    //     <Referral
-    //       data={record}
-    //       setLoading={setLoading}
-    //       saveTokenReferralAccount={saveTokenReferralAccount}
-    //     />
-    //   ),
-    // },
   ];
 
   const getTokenDataFn = async (
@@ -497,10 +454,10 @@ console.log("TokenId",TokenId);
       from_date: myFromData || null,
       to_date: myToDate || null,
     };
-    console.log("filterAddedBy",typeof filterAddedBy)
+    console.log("filterAddedBy", typeof filterAddedBy);
     // if (filterAddedBy !== "0") {
-    if(filterAddedBy !== "0"){
-    filter_data["added_by"] = filterAddedBy;
+    if (filterAddedBy !== "0") {
+      filter_data["added_by"] = filterAddedBy;
     }
     // }
     if (coin_family > 0) {
@@ -557,14 +514,13 @@ console.log("TokenId",TokenId);
       }
     })();
   }, [action]);
-  
+
   const select_options = [
     { key: "key1", label: "ALL", value: "0" },
     { key: "key2", label: "Added by User", value: "2" },
     { key: "key3", label: "Added by Admin", value: "1" },
   ];
   const navigate = useNavigate();
-
 
   const handlePagenationChange = (event) => {
     if (!enableSearchButton) {
@@ -576,12 +532,18 @@ console.log("TokenId",TokenId);
   };
 
   const onChangeSwitch = async (value) => {
-    console.log("value",value)
+    console.log("value", value);
     confirm({
       title:
-        value.status == 1
-          ? <span style={{color:'black'}}>Do you want to add this token to the swap?</span> 
-          : <span style={{color:'black'}}>Do you want to remove this token from the swap?</span>,
+        value.status == 1 ? (
+          <span style={{ color: "black" }}>
+            Do you want to add this token to the swap?
+          </span>
+        ) : (
+          <span style={{ color: "black" }}>
+            Do you want to remove this token from the swap?
+          </span>
+        ),
       icon: <ExclamationCircleFilled />,
       centered: true,
       async onOk() {
@@ -593,13 +555,15 @@ console.log("TokenId",TokenId);
         };
         setDisableToggleSwap(false);
         setSwapChangeLoading(true);
-        const enc = await encryption(JSON.stringify({id:value.id,status:value.status}));
+        const enc = await encryption(
+          JSON.stringify({ id: value.id, status: value.status })
+        );
         const securedData = { dataString: enc };
         swapAction(securedData).then(async (res, err) => {
-          console.log("res222222222222",res?.data?.message)
+          console.log("res222222222222", res?.data?.message);
           // await getTokenDataFn(fromDate, toDate, SearchData, currentPage);
           if (res?.data?.status === true) {
-            console.log("res333333333",res?.data)
+            console.log("res333333333", res?.data);
             SetAction("token_swap_enable_disable");
             dispatch(
               setToast({ message: `${res?.data?.message}`, status: true })
@@ -742,7 +706,7 @@ console.log("TokenId",TokenId);
   };
 
   const showConfirm = (e, parsedValue) => {
-    console.log("parsedValue",parsedValue)
+    console.log("parsedValue", parsedValue);
     SetAction("");
     if (e.key == "1" && parsedValue) {
       confirm({
@@ -906,12 +870,6 @@ console.log("TokenId",TokenId);
           console.log("Cancel");
         },
       });
-      // setTokenId(parsedValue?.id);
-      // setEditRank(parsedValue?.rank);
-      // setEditTokenName("");
-      // setEditAction('edit_token_rank');
-      // setEditTokenTitle('Edit Token Order')
-      // setEditModalOpen(true);
     } else if (e.key === "inactive" || e.key === "blacklist") {
       confirm({
         title:
@@ -929,7 +887,9 @@ console.log("TokenId",TokenId);
     } else if (parsedValue) {
       setTokenId(parsedValue?.coin_id);
       setEditAction("edit_token_image");
-      setEditTokenTitle(<span style={{color:'#080707'}}>Upload Token Image</span>);
+      setEditTokenTitle(
+        <span style={{ color: "#080707" }}>Upload Token Image</span>
+      );
       setEditModalOpen(true);
     }
   };
@@ -1229,46 +1189,14 @@ console.log("TokenId",TokenId);
               </Button>
             </div>
           </div>
-
-          {/* <div className="select-Design select-width firstSelect mangTonkn">
-            <Option value='0'>ALL</Option>
-              <Option value='2'>Added by User</Option>
-              <Option value='1'>Added by Admin</Option>
-            </Select>
-          </div> */}
-            <Button
-              className="btn mr10"
-              type="primary"
-              onClick={() => setModal2Open(true)}
-              style={{ marginBottom: "10px" }}
-            >
-              Add Tokens
-            </Button>
-          
-          {/* <Button
-            className="btn mb30"
-            type="primary"
-            onClick={() => {
-              navigate("/default-token-management");
-            }}
-          >
-            Default tokens
-            {swapRequestCount > 0 ? swapRequestCount : ""}
-          </Button>
-
           <Button
-            style={{ marginLeft: 10 }}
-            className="btn mb30"
+            className="btn mr10"
             type="primary"
-            onClick={() => {
-              navigate("/solana-dashboard");
-            }}
+            onClick={() => setModal2Open(true)}
+            style={{ marginBottom: "10px" }}
           >
-            Solana Referral
-          </Button> */}
-          {/* <div className="soalanalink">
-            <Link to="/solana-dashboard">Solana Referral </Link>
-          </div> */}
+            Add Tokens
+          </Button>
         </div>
 
         <Table
@@ -1308,7 +1236,6 @@ console.log("TokenId",TokenId);
             editTokenName={editTokenName}
             editTokenTitle={editTokenTitle}
             editAction={editAction}
-            // editTokenRank={editTokenRank}
             handleSuccess={handleSuccess}
           />
         )}

@@ -270,7 +270,7 @@ function TransactionDetails() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
+ 
   const sharedProps = {
     style: { width: "100%" },
     defaultValue: "the value",
@@ -313,6 +313,7 @@ function TransactionDetails() {
     }
     return usd_amount;
   };
+
   const calculateCryptoAmount = (amount, decimals) => {
     let decimals_length = Number(decimals?.toString()?.length) - 1;
     let amount_crypto = amount?.toFixed(decimals_length);
@@ -343,15 +344,6 @@ function TransactionDetails() {
     },
     {
       title: " Token Symbol",
-      // dataIndex: "coin_data",
-      // render: (text) => (
-      //   <p>
-      //     {text?.coin_symbol === null || text === null
-      //       ? "N/A"
-      //       : text?.coin_symbol.charAt(0).toUpperCase() +
-      //         text?.coin_symbol.slice(1)}
-      //   </p>
-      // ),
       render: (text) => (
         <p>
           {text?.coin_data?.coin_symbol === null
@@ -362,61 +354,12 @@ function TransactionDetails() {
 
       // render: (text) => <p>{text?.coin_symbol}</p>,
     },
-    // {
-    //   title: "Decimal",
-    //   dataIndex: 'coin_data',
-    //   key: 'coin_data',
-    //   render: (text) => <p>{text?.decimals===null?'N/A':text?.decimals}</p>,
-    // },
     {
       title: "Amount (In Crypto)",
       dataIndex: "amount",
       key: "amount",
-      render: (amount) => <p>{amount || "N/A"}</p>,
+      render: (amount) => <p>{amount ? exponentialToDecimal(amount) : "N/A"}</p>,
     },
-
-    // {
-    //   title: "Fiat Amount",
-    //   // dataIndex: "amount",
-    //   // key: "amount",
-    //   render: (text) => (
-    //     <p>
-    //       {/* {exponentialToDecimal(
-    //         calculateUsedAmount(text?.amount, text?.trxn_fiat_price_detail)
-    //       )} */}
-    //       {formatNumberUSD(
-    //         calculateUsedAmount(text?.amount, text?.trxn_fiat_price_detail)
-    //       )}
-
-    //       {/* {text?.coin_data?.coins_market?.usd_amount === null ||
-    //       text?.coin_data === null
-    //         ? "N/A"
-    //         : text?.coin_data?.coins_market
-    //         ? parseFloat(
-    //             exponentialToDecimal(
-    //               text?.coin_data?.coins_market?.usd_amount
-    //             ) || 0
-    //           ).toFixed(2)
-    //         : 0} */}
-    //     </p>
-    //   ),
-    // },
-
-    // {
-    //   title: "Fiat Currency Name ",
-    //   // dataIndex: "amount",
-    //   // key: "amount",
-    //   render: (text) => (
-    //     <p>
-    //       USD
-    //       {/* {text?.coin_data?.coins_market?.fiat_currency === null ||
-    //       text?.coin_data === null
-    //         ? "N/A"
-    //         : text?.coin_data?.coins_market?.fiat_currency.toUpperCase() ||
-    //           "N/A"} */}
-    //     </p>
-    //   ),
-    // },
     {
       title: "Source Address",
       dataIndex: "from_adrs",
@@ -509,12 +452,6 @@ function TransactionDetails() {
           </u>
         </Tooltip>
       ),
-
-      // render: (text) => (
-      //   <Tooltip title={text === null ? "N/A" : text}>
-      //     <p>{text === null ? "N/A" : truncate(`${text}`,16)}</p>
-      //   </Tooltip>
-      // ),
     },
     {
       title: "Transaction Hash  ",
@@ -640,23 +577,6 @@ function TransactionDetails() {
         </p>
       ),
     },
-
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   render: (text, record) => (
-    //     <span>
-    //       <Dropdown menu={menuProps}>
-    //         <Button>
-    //           <Space>
-    //             Action
-    //             <MoreOutlined />
-    //           </Space>
-    //         </Button>
-    //       </Dropdown>
-    //     </span>
-    //   ),
-    // },
   ];
 
   return (
@@ -715,47 +635,6 @@ function TransactionDetails() {
                   className="form-control"
                 />
               </div>
-              {/* <div
-                className='form-group reactDatePicker'
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                }}
-              >
-                <label htmlFor='' style={{ color: "#000" }} className="labelHead">
-                  From date
-                </label>
-              <DatePicker
-                    dayPlaceholder="DD"
-                    monthPlaceholder="MM"
-                    yearPlaceholder="YYYY"
-                    value={fromDate !== null
-                      ? moment(fromDate)
-                      : null}
-                    format="MM-dd-yyyy"
-                    clearIcon={null}
-                    // calendarIcon={<CalendarIcon />}
-                    onChange={(e) => {
-                      const selectedDate = e;
-                    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in YYYY-MM-DD format
-
-                    if ((toDate!==null && new Date(toDate).getTime() < new Date(selectedDate).getTime()) || selectedDate > currentDate) {
-                      // Do not update fromDate state if a future date is selected
-                      return;
-                    }
-
-                    setFromDate(selectedDate);
-                      // setStartDate(date);
-                      // setStartDateError("")
-                      // setDateError("")
-                    }}
-                    onKeyDown={(e) => {
-                      e.preventDefault()
-                    }}
-                    maxDate={toDate ? toDate : new Date()}
-                  />
-                  </div>  */}
               <div
                 className="form-group reactDatePicker"
                 style={{
@@ -804,36 +683,6 @@ function TransactionDetails() {
                     }}
                   />
                 </div>
-                {/* <DatePicker
-                    // placeholder="End Date"
-                    value={toDate !== null
-                      ? moment(toDate)
-                      : null}
-                    format="MM-dd-yyyy"
-                    dayPlaceholder="DD"
-                    monthPlaceholder="MM"
-                    yearPlaceholder="YYYY"
-                    clearIcon={null}
-                    // calendarIcon={<CalendarIcon />}
-                    onChange={(e) => {
-                      const selectedDate = e;
-                      const currentDate = new Date()
-                        .toISOString()
-                        .split("T")[0]; // Get the current date in YYYY-MM-DD format
-
-                      if (selectedDate > currentDate) {
-                        // Do not update toDate state if a future date is selected
-                        return;
-                      }
-
-                      setToDate(selectedDate);
-                    }}
-                    onKeyDown={(e) => {
-                      e.preventDefault()
-                    }}
-                    minDate={fromDate ? fromDate : null}
-                    maxDate={new Date()}
-                  /> */}
               </div>
 
               <div

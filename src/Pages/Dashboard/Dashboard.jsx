@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Spin, Table, Row, Col, Card } from "antd";
 import "./Dashboard.scss";
 import * as moment from "moment";
-import { exponentialToDecimal, truncate } from "../../Helper/StringFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetTransactionsDataMutation } from "../../Redux/services/TransactionsDetail/TransactionsDetailApiSlice";
-import { setTransactionData } from "../../Redux/slice/TransactionDetailSlice";
 import { useGetDeviceUserDataQuery } from "../../Redux/services/DashboardServicces/DashboardApiSlice";
 import { setDeviceUsers } from "../../Redux/slice/DashboardDetailsSlice";
 import Tooltip from "antd/es/tooltip";
-import { formatNumberCrypto, formatNumberUSD } from "../../Helper/FormatNumber";
 import { encryption } from "../../common/encryption/encryption";
+import { truncate, exponentialToDecimal } from "../../Helper/StringFormat";
 
 function Dashboard() {
   const [getTransactionsData, { isLoading }] = useGetTransactionsDataMutation();
@@ -21,7 +19,7 @@ function Dashboard() {
   let TransactionsDetails = useSelector(
     (state) => state?.TransactionData?.data
   );
-  console.log("TransactionsDetails", transactionData);
+  // Removed console.log
   let DashBoardList = useSelector((state) => state?.DashboardList?.DeviceUsers);
 
   const dispatch = useDispatch();
@@ -31,11 +29,11 @@ function Dashboard() {
     const securedData = { dataString: enc };
     await getTransactionsData(securedData).then((res, err) => {
       if (res) {
-        console.log("res?.data?.data >>.", res?.data?.data);
+        // Removed console.log
         setTransactionData(res?.data?.data?.transaction_history);
         // dispatch(setTransactionData(res?.data?.data));
       } else {
-        console.log("error", err);
+        // Removed console.log
       }
     });
   };
@@ -56,7 +54,7 @@ function Dashboard() {
           dispatch(setDeviceUsers(GetDeviceUserData?.data?.data));
         }
       } catch {
-        console.log("error");
+        // Removed console.log
       }
     })();
   }, [DeviceUserData?.data]);
@@ -99,47 +97,18 @@ function Dashboard() {
     {
       title: " Token Symbol",
       dataIndex: "coin_data",
-      // render: (text) => <p>{text?.coin_symbol === null ? "N/A" : text?.coin_symbol.charAt(0).toUpperCase() +
-      // text?.coin_symbol.slice(1)}</p>,
       render: (text) => (
         <p>
           {text?.coin_symbol === null ? "N/A" : text?.coin_symbol.toUpperCase()}
         </p>
       ),
-      // render: (text) => <p>{text?.coin_symbol}</p>,
     },
-
-    // {
-    //   title: "Decimal",
-    //   dataIndex: 'coin_data',
-    //   key: 'coin_data',
-    //   render: (text) => <p>{text?.decimals===null?'N/A':text?.decimals}</p>,
-    // },
     {
       title: "Amount (In Crypto)",
       dataIndex: "amount",
       key: "amount",
-      render: (amount) => <p>{amount || "N/A"}</p>,
+      render: (amount) => <p>{amount ? exponentialToDecimal(amount) : "N/A"}</p>,
     },
-
-    // {
-    //   title: 'Fiat Amount',
-    //   // dataIndex: "amount",
-    //   // key: "amount",
-    //   render: (text) => (
-    //     <p>
-    //       {formatNumberUSD(
-    //         calculateUsedAmount(text?.amount, text?.trxn_fiat_price_detail)
-    //       )}
-    //     </p>
-    //   ),
-    // },
-    // {
-    //   title: 'Fiat Currency Name ',
-    //   // dataIndex: "amount",
-    //   // key: "amount",
-    //   render: (text) => <p>{'USD'}</p>,
-    // },
     {
       title: "Source Address",
       dataIndex: "from_adrs",
@@ -228,12 +197,6 @@ function Dashboard() {
           </u>
         </Tooltip>
       ),
-
-      // render: (text) => (
-      //   <Tooltip title={text === null ? "N/A" : text}>
-      //     <p>{text === null ? "N/A" : truncate(`${text}`,16)}</p>
-      //   </Tooltip>
-      // ),
     },
     {
       title: "Transaction Hash  ",
@@ -336,59 +299,6 @@ function Dashboard() {
         <div className="dashboardSec__dashBoardHeading">
           <div className="dashboardSec">
             <div className="dashbord_upper">
-              {/* <Row gutter={16}>
-                <Col span={24}>
-                  <Card className="text-center" title="Markup Fees">
-                    <Row className="swap">
-                      <Col span={4}>
-                        <h4>
-                          PanCake-Swap (BSC) -{' '}
-                          <span>
-                            {' '}
-                            {DashBoardList?.bnb_network_fees
-                              ? DashBoardList?.bnb_network_fees
-                              : 0}
-                            %
-                          </span>
-                        </h4>
-                      </Col>
-                      <Col span={4}>
-                        <h4>
-                          Uni-Swap (ETH) -{' '}
-                          <span>
-                            {DashBoardList?.eth_network_fees
-                              ? DashBoardList?.eth_network_fees
-                              : 0}
-                            %
-                          </span>
-                        </h4>
-                      </Col>
-                      <Col span={4}>
-                        <h4>
-                          PulseX-Swap (PLS) -{' '}
-                          <span>
-                            {DashBoardList?.pls_network_fees
-                              ? DashBoardList?.pls_network_fees
-                              : 0}
-                            %
-                          </span>
-                        </h4>
-                      </Col>
-                      <Col span={4}>
-                        <h4>
-                          Solana-Swap (SOL) -{' '}
-                          <span>
-                            {DashBoardList?.sol_network_fees
-                              ? DashBoardList?.sol_network_fees
-                              : 0}
-                            %
-                          </span>
-                        </h4>
-                      </Col>
-                    </Row>
-                  </Card>
-                </Col>
-              </Row> */}
             </div>
 
             <div className="dashbord_upper">
@@ -397,10 +307,6 @@ function Dashboard() {
                   <Card title="Newly Added Token" bordered={false}>
                     <p className="user_number">
                       {deviceUsers?.new_added_token}
-                      {/* {`${DashBoardList?.newly_added_token?.coin_name
-                        ? DashBoardList?.newly_added_token?.coin_name
-                        : '0'
-                        }`} */}
                     </p>
                   </Card>
                 </Col>

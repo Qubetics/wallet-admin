@@ -1,5 +1,4 @@
 // Know this page is cancel by shivam project
-
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -118,18 +117,6 @@ const Announcement = () => {
         // is_scheduled: data.type,
         // ip_address: IpData?.ip,
       };
-      // if (data.schedule_time && data.schedule_time !== "") {
-      //   submitted_data.schedule_time = data.schedule_time;
-      // } else {
-      //   if (data.type == "1" && data.schedule_time == "") {
-      //     dispatch(
-      //       setToast({
-      //         message: `Please set schedule date time`,
-      //         status: false,
-      //       })
-      //     );
-      //   }
-      // }
       const enc = await encryption(JSON.stringify(submitted_data));
       const securedData = { dataString: enc };
       await SaveAnnouncement(securedData).then((res) => {
@@ -229,18 +216,6 @@ const Announcement = () => {
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
     },
-    // {
-    //   title: "Type",
-    //   dataIndex: "Type",
-    //   key: "Type",
-    //   render: (item, record, index) => (
-    //     <p>
-    //       {record?.is_scheduled && record?.is_scheduled == "0"
-    //         ? "Instant"
-    //         : "Scheduled"}
-    //     </p>
-    //   ),
-    // },
     {
       title: "Title",
       dataIndex: "Title",
@@ -255,19 +230,6 @@ const Announcement = () => {
         <p>{record?.message ? record.message : "N/A"}</p>
       ),
     },
-    // {
-    //   title: "Scheduled Date and Time",
-    //   dataIndex: "schedule_time",
-    //   key: "Scheduled Date and Time",
-    //   render: (text, record) => (
-    //     <p style={{ whiteSpace: "normal" }}>
-    //       {record?.schedule_time && record?.schedule_time !== null
-    //         ? moment.utc(text).local().format("MM/DD/YYYY h:mm:ss A")
-    //         : "Instant"}
-    //     </p>
-    //     // moment.utc(record?.schedule_time).format('MM/DD/YYYY HH:mm')
-    //   ),
-    // },
     {
       title: "Date and Time",
       dataIndex: "created_at",
@@ -360,34 +322,6 @@ const Announcement = () => {
           
             <form onSubmit={handleSubmit(onFormSubmit)}>
               <div className="topper Send-massage">
-                {/* <div className="drop-select">
-                  <Controller
-                    name="type"
-                    control={control}
-                    render={({ field: { value } }) => (
-                      <>
-                        <Select
-                          defaultValue="0"
-                          className="selectReactCmn"
-                          getPopupContainer={(trigger) => trigger.parentNode}
-                          onChange={(value) => {
-                            if (value == "1") {
-                              setSchedule(true);
-                            } else {
-                              setSchedule(false);
-                            }
-                            setValue("type", value);
-                            trigger("type");
-                          }}
-                          options={[
-                            { value: "0", label: "Instant" },
-                            { value: "1", label: "Schedule" },
-                          ]}
-                        />
-                      </>
-                    )}
-                  />
-                </div> */}
                 <div className="input-fields">
                   <Controller
                     name="title"

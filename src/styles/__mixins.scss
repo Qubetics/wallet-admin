@@ -274,4 +274,9 @@
     background: linear-gradient(rgb(48, 10, 94) 20%, rgb(136, 81, 204) 80%);
     color: #fff;
   }
+
+  @mixin gradient-theme-unchecked {
+    background: linear-gradient(rgb(223, 218, 230) 20%, rgb(81, 72, 92) 80%);
+    color: #fff;
+  }
   

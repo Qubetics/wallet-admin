@@ -119,6 +119,20 @@ const BannerManagement = () => {
             "image/jpg",
             "image/webp",
           ].includes(value?.type);
+        })
+        .test("imageDimensions", "Banner dimensions must be exactly 300x100 (width x height)", (value) => {
+          if (!value) return true; // Skip validation if no file
+          return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const img = new Image();
+              img.onload = () => {
+                resolve(img.height === 100 && img.width === 300);
+              };
+              img.src = e.target.result;
+            };
+            reader.readAsDataURL(value);
+          });
         }),
     })
     .required();
@@ -299,10 +313,46 @@ const BannerManagement = () => {
       return false;
     }
 
-    setBannerImage(file);
-    setImageName(file.name);
-    setValue("bannerImage", file);
-    trigger("bannerImage");
+    // Check image height
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        if (img.height !== 100) {
+          // message.error("Banner height must be exactly 100!");
+          dispatch(
+            setToast({
+              message:
+                "Banner height must be exactly 100!",
+              status: false,
+            })
+          );
+          setBannerImage(null);
+          setImageName("");
+          setValue("bannerImage", null);
+        } else if (img.width !== 300) {
+          // message.error("Banner height must be exactly 100!");
+          dispatch(
+            setToast({
+              message:
+                "Banner Width must be exactly 300!",
+              status: false,
+            })
+          );
+          setBannerImage(null);
+          setImageName("");
+          setValue("bannerImage", null);
+        } else {
+          setBannerImage(file);
+          setImageName(file.name);
+          setValue("bannerImage", file);
+          trigger("bannerImage");
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
     return false;
   };
 
@@ -385,9 +435,7 @@ const BannerManagement = () => {
             <span className="status-text">{status === "1" ? "Active" : "Inactive"}</span>
             <Switch
               checked={status === "1"}
-              style={{
-                backgroundColor: status === "1" ? undefined : "#ffffff",
-              }}
+              className={status === "0" ? "custom-switch-off" : ""}
               onChange={() => {
                 const newStatus = status === "1" ? "0" : "1";
                 const statusText = newStatus === "1" ? "activate" : "deactivate";
@@ -497,34 +545,6 @@ const BannerManagement = () => {
         >
           <form onSubmit={handleSubmit(onFormSubmit)}>
             <div className="topper Send-massage">
-              {/* <div className="drop-select">
-                  <Controller
-                    name="type"
-                    control={control}
-                    render={({ field: { value } }) => (
-                      <>
-                        <Select
-                          defaultValue="0"
-                          className="selectReactCmn"
-                          getPopupContainer={(trigger) => trigger.parentNode}
-                          onChange={(value) => {
-                            if (value == "1") {
-                              setSchedule(true);
-                            } else {
-                              setSchedule(false);
-                            }
-                            setValue("type", value);
-                            trigger("type");
-                          }}
-                          options={[
-                            { value: "0", label: "Instant" },
-                            { value: "1", label: "Schedule" },
-                          ]}
-                        />
-                      </>
-                    )}
-                  />
-                </div> */}
               <div className="input-fields">
                 <label
                   style={{
@@ -563,7 +583,9 @@ const BannerManagement = () => {
                 <p
                   style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}
                 >
-                  Supported formats: JPG, PNG, WebP. Max size: 5MB
+                  Supported formats: JPG, PNG, WebP. Max size: 5MB.
+                  <br />
+                   Height must be exactly 100 and Width must be exactly 300.
                 </p>
               </div>
               <Controller

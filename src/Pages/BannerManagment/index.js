@@ -33,6 +33,8 @@ import dayjs from "dayjs";
 import "./Banner.scss";
 import { CONFIG } from "../../common/constant/constant";
 import { encryption } from "../../common/encryption/encryption";
+import { handleUnauthorizedError } from "../../common/constant/constant";
+import { useNavigate } from "react-router-dom";
 const { confirm } = Modal;
 
 const BannerManagement = () => {
@@ -50,6 +52,7 @@ const BannerManagement = () => {
   const [updateBannerList, {}] = useUpdateBannerListMutation();
   const [bannerList, setBannerList] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   console.log("Environment Variables:", {
     imageUrl: CONFIG.IMAGE_URL,
@@ -58,10 +61,12 @@ const BannerManagement = () => {
   });
 
   const updateBannerListFn = async (data) => {
-    const enc = await encryption(JSON.stringify(data));
-    const securedData = { dataString: enc };
-    await updateBannerList(securedData).then((res) => {
-      if (res?.data?.status) {
+    try {
+      const enc = await encryption(JSON.stringify(data));
+      const securedData = { dataString: enc };
+      const response = await updateBannerList(securedData);
+      
+      if (response?.data?.status) {
         dispatch(
           setToast({
             message: "Banner status updated successfully",
@@ -69,22 +74,35 @@ const BannerManagement = () => {
           })
         );
         getAnnouncementListFn(); // Refresh the list
-      } else {
+      } else if (response?.error) {
+        // Check for 401 unauthorized error
+        if (response?.error?.status === 401 || response?.error?.data?.code === 401) {
+          handleUnauthorizedError(response, dispatch, navigate, setToast);
+          return;
+        }
+        
         dispatch(
           setToast({
-            message: res?.error?.data?.message || "Failed to update banner status",
+            message: response?.error?.data?.message || "Failed to update banner status",
             status: false,
           })
         );
       }
-    }).catch((error) => {
-      dispatch(
-        setToast({
-          message: "Failed to update banner status",
-          status: false,
-        })
-      );
-    });
+    } catch (error) {
+      console.error("Error updating banner status:", error);
+      
+      // Handle any other errors including 401
+      if (error?.status === 401 || error?.data?.code === 401) {
+        handleUnauthorizedError({ error: { status: 401 } }, dispatch, navigate, setToast);
+      } else {
+        dispatch(
+          setToast({
+            message: "Failed to update banner status",
+            status: false,
+          })
+        );
+      }
+    }
   };
 
   const AnnouncementDetails = useSelector(
@@ -155,31 +173,62 @@ const BannerManagement = () => {
   }, [reset]);
 
   const getAnnouncementListFn = async () => {
-    const enc = await encryption(
-      JSON.stringify({ page: currentPage, limit: perPage })
-    );
-    const securedData = { dataString: enc };
-    await getBannerList(securedData).then((res, err) => {
-      if (res?.data?.data) {
-        console.log("res", res?.data?.data);
-        setBannerList(res?.data?.data?.banner_list);
+    try {
+      const enc = await encryption(
+        JSON.stringify({ page: currentPage, limit: perPage })
+      );
+      const securedData = { dataString: enc };
+      const response = await getBannerList(securedData);
+      
+      if (response?.data?.data) {
+        console.log("res", response?.data?.data);
+        setBannerList(response?.data?.data?.banner_list);
         // Update meta information for pagination
         const meta = {
-          total_records: res?.data?.data?.total,
-          current_page: res?.data?.data?.page,
-          per_page: res?.data?.data?.per_page,
-          total_pages: res?.data?.data?.total_pages,
+          total_records: response?.data?.data?.total,
+          current_page: response?.data?.data?.page,
+          per_page: response?.data?.data?.per_page,
+          total_pages: response?.data?.data?.total_pages,
         };
         // dispatch(setAnnouncementListMeta(meta));
-      } else {
-        if (res?.error?.status == "FETCH_ERROR") {
-          setToast({
-            message: `${"Unable to fetch banner list"}`,
-            status: false,
-          });
+      } else if (response?.error) {
+        // Check for 401 unauthorized error
+        if (response?.error?.status === 401 || response?.error?.data?.code === 401) {
+          handleUnauthorizedError(response, dispatch, navigate, setToast);
+          return;
+        }
+        
+        if (response?.error?.status === "FETCH_ERROR") {
+          dispatch(
+            setToast({
+              message: "Unable to fetch banner list",
+              status: false,
+            })
+          );
+        } else {
+          dispatch(
+            setToast({
+              message: response?.error?.data?.message || "Failed to fetch banner list",
+              status: false,
+            })
+          );
         }
       }
-    });
+    } catch (error) {
+      console.error("Error fetching banner list:", error);
+      
+      // Handle any other errors including 401
+      if (error?.status === 401 || error?.data?.code === 401) {
+        handleUnauthorizedError({ error: { status: 401 } }, dispatch, navigate, setToast);
+      } else {
+        dispatch(
+          setToast({
+            message: "Failed to fetch banner list",
+            status: false,
+          })
+        );
+      }
+    }
   };
 
   useEffect(() => {

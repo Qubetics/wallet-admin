@@ -9,10 +9,26 @@ import sol from "../../Images/solana.png";
 import cro from "../../Images/cronos.png";
 import btc from "../../Images/btc.png";
 import pls from "../../Images/pls.png";
+import { logout } from "../../Redux/slice/userSlice";
+
 const CONFIG = {
   API_URL: process.env.REACT_APP_API_URL,
   IMAGE_URL: process.env.REACT_APP_PUBLIC_BASE_URL,
   IP_TRACK_URL: process.env.REACT_APP_IP_TRACK_URL,
+};
+
+const handleUnauthorizedError = (response, dispatch, navigate, setToast) => {
+  if (response?.error?.status === 401 || 
+      (response?.error?.data?.code === 401) || 
+      (response?.data?.code === 401)) {
+        dispatch(logout({ navigate: navigate }));
+        dispatch(setToast({ message: "Logout successfully", status: true }));
+        clearStorage();
+        setTimeout(() => {
+          dispatch(setToast({ message: "Logout successfully", status: false }));
+        }, 5000);
+  }
+  return false;
 };
 
 const revenue_blockchain_options = [
@@ -302,6 +318,7 @@ export {
   select_blockchain,
   clearStorage,
   revenue_blockchain_options,
-  COIN_FAMILY_TOKEN_TYPE
+  COIN_FAMILY_TOKEN_TYPE,
+  handleUnauthorizedError
 };
 

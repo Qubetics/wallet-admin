@@ -14,6 +14,7 @@ const baseQuery = fetchBaseQuery({
     const randomNumber = generateRandomNumber();
 
     headers.set("aw-api-auth", randomNumber);
+    headers.set("app-version", "1")
     if (token) {
       // headers.set("authorization", `Bearer ${token}`)
       headers.set("Access-Control-Allow-Origin", "*");

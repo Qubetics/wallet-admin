@@ -36,6 +36,7 @@ export const loginApi = createApi({
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
+          "app-version": "1",
           // "Authorization": "dfadsfasf",
           Authorization: "",
           "aw-api-auth": generateRandomNumber(), 

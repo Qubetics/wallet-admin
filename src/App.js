@@ -14,6 +14,7 @@ import TokenManagement from "./Pages/TokenManagement/TokenManagement";
 import DefaultTokenManagement from "./Pages/DefaultTokenManagment/DefaultTokenManagement";
 import Announcement from "./Pages/Announcement";
 import SubAdmin from "./Pages/SubAdmin";
+import CommissionSetting from "./Pages/CommisionSetting/commisionSetting";
 
 import NotRequireAuth from "./Layout/NotRequireAuth";
 import RequireAuth from "./Layout/RequredAuth";
@@ -134,6 +135,7 @@ function App() {
               path="/token-management"
               element={<TokenManagement />}
             />
+            <Route index path="/commission" element={<CommissionSetting />}/>
             <Route index path="/settings" element={<Setting />} />
             <Route index path="/swap" element={<Revenue />} />
             <Route index path="/revenue" element={<Revenue />} />

@@ -20,7 +20,7 @@ import {
   useGetAnnouncementNotificationMutation,
   useDeleteAnnouncementMutation,
 } from "../../Redux/services/AnnouncementServices/AnnouncementApiSlice";
-
+import { handleUnauthorizedError } from "../../common/constant/constant";
 import {
   setAnnouncementList,
   setAnnouncementListMeta,
@@ -30,6 +30,7 @@ import moment from "moment";
 import dayjs from "dayjs";
 import "./Announcement.scss";
 import { encryption } from "../../common/encryption/encryption";
+import { Link, useNavigate } from "react-router-dom";
 const { confirm } = Modal;
 
 const Announcement = () => {
@@ -44,7 +45,7 @@ const Announcement = () => {
   const [tableData, setTableData] = useState([]);
   const [getAnnouncementist, { isLoading }] =
     useGetAnnouncementNotificationMutation();
-
+    const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const AnnouncementDetails = useSelector(
@@ -156,6 +157,9 @@ const Announcement = () => {
       });
     } catch (er) {
       dispatch(setToast({ message: "something went wrong", status: false }));
+      if (er?.status === 401 || er?.data?.code === 401) {
+        handleUnauthorizedError({ error: { status: 401 } }, dispatch, navigate, setToast);
+      }
     }
   };
 

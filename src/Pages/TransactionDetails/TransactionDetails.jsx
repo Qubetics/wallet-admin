@@ -20,6 +20,7 @@ import {
 } from "../../common/constant/constant";
 import { formatNumberCrypto, formatNumberUSD } from "../../Helper/FormatNumber";
 import { encryption } from "../../common/encryption/encryption";
+import { handleUnauthorizedError } from "../../common/constant/constant";
 
 function TransactionDetails() {
   const [checked, setChecked] = useState(true);
@@ -61,40 +62,46 @@ function TransactionDetails() {
     coin_family
   ) => {
     let filter_data = {
-      page: !myPage ? (SearchData != "" ? 1 : currentPage) : myPage,
+      page: myPage,
       limit: perPage,
-      search: searchData ? searchData?.trim() : undefined,
-      from_date: myFromData || null,
-      to_date: myToDate || null,
     };
-    // // if (filterAddedBy !== "0") {
-    // filter_data["added_by"] = filterAddedBy;
-    // }
-    if (coin_family > 0) {
+    if (searchData && searchData !== "") {
+      filter_data.search = searchData;
+    }
+    if (myFromData && myToDate) {
+      filter_data.from_date = moment(myFromData).format("YYYY-MM-DD");
+      filter_data.to_date = moment(myToDate).format("YYYY-MM-DD");
+    }
+    if (filterAddedBy) {
+      filter_data.added_by = filterAddedBy;
+    }
+    if (coin_family) {
       filter_data.coin_family = coin_family;
     }
-    const enc = await encryption(JSON.stringify(filter_data));
-    const securedData = { dataString: enc };
-    await getTransactionsListData(securedData).then((res, err) => {
-      if (res) {
-        if (res?.data) {
-          console.log("res?.data >>>", res?.data?.data);
-          setTableData(res?.data?.data);
-          dispatch(
-            setTransactionListData(res?.data?.data?.transaction_history)
-          );
-          setSearch(false);
-        } else {
-          // getTransactionsDataFn(
-          //   fromDate,
-          //   toDate,
-          //   SearchData,
-          //   currentPage,
-          //   coin_family
-          // );
-        }
+    
+    try {
+      const enc = await encryption(JSON.stringify(filter_data));
+      const securedData = { dataString: enc };
+      const response = await getTransactionsListData(securedData);
+      
+      if (response?.data) {
+        console.log("res?.data >>>", response?.data?.data);
+        setTableData(response?.data?.data);
+        dispatch(
+          setTransactionListData(response?.data?.data?.transaction_history)
+        );
+        setSearch(false);
+      } else if (response.error) {
+        // Check for 401 unauthorized error
+        handleUnauthorizedError(response, dispatch, navigate, setToast);
       }
-    });
+    } catch (error) {
+      console.error("Error fetching transaction data:", error);
+      // Handle any other errors
+      if (error?.status === 401 || error?.data?.code === 401) {
+        handleUnauthorizedError({ error: { status: 401 } }, dispatch, navigate, setToast);
+      }
+    }
   };
   const onChangeBlockchainFilterHandler = (data) => {
     setCoinFamily(data?.value);

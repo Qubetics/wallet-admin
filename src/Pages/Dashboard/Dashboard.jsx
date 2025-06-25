@@ -9,6 +9,9 @@ import { setDeviceUsers } from "../../Redux/slice/DashboardDetailsSlice";
 import Tooltip from "antd/es/tooltip";
 import { encryption } from "../../common/encryption/encryption";
 import { truncate, exponentialToDecimal } from "../../Helper/StringFormat";
+import { handleUnauthorizedError } from "../../common/constant/constant";
+import { setToast } from "../../Redux/slice/toastSlice";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [getTransactionsData, { isLoading }] = useGetTransactionsDataMutation();
@@ -19,23 +22,31 @@ function Dashboard() {
   let TransactionsDetails = useSelector(
     (state) => state?.TransactionData?.data
   );
+  const navigate = useNavigate();
   // Removed console.log
   let DashBoardList = useSelector((state) => state?.DashboardList?.DeviceUsers);
 
   const dispatch = useDispatch();
 
   const getTransactionsDataFn = async () => {
-    const enc = await encryption(JSON.stringify({ page: 1, limit: 5 }));
-    const securedData = { dataString: enc };
-    await getTransactionsData(securedData).then((res, err) => {
-      if (res) {
-        // Removed console.log
-        setTransactionData(res?.data?.data?.transaction_history);
-        // dispatch(setTransactionData(res?.data?.data));
-      } else {
-        // Removed console.log
+    try {
+      const enc = await encryption(JSON.stringify({ page: 1, limit: 5 }));
+      const securedData = { dataString: enc };
+      const response = await getTransactionsData(securedData);
+      
+      if (response?.data) {
+        setTransactionData(response?.data?.data?.transaction_history);
+      } else if (response.error) {
+        // Check for 401 unauthorized error
+        handleUnauthorizedError(response, dispatch, navigate, setToast);
       }
-    });
+    } catch (error) {
+      console.error("Error fetching transaction data:", error);
+      // Handle any other errors
+      if (error?.status === 401 || error?.data?.code === 401) {
+        handleUnauthorizedError({ error: { status: 401 } }, dispatch, navigate, setToast);
+      }
+    }
   };
 
   useEffect(() => {

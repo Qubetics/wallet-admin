@@ -42,6 +42,7 @@ import { formatNumberUSD } from "../../Helper/FormatNumber";
 // import Utils from "./solana/walletConnector";
 // import Referral from "./solana/wallet/handleReferal";
 import { encryption } from "../../common/encryption/encryption";
+import { handleUnauthorizedError } from "../../common/constant/constant";
 
 const { confirm } = Modal;
 
@@ -82,6 +83,7 @@ const TokenManagement = () => {
   const swapRequestCount = useSelector(
     (state) => state?.TokenTableData?.swapRequestCount
   );
+  
   console.log("TokenId", TokenId);
 
   const columns = [
@@ -450,12 +452,11 @@ const TokenManagement = () => {
     let filter_data = {
       page: !myPage ? (SearchData != "" ? 1 : currentPage) : myPage,
       limit: perPage,
-      search: searchData ? searchData?.trim() : null,
+      search: searchData ? searchData?.trim() : undefined,
       from_date: myFromData || null,
       to_date: myToDate || null,
     };
-    console.log("filterAddedBy", typeof filterAddedBy);
-    // if (filterAddedBy !== "0") {
+    // // if (filterAddedBy !== "0") {
     if (filterAddedBy !== "0") {
       filter_data["added_by"] = filterAddedBy;
     }
@@ -463,30 +464,61 @@ const TokenManagement = () => {
     if (coin_family > 0) {
       filter_data.coin_family = coin_family;
     }
-    const enc = await encryption(JSON.stringify(filter_data));
-    const securedData = { dataString: enc };
-    await getTokenTableData(securedData).then((res, err) => {
-      if (res?.data) {
-        setTableData(res?.data?.data);
-        dispatch(setTokenTableData(res?.data?.data));
-      } else if (res?.error?.data) {
-        console.log("res?.error?.data", res?.error?.data);
+    
+    try {
+      const enc = await encryption(JSON.stringify(filter_data));
+      const securedData = { dataString: enc };
+      const response = await getTokenTableData(securedData);
+      
+      if (response?.data) {
+        setTableData(response?.data?.data);
+        dispatch(setTokenTableData(response?.data?.data));
+      } else if (response?.error?.data) {
+        console.log("res?.error?.data", response?.error?.data);
+        
+        // Check for 401 unauthorized error in error.data
+        if (response?.error?.data?.code === 401) {
+          handleUnauthorizedError(response, dispatch, navigate, setToast);
+          return;
+        }
+        
         dispatch(
           setToast({
-            message: `${res?.error?.data?.message || "Something went wrong"}`,
+            message: `${response?.error?.data?.message || "Something went wrong"}`,
             status: false,
           })
         );
-      } else {
-        console.log("res?.error", res?.error?.error);
+      } else if (response?.error) {
+        console.log("res?.error", response?.error);
+        
+        // Check for 401 unauthorized error in error
+        if (response?.error?.status === 401) {
+          handleUnauthorizedError(response, dispatch, navigate, setToast);
+          return;
+        }
+        
         dispatch(
           setToast({
-            message: `${res?.error?.error || "Something went wrong"}`,
+            message: `${response?.error?.error || "Something went wrong"}`,
             status: false,
           })
         );
       }
-    });
+    } catch (error) {
+      console.error("Error fetching token data:", error);
+      
+      // Handle any other errors including 401
+      if (error?.status === 401 || error?.data?.code === 401) {
+        handleUnauthorizedError({ error: { status: 401 } }, dispatch, navigate, setToast);
+      } else {
+        dispatch(
+          setToast({
+            message: "Failed to fetch token data",
+            status: false,
+          })
+        );
+      }
+    }
   };
 
   useEffect(() => {

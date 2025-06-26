@@ -38,7 +38,6 @@ const GoogleStepTwo = ({ isOpenStepTwo, closeCardModal, action ,loginCred }) => 
   const loginResponseData = useSelector(
     (state) => state?.userState?.loginResponseData
   );
-  console.log("loginCred",loginCred)
   // const [google2faVerify, { isLoading }] = useGoogle_2fa_verifyMutation();
 
   // const [verify2fa, { isLoading }] = useVerify2faMutation();

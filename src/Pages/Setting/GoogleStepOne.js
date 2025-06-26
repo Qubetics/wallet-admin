@@ -21,6 +21,8 @@ import "./Setting.scss";
 import { useNavigate } from "react-router-dom";
 import { setToast } from "../../Redux/slice/toastSlice";
 // import { setUser, setLoginResponseData } from "../../Redux/slice/userSlice";
+import { encryption } from "../../common/encryption/encryption";
+
 const schema = yup
   .object({
     password: yup.string().required("Password is required"),
@@ -109,25 +111,25 @@ const GoogleStepOne = ({
       return document.execCommand("copy", true, text);
     }
   };
+
   const onSubmit = async (data) => {
     let validation = await trigger();
     if (validation) {
       data.action = 1;
       data.token = data?.token?.toString();
       data.googleSecretKey = googleSecretKeyData.google_secret_key;
-      if (IpData && IpData?.ip) {
-        data.ip_address = IpData?.ip;
-      }
 
-      // data.google_secret_key = googleSecretKeyData.google_secret_key;
-      googleAuthEnableDisable(data).then((res) => {
+      const enc = await encryption(JSON.stringify(data));
+      const securedData = { dataString: enc };
+
+      googleAuthEnableDisable(securedData).then((res) => {
         if (res.error) {
           if (res?.error?.status == "FETCH_ERROR") {
             dispatch(setToast({ message: "Network failed", status: false }));
           } else {
             // toast.error(res.error.data.data.message);
             if (res?.error?.data?.data?.message) {
-              localStorage.setItem("google_2fa", "enabled");
+
               dispatch(
                 setToast({
                   message: `${res?.error?.data?.data?.message}`,
@@ -146,6 +148,7 @@ const GoogleStepOne = ({
         } else {
           /* toast.success(res.data.data.message);
            dispatch(logout({ navigate: navigate })); */
+          localStorage.setItem("google_2fa", "disabled");
           dispatch(setToast({ message: res.data.data.message, status: true }));
           dispatch(set2FaStatus(true));
           setTimeout(() => {
@@ -224,43 +227,6 @@ const GoogleStepOne = ({
                 </div>
               ) : (
                 <></>
-                // <div className={`stepOne ${hideShowDivOne ? " hide" : ""}`}>
-                //   <div className="QRImageSec">
-                //     <img src={googleSecretKeyData?.qr_code} width={"200"} />
-                //     {/* <img src={QR} width={"200"} /> */}
-                //   </div>
-                //   <div className="spantext">
-                //     Scan the QR code in the Google Authentication App, if you are
-                //     unable to scan the QR Code please enter this code manually into
-                //     the app
-                //   </div>
-                //   <Input
-                //     type={"text"}
-                //     className="form-control"
-                //     value={googleSecretKeyData?.google_secret_key}
-                //     disabled
-                //   />
-                //   <div className="btnDiv">
-                //     <Button
-                //       className="steponeformbtn btn btn-primary"
-                //       onClick={() => {
-                //         handleCopyClick();
-                //         toast.success("Text copied.");
-                //       }}
-                //     >
-                //       Copy
-                //     </Button>
-                //     <Button
-                //       className="steponecontbtn"
-                //       onClick={() => {
-                //         setHideShowDivOne(true);
-                //         setHideShowDivTwo(false);
-                //       }}
-                //     >
-                //       Continue
-                //     </Button>
-                //   </div>
-                // </div>
               )}
               <div
                 id="stepTwo"

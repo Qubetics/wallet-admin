@@ -65,7 +65,7 @@ function Sidebar({ collapsedState }) {
     if (e == "transaction-details") return <HistoryOutlined />;
     if (e == "token-management") return <AppstoreAddOutlined />;
     if (e == "settings") return <SettingOutlined />;
-    if (e == "commission") return <SettingOutlined />;
+    if (e == "commission") return <BarChartOutlined />;
     if (e == "push-notification") return <ContainerOutlined />;
     if (e == "banner-management") return <ExceptionOutlined />;
     if (e == "sub-admin-management") return <UsergroupAddOutlined />;

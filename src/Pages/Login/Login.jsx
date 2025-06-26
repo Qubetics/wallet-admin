@@ -117,7 +117,7 @@ function Login() {
           localStorage.setItem("isRemeber", data.remember);
           sessionStorage.setItem("isActive", 1);
           sessionStorage.setItem("activeKey", "1");
-          localStorage.setItem("google_2fa", "disabled");
+          localStorage.setItem("google_2fa", "enabled");
           sessionStorage.setItem("page_title", "Dashboard");
           dispatch(setUser(res?.data?.data));
           // dispatch(setAuthentication(res?.data));
@@ -129,7 +129,7 @@ function Login() {
         } else if (res?.data?.data?.google_2fa == 1) {
           setLoginButton(false);
           dispatch(set2FaStatus(true));
-          localStorage.setItem("google_2fa", "enabled");
+          localStorage.setItem("google_2fa", "disabled");
           localStorage.setItem("isRemeber", data.remember);
           sessionStorage.setItem("isActive", 1);
           sessionStorage.setItem("activeKey", "1");

@@ -317,7 +317,7 @@ function Dashboard() {
                 <Col sm={24} md={12} xl={6}>
                   <Card title="Newly Added Token" bordered={false}>
                     <p className="user_number">
-                      {deviceUsers?.new_added_token}
+                      {deviceUsers?.new_added_token || 'N/A'}
                     </p>
                   </Card>
                 </Col>
@@ -337,7 +337,7 @@ function Dashboard() {
                 </Col>
                 <Col sm={24} md={12} xl={6}>
                   <Card title="Total Wallets" bordered={false}>
-                    <p className="user_number">{deviceUsers?.total_wallets}</p>
+                    <p className="user_number">{deviceUsers?.total_wallets?.toLocaleString("en-US")}</p>
                   </Card>
                 </Col>
               </Row>

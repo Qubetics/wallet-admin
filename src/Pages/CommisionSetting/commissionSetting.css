@@ -1,5 +1,13 @@
+.commissionData{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
 .commission-setting-container {
     max-width: 600px;
+    width: 100%;
     margin: 0 auto;
     padding: 20px;
     background-color: #ffffff;

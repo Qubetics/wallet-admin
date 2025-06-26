@@ -7,6 +7,7 @@ import { Input, Modal, Upload, Button, Select } from "antd";
 // import { yupResolver } from "@hookform/resolvers/yup";
 // import { useChangePasswordMutation } from "../../Redux/services/settingApi";
 import * as yup from "yup";
+import { encryption } from "../../common/encryption/encryption";
 // import useSelection from "antd/lib/table/hooks/useSelection";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -34,8 +35,8 @@ const schema = yup.object({
     .when("old_password", (password, field) =>
       password
         ? field
-            .required("New password is required")
-            .notOneOf([yup.ref("old_password")], "New password does not same!")
+          .required("New password is required")
+          .notOneOf([yup.ref("old_password")], "New password does not same!")
         : field
     ),
   confirm_password: yup
@@ -46,8 +47,8 @@ const schema = yup.object({
     .when("new_password", (password, field) =>
       password
         ? field
-            .required("Confirm password is required")
-            .oneOf([yup.ref("new_password")], "Password mismatch!")
+          .required("Confirm password is required")
+          .oneOf([yup.ref("new_password")], "Password mismatch!")
         : field
     ),
 });
@@ -77,7 +78,7 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
   };
 
   const [allState, setAllState] = useState(initilaObj);
-console.log(allState, 'allState')
+  console.log(allState, 'allState')
   const setValue = (event) => {
     handleValidaton({ [event.target.name]: event.target.value });
     setAllState({ ...allState, [event.target.name]: event.target.value });
@@ -212,7 +213,7 @@ console.log(allState, 'allState')
   //   //formState: { errors },
   // } = useForm({});
 
-  const handleOk = () => {
+  const handleOk = async () => {
     var validationData = {
       old_password: allState.old_password,
       new_password: allState.new_password,
@@ -233,9 +234,10 @@ console.log(allState, 'allState')
       if (IpData && IpData?.ip) {
         data.ip_address = IpData?.ip;
       }
-
+      const enc = await encryption(JSON.stringify(data));
+      const securedData = { dataString: enc };
       // trigger();
-      changePassword(data).then((res) => {
+      changePassword(securedData).then((res) => {
         if (res.error) {
           dispatch(
             setToast({

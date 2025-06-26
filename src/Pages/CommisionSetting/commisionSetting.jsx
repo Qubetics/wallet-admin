@@ -21,9 +21,9 @@ const CommissionSetting = () => {
 
   // Update state when data is fetched
   useEffect(() => {
-    if (data && data.data) {
-      setContractAddress(data.data.address || "");
-      setCommissionPercentage(data.data.percentage || "");
+    if (data && data?.data) {
+      setContractAddress(data?.data?.walletAddress || "");
+      setCommissionPercentage(data?.data?.percentage || "");
     }
   }, [data]);
 
@@ -136,7 +136,8 @@ const CommissionSetting = () => {
   };
  
   return (
-    <div className="commission-setting-container" style={{marginTop:'220px'}}>
+   <div className="commissionData">
+     <div className="commission-setting-container">
       <h2>Commission</h2>
       {isLoading ? (
         <p>Loading commission data...</p>
@@ -182,6 +183,7 @@ const CommissionSetting = () => {
         </div>
       )}
     </div>
+   </div>
   );
 };
 

@@ -11,6 +11,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 import { setToast } from "../../Redux/slice/toastSlice";
 import { useNavigate } from "react-router-dom";
+import { encryption } from "../../common/encryption/encryption";
+
 const schema = yup
   .object({
     password: yup.string().required("Password is required"),
@@ -80,8 +82,11 @@ const GoogleStepTwo = ({
       data.token = data?.token?.toString();
       data.googleSecretKey = googleSecretKeyData?.google_secret_key;
 
+      const enc = await encryption(JSON.stringify(data));
+      const securedData = { dataString: enc };
+
       setDisabledButton(true);
-      googleAuthEnableDisable(data).then((res) => {
+      googleAuthEnableDisable(securedData).then((res) => {
         if (res.error) {
           if (res?.error?.status == "FETCH_ERROR") {
             dispatch(setToast({ message: "Network failed", status: false }));
@@ -91,7 +96,6 @@ const GoogleStepTwo = ({
           } else {
             // toast.error(res.error.data.data.message);
             if (res?.error?.data?.data?.message) {
-              localStorage.setItem("google_2fa", "disabled");
               dispatch(set2FaStatus(false));
               dispatch(
                 setToast({
@@ -114,9 +118,10 @@ const GoogleStepTwo = ({
           }
         } else {
           /* toast.success(res.data.data.message); */
+          localStorage.setItem("google_2fa", "enable");
           dispatch(setToast({ message: res.data.data.message, status: true }));
           dispatch(set2FaStatus(false));
-          localStorage.setItem("google_2fa", "disabled");
+          // localStorage.setItem("google_2fa", "disabled");
           setTimeout(() => {
             dispatch(setToast({ message: null, status: false }));
           }, 2000);

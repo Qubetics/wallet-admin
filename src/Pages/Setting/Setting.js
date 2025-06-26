@@ -267,14 +267,14 @@ function Setting() {
             e.preventDefault();
             setAction(true);
             if (twoFaStatus === "disabled") {
-              openGoogleStepone({}, "edit");
+              openGoogleStepTwo({}, "edit");
             } else {
               getGoogleAuthSecretKey();
-              openGoogleStepTwo({}, "edit");
+              openGoogleStepone({}, "edit");
             }
           }}
         >
-          {twoFaStatus === "disabled"  ? "Enable" : "Disable"}
+          {twoFaStatus === "disabled"  ? "Disable" : "Enable"}
         </Button>
       </div>
 

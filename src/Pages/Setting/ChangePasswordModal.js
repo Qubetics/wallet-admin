@@ -219,6 +219,7 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
       new_password: allState.new_password,
       confirm_password: allState.confirm_password,
     };
+    console.log(validationData, 'validationData')
     var isValid = handleValidaton(validationData);
     // handleValidaton()
 
@@ -231,24 +232,29 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
         newPassword: allState.new_password.trim(),
         confirmPassword: allState.confirm_password
       };
-      if (IpData && IpData?.ip) {
-        data.ip_address = IpData?.ip;
-      }
+      // if (IpData && IpData?.ip) {
+      //   data.ip_address = IpData?.ip;
+      // }
+      console.log(data, 'data====================')
       const enc = await encryption(JSON.stringify(data));
       const securedData = { dataString: enc };
+    
       // trigger();
       changePassword(securedData).then((res) => {
         if (res.error) {
+          console.log("res.error", res.error);
+          const errorMsg = res?.error?.data?.message || "Something went wrong";
+      console.log("errorMsg", errorMsg);
           dispatch(
             setToast({
-              message: `${res?.error?.data?.data?.message}`,
+              message: errorMsg,
               status: false,
             })
           );
           // toast.error(res.error.data.message);
         } else {
           // toast.success(res.data.message);
-          dispatch(setToast({ message: `${res?.data?.message}`, status: true }));
+          dispatch(setToast({ message: `${res?.data?.data?.message}`, status: true }));
           closeCardModal();
           resetState();
           // reset();
@@ -292,6 +298,7 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
       <Modal
         className="submit_changes"
         title="Change Password"
+        centered
         open={isOpen}
         onOk={handleOk}
         okText="Submit"

@@ -12,6 +12,9 @@ import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/Setting
 import { setToast } from "../../Redux/slice/toastSlice";
 import { useNavigate } from "react-router-dom";
 import { encryption } from "../../common/encryption/encryption";
+import eye1 from "../../Images/hidden.png";
+import eye2 from "../../Images/eye.png";
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 
 const schema = yup
   .object({
@@ -131,6 +134,7 @@ const GoogleStepTwo = ({
       });
     }
   };
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   // useEffect(() => {});
 
@@ -141,6 +145,7 @@ const GoogleStepTwo = ({
         title="Disable Google Authentication"
         open={isOpenStepTwo}
         onOk={handleOk}
+        centered
         // okText={false}
         onCancel={handleCancel}
         // cancelText="Disable"
@@ -151,9 +156,8 @@ const GoogleStepTwo = ({
           <div id="stepTwo" className={`stepTwo`}>
             <div className="inputStyle" style={{ marginTop: 0 }}>
               <label>Login password</label>
-              <Input
+              <Input.Password
                 placeholder="Please enter password"
-                type="password"
                 onChange={(e) => {
                   setValue("password", e.target.value);
                   trigger("password");
@@ -161,7 +165,18 @@ const GoogleStepTwo = ({
                     errors.password.message = "";
                   }
                 }}
-              ></Input>
+                visibilityToggle={{
+                  visible: passwordVisible,
+                  onVisibleChange: setPasswordVisible,
+                }}
+                iconRender={(visible) =>
+                  visible ? (
+                    <img src={eye2} style={{ width: "20px" }} />
+                  ) : (
+                    <img src={eye1} style={{ width: "20px" }} />
+                  )
+                }
+              />
               <p className="error">{errors.password?.message}</p>
             </div>
             <div className="inputStyle">

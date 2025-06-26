@@ -159,7 +159,9 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
   // const [rank, setRank] = useState(0);
   const [coinFamily, setCoinFamily] = useState(1);
   const [StateCoinName, setStateCoinName] = useState("");
+  console.log("🚀 ~ StateCoinName:", StateCoinName)
   const [StateCoinSymbol, setStateCoinSymbol] = useState("");
+  console.log("🚀 ~ StateCoinSymbol++++++++++:", StateCoinSymbol)
   const [PolicyId, setPolicyId] = useState("");
   const [SateCoinDecimal, setSateCoinDecimal] = useState("");
   const [ContractAddress, setContractAddress] = useState("");
@@ -569,6 +571,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
       });
     }
   };
+  
 
   return (
     <div className="main_page_outer">
@@ -638,6 +641,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                   render={({ field: { value } }) => (
                     <Input
                       placeholder={StateCoinName}
+                      // placeholder="Enter Token Name"
                       readOnly={true}
                       onChange={(e) => {
                         setValue("TokenName", e.target.value);
@@ -670,6 +674,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                   render={({ field: { value } }) => (
                     <Input
                       placeholder={StateCoinSymbol}
+                      // placeholder="Enter Token Symbol"
                       readOnly={true}
                       onChange={(e) => {
                         //   setValue("TokenSymbol",);

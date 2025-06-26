@@ -19,17 +19,22 @@ import { setUser,set2FaStatus, setMenus } from "../../Redux/slice/userSlice";
 import { useVerify2faMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 import { useLazyMenuListQuery } from "../../Redux/services/SubAdmin/SubAdminApiSlice";
 
-const schema = yup
-  .object({
-    token: yup.string().required("Token is required"),
-  })
-  .required();
+const schema = yup.object({
+  token: yup
+    .string()
+    .required("Token is required")
+    .matches(/^\d+$/, "Only numeric values are allowed")
+    .length(6, "Token must be exactly 6 digits"),
+});
+
+
 
 const GoogleStepTwo = ({ isOpenStepTwo, closeCardModal, action ,loginCred }) => {
   const dispatch = useDispatch();
   const [hideShowDivOne, setHideShowDivOne] = useState(false);
   const [hideShowDivTwo, setHideShowDivTwo] = useState(true);
   const userData = useSelector((state) => state?.userState);
+  const [apiError, setApiError] = useState("");
   const loginResponseData = useSelector(
     (state) => state?.userState?.loginResponseData
   );
@@ -92,7 +97,7 @@ console.log("setValue",setValue)
 
   const handleCancel = () => {
     closeCardModal();
-    resetModal();
+    resetModal('');
   };
 
   // const onSubmit = async (data) => {
@@ -140,7 +145,7 @@ console.log("setValue",setValue)
       localStorage.setItem("email", data?.email);
       localStorage.setItem("password", data.password);
       if (res.error) {
-        console.log("res.error",res.error)
+        console.error("❌ API returned error:", res.error);
         if (res?.error?.status == "FETCH_ERROR") {
           dispatch(setToast({ message: "Network failed", status: false }));
           // setTimeout(() => {
@@ -149,7 +154,7 @@ console.log("setValue",setValue)
         } else {
           // setTimeout(() => {
           dispatch(
-            setToast({ message: res.error.data.data.message, status: false })
+            setToast({ message: res?.error?.data?.message, status: false })
           );
           // }, 1000);
           // setTimeout(() => {
@@ -206,6 +211,7 @@ console.log("setValue",setValue)
         }
       }
     });
+    
   };
 
   return (
@@ -214,6 +220,7 @@ console.log("setValue",setValue)
       <Modal
         title="Google Authentication"
         open={isOpenStepTwo}
+        centered
         onOk={handleSubmit(onSubmit)}
         okText="Submit"
         onCancel={handleCancel}

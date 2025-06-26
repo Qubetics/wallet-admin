@@ -45,7 +45,7 @@ const Announcement = () => {
   const [tableData, setTableData] = useState([]);
   const [getAnnouncementist, { isLoading }] =
     useGetAnnouncementNotificationMutation();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const AnnouncementDetails = useSelector(
@@ -57,15 +57,25 @@ const Announcement = () => {
 
   const IpData = useSelector((state) => state?.userState?.ipData);
 
-  const schema = yup
-    .object({
-      title: yup.string().required("Please enter the title"),
-      message: yup.string().required("Please enter the message"),
-      schedule_time: schedule
-        ? yup.string().nullable().required("Please select schedule date time")
-        : yup.string().notRequired(),
-    })
-    .required();
+  const schema = yup.object({
+    title: yup
+      .string()
+      .required("Please enter the title")
+      .matches(
+        /^[\p{L}\p{N}\p{P}\p{Zs}]+$/u,
+        "Emojis are not allowed in the title"
+      ),
+    message: yup
+      .string()
+      .required("Please enter the message")
+      .matches(
+        /^[\p{L}\p{N}\p{P}\p{Zs}]+$/u,
+        "Emojis are not allowed in the message"
+      ),
+    schedule_time: schedule
+      ? yup.string().nullable().required("Please select schedule date time")
+      : yup.string().notRequired(),
+  });
   const {
     handleSubmit,
     control,
@@ -85,22 +95,24 @@ const Announcement = () => {
   }, [reset]);
 
   const getAnnouncementListFn = async () => {
-    const enc = await encryption(JSON.stringify({ page: currentPage, limit: perPage }));
+    const enc = await encryption(
+      JSON.stringify({ page: currentPage, limit: perPage })
+    );
     const securedData = { dataString: enc };
-    await getAnnouncementist(securedData).then(
-      (res, err) => {
-        if (res?.data?.data) {
-          console.log("here i am",res?.data?.data);
-          setTableData(res?.data?.data)
-          dispatch(setAnnouncementList(res?.data?.data?.data));
-          dispatch(setAnnouncementListMeta(res?.data?.data?.meta));
-        } else {
-          if (res?.error?.status == "FETCH_ERROR") {
-            dispatch(setToast({ message: "Something went wrong", status: false }));
-          }
+    await getAnnouncementist(securedData).then((res, err) => {
+      if (res?.data?.data) {
+        console.log("here i am", res?.data?.data);
+        setTableData(res?.data?.data);
+        dispatch(setAnnouncementList(res?.data?.data?.data));
+        dispatch(setAnnouncementListMeta(res?.data?.data?.meta));
+      } else {
+        if (res?.error?.status == "FETCH_ERROR") {
+          dispatch(
+            setToast({ message: "Something went wrong", status: false })
+          );
         }
       }
-    );
+    });
   };
 
   useEffect(() => {
@@ -122,7 +134,7 @@ const Announcement = () => {
       const securedData = { dataString: enc };
       await SaveAnnouncement(securedData).then((res) => {
         if (res?.data?.status) {
-          console.log("resssss",res?.data?.message)
+          console.log("resssss", res?.data?.message);
           setDisabled(false);
           reset({
             schedule_time: "",
@@ -158,7 +170,12 @@ const Announcement = () => {
     } catch (er) {
       dispatch(setToast({ message: "something went wrong", status: false }));
       if (er?.status === 401 || er?.data?.code === 401) {
-        handleUnauthorizedError({ error: { status: 401 } }, dispatch, navigate, setToast);
+        handleUnauthorizedError(
+          { error: { status: 401 } },
+          dispatch,
+          navigate,
+          setToast
+        );
       }
     }
   };
@@ -178,38 +195,36 @@ const Announcement = () => {
   const disabledDate = (current) => {
     return current && current <= dayjs().startOf("day");
   };
-  
 
   const disabledDateTime = (current) => {
     const now = dayjs();
 
     if (current && current.isSame(now, "day")) {
-        const hours = [];
-        for (let i = 0; i < 24; i++) {
-            if (i < now.hour()) {
-                hours.push(i);
-            }
+      const hours = [];
+      for (let i = 0; i < 24; i++) {
+        if (i < now.hour()) {
+          hours.push(i);
         }
+      }
 
-        const minutes = [];
-        for (let i = 0; i < 60; i++) {
-            if (i < now.minute()) {
-                minutes.push(i);
-            }
+      const minutes = [];
+      for (let i = 0; i < 60; i++) {
+        if (i < now.minute()) {
+          minutes.push(i);
         }
+      }
 
-        return {
-            disabledHours: () => hours,
-            disabledMinutes: () => minutes,
-        };
+      return {
+        disabledHours: () => hours,
+        disabledMinutes: () => minutes,
+      };
     }
 
     return {
       disabledHours: () => [],
       disabledMinutes: () => [],
     };
-};
-
+  };
 
   const columns = [
     {
@@ -278,12 +293,16 @@ const Announcement = () => {
           type="primary"
           onClick={(e) => {
             confirm({
-              title: <span style={{color: "black"}}>Do you want to delete this announcement?</span>,
-              icon: <ExclamationCircleFilled style={{marginTop:'6px'}}/>,  
+              title: (
+                <span style={{ color: "black" }}>
+                  Do you want to delete this announcement?
+                </span>
+              ),
+              icon: <ExclamationCircleFilled style={{ marginTop: "6px" }} />,
               centered: true,
               okText: "Delete",
               onOk() {
-                let deleteValue = { id: record?.id};
+                let deleteValue = { id: record?.id };
                 DeleteAnnouncement(deleteValue).then((res, err) => {
                   if (res?.data?.status) {
                     dispatch(
@@ -323,100 +342,99 @@ const Announcement = () => {
           tip="Loading..."
           size="large"
         >
-          
-            <form onSubmit={handleSubmit(onFormSubmit)}>
-              <div className="topper Send-massage">
-                <div className="input-fields">
-                  <Controller
-                    name="title"
-                    control={control}
-                    render={({ field: { value } }) => (
-                      <Input
-                        className="annocInput"
-                        name="title"
-                        showCount
-                        maxLength={20}
-                        placeholder="Title"
-                        onChange={(e) => {
-                          setValue("title", e.target.value.trimStart());
-                          trigger("title");
-                        }}
-                        value={value}
-                      />
-                    )}
-                  />
-                  {errors?.title?.message && (
-                    <div className="errorElement">
-                      <p style={{ color: "red" }}>{errors?.title?.message}</p>
-                    </div>
-                  )}
-                </div>
+          <form onSubmit={handleSubmit(onFormSubmit)}>
+            <div className="topper Send-massage">
+              <div className="input-fields">
                 <Controller
-                  name="message"
+                  name="title"
                   control={control}
                   render={({ field: { value } }) => (
-                    <TextArea
-                      name="message"
-                      style={{ width: "100%" }}
-                      placeholder="Description "
+                    <Input
+                      className="annocInput"
+                      name="title"
                       showCount
-                      maxLength={100}
+                      maxLength={20}
+                      placeholder="Title"
                       onChange={(e) => {
-                        setValue("message", e.target.value.trimStart());
-                        trigger("message");
+                        setValue("title", e.target.value.trimStart());
+                        trigger("title");
                       }}
                       value={value}
                     />
                   )}
                 />
-                {errors?.message?.message && (
+                {errors?.title?.message && (
                   <div className="errorElement">
-                    <p style={{ color: "red" }}>{errors?.message?.message}</p>
+                    <p style={{ color: "red" }}>{errors?.title?.message}</p>
                   </div>
                 )}
-                {schedule && (
-                  <div className="input-fields">
-                    <Controller
-                      name="schedule_time"
-                      control={control}
-                      render={({ field: { value } }) => (
-                        <DatePicker
-                          className="annocInput"
-                          name="schedule_time"
-                          format="YYYY-MM-DD HH:mm"
-                          disabledDate={disabledDate}
-                          disabledTime={disabledDateTime}
-                          showTime={{
-                            defaultValue: dayjs("00:00", "HH:mm"),
-                          }}
-                          onChange={(e) => {
-                            setValue("schedule_time", e);
-                            trigger("schedule_time");
-                          }}
-                          value={value}
-                        />
-                      )}
-                    />
-                    {errors?.schedule_time?.message && (
-                      <div className="errorElement">
-                        <p style={{ color: "red", marginBottom: "0px" }}>
-                          {errors?.schedule_time?.message}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-                <div
-                  className="submit_modal"
-                  style={{ display: "inline-block", width: "100%" }}
-                >
-                  <Button htmlType="submit" disabled={disabled} type="primary">
-                    Send message
-                  </Button>
-                </div>
               </div>
-            </form>
-          
+              <Controller
+                name="message"
+                control={control}
+                render={({ field: { value } }) => (
+                  <TextArea
+                    name="message"
+                    style={{ width: "100%" }}
+                    placeholder="Description "
+                    showCount
+                    maxLength={100}
+                    onChange={(e) => {
+                      setValue("message", e.target.value.trimStart());
+                      trigger("message");
+                    }}
+                    value={value}
+                  />
+                )}
+              />
+              {errors?.message?.message && (
+                <div className="errorElement">
+                  <p style={{ color: "red" }}>{errors?.message?.message}</p>
+                </div>
+              )}
+              {schedule && (
+                <div className="input-fields">
+                  <Controller
+                    name="schedule_time"
+                    control={control}
+                    render={({ field: { value } }) => (
+                      <DatePicker
+                        className="annocInput"
+                        name="schedule_time"
+                        format="YYYY-MM-DD HH:mm"
+                        disabledDate={disabledDate}
+                        disabledTime={disabledDateTime}
+                        showTime={{
+                          defaultValue: dayjs("00:00", "HH:mm"),
+                        }}
+                        onChange={(e) => {
+                          setValue("schedule_time", e);
+                          trigger("schedule_time");
+                        }}
+                        value={value}
+                      />
+                    )}
+                  />
+                  {errors?.schedule_time?.message && (
+                    <div className="errorElement">
+                      <p style={{ color: "red", marginBottom: "0px" }}>
+                        {errors?.schedule_time?.message}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+              <div
+                className="submit_modal"
+                style={{ display: "inline-block", width: "100%" }}
+              >
+                <Button htmlType="submit" disabled={disabled} type="primary">
+                  Send message
+                </Button>
+              </div>
+            </div>
+          </form>
+
           <Table
             columns={columns}
             dataSource={tableData?.notification_list}

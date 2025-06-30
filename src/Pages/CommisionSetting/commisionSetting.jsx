@@ -192,7 +192,7 @@ const CommissionSetting = () => {
           <div className="commission-form">
             <form onSubmit={handleAddressSubmit} className="form-group">
               <div className="label-wrapper">
-                <label htmlFor="contractAddress">Address</label>
+                <label htmlFor="contractAddress"> Wallet Address :</label>
                 <span className="info-text">
                   (Enter your ETH/BSC address where markup revenue will be
                   transferred.)
@@ -216,7 +216,7 @@ const CommissionSetting = () => {
 
             <form onSubmit={handlePercentageSubmit} className="form-group">
               <div className="label-wrapper">
-                <label htmlFor="commissionPercentage">Commission (%)</label>
+                <label htmlFor="commissionPercentage">Commission (%) :</label>
                 <span className="info-text">
                   (This is the revenue percentage admin earns per transaction on
                   ETH/BSC chain via 1inch in the Qubetics wallet.)

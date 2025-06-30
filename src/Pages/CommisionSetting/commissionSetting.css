@@ -93,17 +93,26 @@ input:focus {
 } 
 
 .label-wrapper {
-    margin-bottom: 4px;
+    margin-bottom: 12px; /* Give some breathing room between fields */
   }
   
   .label-wrapper label {
     display: block;
-    font-weight: 500;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
+    font-size: 16px;
+    font-weight: 700; /* Stronger bold */
+    color: #111; /* Darker black text */
   }
   
   .info-text {
     font-size: 14px;
-    color: #151516; /* Tailwind gray-500 */
+    color: #444; /* Dark gray */
+    margin-left: 2px;
+    display: inline-block;
+  }
+  
+  .label-wrapper label strong {
+    font-weight: 700;
+    color: #000;
   }
   

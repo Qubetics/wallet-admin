@@ -179,7 +179,7 @@ const CommissionSetting = () => {
       setCommissionPercentage(value);
     }
   };
-
+//////////
   return (
     <div className="commissionData">
       <div className="commission-setting-container">
@@ -196,6 +196,7 @@ const CommissionSetting = () => {
                 <span className="info-text">
                   (Enter your ETH/BSC address where markup revenue will be
                   transferred.)
+                  
                 </span>
               </div>
               <div className="input-button-group">

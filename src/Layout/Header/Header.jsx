@@ -99,7 +99,7 @@ function Header({ toggleSidebar, collapsed }) {
         </div>
         <h2 style={{ margin: 0 }}>
           {sessionStorage.getItem("page_title")
-            ? sessionStorage.getItem("page_title")
+            ? sessionStorage.getItem("page_title") === 'Commission' ? 'Revenue' : sessionStorage.getItem("page_title")
             : "Dashboard"}
         </h2>
         {/* <button className="header__toggleBtn" onClick={toggleSidebar}>

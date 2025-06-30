@@ -323,7 +323,6 @@ function Sidebar({ collapsedState }) {
                 navigate("/dashboard");
               }}
             >
-              {/* <img src={smallLogo} alt="img" /> */}
             </Link>
           ) : (
             <Link

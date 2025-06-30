@@ -170,7 +170,7 @@ function Sidebar({ collapsedState }) {
               } else {
                 item = {
                   key: value?.menu_list_data?.id.toString(),
-                  label: value?.menu_list_data?.name,
+                  label: value?.menu_list_data?.name === 'Commission' ? 'Revenue' : value?.menu_list_data?.name,
                   icon: findIcon(value?.menu_list_data?.slug), //icons[index],
                   onClick: () => {
                     dispatch(

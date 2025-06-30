@@ -91,3 +91,19 @@ input:focus {
 .submit-btn:active {
     background-color: #2a6cb8;
 } 
+
+.label-wrapper {
+    margin-bottom: 4px;
+  }
+  
+  .label-wrapper label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  
+  .info-text {
+    font-size: 14px;
+    color: #151516; /* Tailwind gray-500 */
+  }
+  

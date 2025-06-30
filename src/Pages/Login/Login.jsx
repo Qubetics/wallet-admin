@@ -67,7 +67,17 @@ function Login() {
   const getMenuList = async () => {
     await menuList().then((res, err) => {
       if (res?.data?.data) {
-        dispatch(setMenus(res?.data?.data));
+        const newArr = [];
+        console.log("res?.data?.data", res?.data?.data);
+        const menuItem = res?.data?.data?.map((item) => {
+          if (item?.slug === "Commission") {
+            item.slug = "revenue";
+          }
+          newArr.push(item);
+        });
+        console.log("res?.data?.data", newArr);
+
+        dispatch(setMenus(newArr));
       } else if (res?.error?.data) {
       }
     });
@@ -86,7 +96,7 @@ function Login() {
       localStorage.setItem("email", data?.email);
       localStorage.setItem("password", data.password);
       if (res.error) {
-        console.log("res.error",res.error)
+        console.log("res.error", res.error);
         if (res?.error?.status == "FETCH_ERROR") {
           dispatch(setToast({ message: "Network failed", status: false }));
           setTimeout(() => {
@@ -156,7 +166,10 @@ function Login() {
         closeCardModal={closeStepTwoModal}
         // loginResponseData={loginResponseData}
         googleSecretKeyData={googleSecretKeyData}
-        loginCred={{ email: getValues("email"), password: getValues("password") }}
+        loginCred={{
+          email: getValues("email"),
+          password: getValues("password"),
+        }}
       />
       <Spin
         spinning={isLoading}

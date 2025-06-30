@@ -138,7 +138,7 @@ function App() {
             <Route index path="/commission" element={<CommissionSetting />}/>
             <Route index path="/settings" element={<Setting />} />
             <Route index path="/swap" element={<Revenue />} />
-            <Route index path="/revenue" element={<Revenue />} />
+            {/* <Route index path="/revenue" element={<Revenue />} /> */}
             <Route
               index
               path="/default-token-management"

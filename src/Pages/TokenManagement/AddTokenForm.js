@@ -447,6 +447,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
         symbol: data?.TokenSymbol || StateCoinSymbol,
         token_type: mapping?.token_type,
       };
+      console.log("Submitted Data:", submittedData);
       const enc = await encryption(JSON.stringify(submittedData));
       const securedData = { dataString: enc };
       const response = await addToken(securedData);
@@ -640,8 +641,8 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                   control={control}
                   render={({ field: { value } }) => (
                     <Input
-                      placeholder={StateCoinName}
-                      // placeholder="Enter Token Name"
+                      // placeholder={StateCoinName}
+                      placeholder="Enter Token Name"
                       readOnly={true}
                       onChange={(e) => {
                         setValue("TokenName", e.target.value);
@@ -651,7 +652,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                         //     errors.link.message = "";
                         //   }
                       }}
-                      value={value}
+                      value={StateCoinName}
                     />
                   )}
                 />
@@ -673,8 +674,8 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                   control={control}
                   render={({ field: { value } }) => (
                     <Input
-                      placeholder={StateCoinSymbol}
-                      // placeholder="Enter Token Symbol"
+                      // placeholder={StateCoinSymbol}
+                      placeholder="Enter Token Symbol"
                       readOnly={true}
                       onChange={(e) => {
                         //   setValue("TokenSymbol",);
@@ -685,7 +686,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                           errors.link.message = "";
                         }
                       }}
-                      value={value}
+                      value={StateCoinSymbol}
                     />
                   )}
                 />
@@ -707,7 +708,8 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                 render={({ field: { value } }) => (
                   <Input
                     readOnly={true}
-                    placeholder={SateCoinDecimal}
+                    // placeholder={SateCoinDecimal}
+                    placeholder="Enter Token Decimal"
                     onChange={(e) => {
                       setSateCoinDecimal(e.target.value);
                       setValue("TokenDecimal", e.target.value);
@@ -717,7 +719,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                         errors.link.message = "";
                       }
                     }}
-                    value={value}
+                    value={SateCoinDecimal}
                   />
                 )}
               />

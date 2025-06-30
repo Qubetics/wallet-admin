@@ -27,8 +27,6 @@ const schema = yup.object({
     .length(6, "Token must be exactly 6 digits"),
 });
 
-
-
 const GoogleStepTwo = ({ isOpenStepTwo, closeCardModal, action ,loginCred }) => {
   const dispatch = useDispatch();
   const [hideShowDivOne, setHideShowDivOne] = useState(false);

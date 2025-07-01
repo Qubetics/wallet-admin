@@ -9,7 +9,20 @@ import { setToast } from "../../Redux/slice/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { handleUnauthorizedError } from "../../common/constant/constant";
+import { set2FaStatus } from "../../Redux/slice/userSlice";
+import { useLoginAuthMutation } from "../../Redux/services/loginApi";
+import * as yup from "yup";
+import { Input, Modal, Upload, Button, Select } from "antd";
+import { useVerify2faMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 
+
+const schema = yup.object({
+  token: yup
+    .string()
+    .required("Token is required")
+    .matches(/^\d+$/, "Only numeric values are allowed")
+    .length(6, "Token must be exactly 6 digits"),
+});
 const CommissionSetting = () => {
   const { data, isLoading, isError, refetch } = useGetCommisionDetialsQuery();
   const [updateCommisionDetials] = useUpdateCommisionDetialsMutation();
@@ -18,7 +31,17 @@ const CommissionSetting = () => {
   const [commissionPercentage, setCommissionPercentage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  const [isOpenStepTwo, setShowTwoFAModal] = useState(false);
+  const [authCode, setAuthCode] = useState('');
+  const [verify2fa, { isLoading : tokenLoading }] = useVerify2faMutation();
 
+  console.log("isOpenStepTwo", isOpenStepTwo);
+
+  const is2FAEnabled = useSelector(
+    (state) => state?.userState?.user?.google2fa_status
+  );
+  console.log("is2FAEnabled==============", is2FAEnabled);
   // Update state when data is fetched
   useEffect(() => {
     if (data && data?.data) {
@@ -86,8 +109,30 @@ const CommissionSetting = () => {
     }
   };
 
-  const handlePercentageSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit2fFA = async () => {
+    try {
+      if(!authCode || authCode.trim() === "") {
+        dispatch(setToast({ message: "Please enter the authentication code", status: false }));
+  
+        return;
+      }
+      const response =  await verify2fa({
+        token: authCode,
+      })
+        .unwrap()
+        console.log("response", response?.message );
+      if(response?.message === "SUCCESS") {
+        setShowTwoFAModal(false)
+        await handlePercentageSubmit()
+        setAuthCode('');
+      }
+    } catch (error) {
+      dispatch(setToast({ message:  error?.data?.message || "something went wrong", status: false }));
+    }
+   
+  }
+
+  const handlePercentageSubmit = async () => {
     console.log("Commission Percentage Submit:", commissionPercentage);
 
     if (commissionPercentage === "") {
@@ -111,7 +156,6 @@ const CommissionSetting = () => {
       );
       return;
     }
-
     try {
       const formData = {
         type: 1,
@@ -123,10 +167,6 @@ const CommissionSetting = () => {
       const response = await updateCommisionDetials(securedData);
       console.log("response", response);
 
-      // Check for 401 error - pass the required parameters
-      if (handleUnauthorizedError(response, dispatch, navigate, setToast)) {
-        return;
-      }
 
       if (response.data && response.data.status) {
         dispatch(
@@ -171,6 +211,11 @@ const CommissionSetting = () => {
     }
   };
 
+
+  const onClickModelOk = (e) => {
+    e.preventDefault();
+    setShowTwoFAModal(true)
+  }
   // Handle commission percentage input change to allow decimal values
   const handleCommissionChange = (e) => {
     const value = e.target.value;
@@ -179,7 +224,12 @@ const CommissionSetting = () => {
       setCommissionPercentage(value);
     }
   };
-//////////
+
+  const handle2FASubmit = async () => {
+
+  setShowTwoFAModal(true)
+  };
+  //////////
   return (
     <div className="commissionData">
       <div className="commission-setting-container">
@@ -196,7 +246,6 @@ const CommissionSetting = () => {
                 <span className="info-text">
                   (Enter your ETH/BSC address where markup revenue will be
                   transferred.)
-                  
                 </span>
               </div>
               <div className="input-button-group">
@@ -215,7 +264,32 @@ const CommissionSetting = () => {
               </div>
             </form>
 
-            <form onSubmit={handlePercentageSubmit} className="form-group">
+            <form onSubmit={onClickModelOk} className="form-group">
+              <Modal
+                title="Google Authentication"
+                open={isOpenStepTwo}
+                centered
+                onOk={onSubmit2fFA}
+                okText="Submit"
+                onCancel={() => setShowTwoFAModal(false)}
+                maskClosable={false}
+              >
+                <form>
+                  <div className="row">
+                    <label style={{ marginBottom: 8 }}>
+                      Google authentication code
+                    </label>
+                    <Input
+                     value={authCode}
+                      placeholder="Enter authentication code"
+                      onChange={(e) => {
+                        setAuthCode(e.target.value);
+                      }}
+                    />
+                    {/* <p className="error">{errors.token?.message}</p> */}
+                  </div>
+                </form>
+              </Modal>
               <div className="label-wrapper">
                 <label htmlFor="commissionPercentage">Commission (%) :</label>
                 <span className="info-text">

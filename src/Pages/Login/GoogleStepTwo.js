@@ -97,36 +97,7 @@ console.log("setValue",setValue)
     resetModal('');
   };
 
-  // const onSubmit = async (data) => {
-  //   let admin_id = userData ? userData?.user?.id : 0;
-  //   data.admin_id = admin_id;
-  //   // let validation =  trigger();
-  //   // if (validation) {
-  //   await verify2fa(data).then((res) => {
-  //     if (res?.error) {
-  //       // toast.error(res?.error?.data?.data.message);
-  //       dispatch(
-  //         setToast({
-  //           message: `${res?.error?.data?.data.message}`,
-  //           status: false,
-  //         })
-  //       );
-  //     } else {
-  //       dispatch(setToast({ message: "Logged in successfully", status: true }));
-  //       // localStorage.setItem("jwt_token", res?.data?.data?.jwt_token);
-  //       localStorage.setItem("jwt_token", res?.data?.data?.jwt_token);
 
-  //       dispatch(setUser(res?.data?.data));
-  //       getMenuList();
-  //       // dispatch(setAuthentication(res?.data));
-  //       setTimeout(() => {
-  //         dispatch(setToast({ message: null, status: false }));
-  //       }, 5000);
-  //       closeCardModal();
-  //     }
-  //   });
-  //   // }
-  // };
 
   const onSubmit = async (data) => {
     // setLoginButton(true);

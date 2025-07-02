@@ -32,6 +32,7 @@ const CommissionSettings = () => {
   const is2FAEnabled = useSelector(
     (state) => state?.userState?.user?.google2fa_status
   );
+  console.log("=====================",is2FAEnabled)
   
 
   // Component state
@@ -330,8 +331,7 @@ const CommissionSettings = () => {
               <button
                 type="submit"
                 className="submit-btn"
-                disabled={isUpdatingWallet}
-              >
+                disabled={is2FAEnabled !== 1 || isUpdatingWallet}>
                 {isUpdatingWallet ? "Updating..." : "Submit"}
               </button>
             </div>
@@ -362,8 +362,8 @@ const CommissionSettings = () => {
               <button
                 type="submit"
                 className="submit-btn"
-                disabled={isUpdatingCommission}
-              >
+                disabled={!is2FAEnabled || isUpdatingCommission}
+                >
                 {isUpdatingCommission ? "Updating..." : "Submit"}
               
               </button>

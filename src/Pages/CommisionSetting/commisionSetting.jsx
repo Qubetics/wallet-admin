@@ -9,215 +9,234 @@ import { setToast } from "../../Redux/slice/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { handleUnauthorizedError } from "../../common/constant/constant";
-import { set2FaStatus } from "../../Redux/slice/userSlice";
-import { useLoginAuthMutation } from "../../Redux/services/loginApi";
-import * as yup from "yup";
-import { Input, Modal, Upload, Button, Select } from "antd";
+import { Input, Modal } from "antd";
 import { useVerify2faMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 
+// Constants for update types
+const UPDATE_TYPES = {
+  COMMISSION_PERCENTAGE: 1,
+  WALLET_ADDRESS: 2,
+};
 
-const schema = yup.object({
-  token: yup
-    .string()
-    .required("Token is required")
-    .matches(/^\d+$/, "Only numeric values are allowed")
-    .length(6, "Token must be exactly 6 digits"),
-});
-const CommissionSetting = () => {
+const CommissionSettings = () => {
+  // API hooks
   const { data, isLoading, isError, refetch } = useGetCommisionDetialsQuery();
-  const [updateCommisionDetials] = useUpdateCommisionDetialsMutation();
-  console.log("data", data);
-  const [contractAddress, setContractAddress] = useState("");
-  const [commissionPercentage, setCommissionPercentage] = useState("");
+  const [updateCommissionDetails] = useUpdateCommisionDetialsMutation();
+  const [verify2FA, { isLoading: tokenLoading }] = useVerify2faMutation();
+  const [isUpdatingWallet, setIsUpdatingWallet] = useState(false);
+  const [isUpdatingCommission, setIsUpdatingCommission] = useState(false);
+
+  // Redux hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const [isOpenStepTwo, setShowTwoFAModal] = useState(false);
-  const [authCode, setAuthCode] = useState('');
-  const [verify2fa, { isLoading : tokenLoading }] = useVerify2faMutation();
-
-  console.log("isOpenStepTwo", isOpenStepTwo);
-
   const is2FAEnabled = useSelector(
     (state) => state?.userState?.user?.google2fa_status
   );
-  console.log("is2FAEnabled==============", is2FAEnabled);
-  // Update state when data is fetched
+  
+
+  // Component state
+  const [walletAddress, setWalletAddress] = useState("");
+  const [commissionPercentage, setCommissionPercentage] = useState("");
+  const [is2FAModalOpen, setIs2FAModalOpen] = useState(false);
+  const [authCode, setAuthCode] = useState("");
+  const [pendingUpdateType, setPendingUpdateType] = useState(null);
+
+  // Initialize form data when API data is loaded
   useEffect(() => {
-    if (data && data?.data) {
-      setContractAddress(data?.data?.walletAddress || "");
-      setCommissionPercentage(data?.data?.percentage || "");
+    if (data?.data) {
+      setWalletAddress(data.data.walletAddress || "");
+      setCommissionPercentage(data.data.percentage || "");
     }
   }, [data]);
 
-  const handleAddressSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Address Submit:", contractAddress);
+  /**
+   * Displays error or success toast messages
+   * @param {string} message - The message to display
+   * @param {boolean} isSuccess - Whether this is a success message
+   */
+  const showToast = (message, isSuccess = false) => {
+    dispatch(setToast({ message, status: isSuccess }));
+  };
 
-    if (contractAddress === "") {
-      dispatch(setToast({ message: "Address cannot be empty", status: false }));
+  /**
+   * Validates commission percentage input
+   * @param {string} percentage - The percentage value to validate
+   * @returns {boolean} - Whether the percentage is valid
+   */
+  const isValidCommissionPercentage = (percentage) => {
+    if (percentage === "") {
+      showToast("Commission percentage cannot be empty");
+      return false;
+    }
+
+    const percentValue = parseFloat(percentage);
+    if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
+      showToast("Commission percentage must be between 0 and 100");
+      return false;
+    }
+
+    return true;
+  };
+
+  /**
+   * Validates wallet address input
+   * @param {string} address - The wallet address to validate
+   * @returns {boolean} - Whether the address is valid
+   */
+  const isValidWalletAddress = (address) => {
+    if (address === "") {
+      showToast("Wallet address cannot be empty");
+      return false;
+    }
+    return true;
+  };
+
+  /**
+   * Handles API errors, including unauthorized access
+   * @param {Object} error - The error object from the API response
+   */
+  const handleApiError = (error, defaultMessage) => {
+    if (error?.error?.status === 401 || error?.data?.code === 401) {
+      handleUnauthorizedError(
+        { error: { status: 401 } },
+        dispatch,
+        navigate,
+        setToast
+      );
       return;
     }
 
-    try {
-      const formData = {
-        type: 2,
-        value: contractAddress,
-      };
-      const enc = await encryption(JSON.stringify(formData));
-      const securedData = { dataString: enc };
-      console.log("securedData", securedData);
-      const response = await updateCommisionDetials(securedData);
-      console.log("response", response);
+    const errorMessage =
+      error?.error?.data?.message || error?.data?.message || defaultMessage;
+    showToast(errorMessage);
+    refetch();
+  };
 
-      // Check for 401 error - pass the required parameters
+  /**
+   * Generic function to update commission settings
+   * @param {number} type - The type of update (1 for percentage, 2 for address)
+   * @param {string} value - The value to update
+   * @param {string} successMessage - Message to show on success
+   * @param {string} errorMessage - Message to show on error
+   */
+  const updateCommissionSetting = async (
+    type,
+    value,
+    successMessage,
+    errorMessage
+  ) => {
+    try {
+      const formData = { type, value };
+      const encryptedData = await encryption(JSON.stringify(formData));
+      const securedData = { dataString: encryptedData };
+
+      const response = await updateCommissionDetails(securedData);
+
+      // Handle unauthorized error
       if (handleUnauthorizedError(response, dispatch, navigate, setToast)) {
         return;
       }
 
-      if (response.data && response.data.status) {
-        dispatch(
-          setToast({ message: "Address updated successfully", status: true })
-        );
+      if (response.data?.status) {
+        showToast(successMessage, true);
         refetch();
       } else {
-        dispatch(
-          setToast({
-            message:
-              response?.error?.data?.message || "Failed to update address",
-            status: false,
-          })
-        );
+        const apiErrorMessage = response?.error?.data?.message || errorMessage;
+        showToast(apiErrorMessage);
         refetch();
       }
     } catch (error) {
-      console.log("error?.error?.status", error?.error?.status);
-
-      // Check for 401 error in catch block - pass the required parameters
-      if (error?.error?.status === 401 || error?.data?.code === 401) {
-        handleUnauthorizedError(
-          { error: { status: 401 } },
-          dispatch,
-          navigate,
-          setToast
-        );
-        return;
-      }
-
-      dispatch(setToast({ message: "Error updating address", status: false }));
-      refetch();
+      handleApiError(error, errorMessage);
     }
   };
 
-  const onSubmit2fFA = async () => {
-    try {
-      if(!authCode || authCode.trim() === "") {
-        dispatch(setToast({ message: "Please enter the authentication code", status: false }));
-  
-        return;
-      }
-      const response =  await verify2fa({
-        token: authCode,
-      })
-        .unwrap()
-        console.log("response", response?.message );
-      if(response?.message === "SUCCESS") {
-        setShowTwoFAModal(false)
-        await handlePercentageSubmit()
-        setAuthCode('');
-      }
-    } catch (error) {
-      dispatch(setToast({ message:  error?.data?.message || "something went wrong", status: false }));
-    }
-   
-  }
+  /**
+   * Handles wallet address update
+   */
+  const handleWalletAddressUpdate = async () => {
+    if (!isValidWalletAddress(walletAddress)) return;
 
-  const handlePercentageSubmit = async () => {
-    console.log("Commission Percentage Submit:", commissionPercentage);
-
-    if (commissionPercentage === "") {
-      dispatch(
-        setToast({
-          message: "Commission percentage cannot be empty",
-          status: false,
-        })
-      );
-      return;
-    }
-
-    // Validate percentage is between 0 and 100
-    const percentValue = parseFloat(commissionPercentage);
-    if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
-      dispatch(
-        setToast({
-          message: "Commission percentage must be between 0 and 100",
-          status: false,
-        })
-      );
-      return;
-    }
-    try {
-      const formData = {
-        type: 1,
-        value: commissionPercentage,
-      };
-      const enc = await encryption(JSON.stringify(formData));
-      const securedData = { dataString: enc };
-      console.log("securedData", securedData);
-      const response = await updateCommisionDetials(securedData);
-      console.log("response", response);
-
-
-      if (response.data && response.data.status) {
-        dispatch(
-          setToast({
-            message: "Commission percentage updated successfully",
-            status: true,
-          })
-        );
-        refetch();
-      } else {
-        dispatch(
-          setToast({
-            message:
-              response?.error?.data?.message ||
-              "Failed to update commission percentage",
-            status: false,
-          })
-        );
-        refetch();
-      }
-    } catch (error) {
-      console.log("error", error);
-
-      // Check for 401 error in catch block - pass the required parameters
-      if (error?.error?.status === 401 || error?.data?.code === 401) {
-        handleUnauthorizedError(
-          { error: { status: 401 } },
-          dispatch,
-          navigate,
-          setToast
-        );
-        return;
-      }
-
-      dispatch(
-        setToast({
-          message: "Error updating commission percentage",
-          status: false,
-        })
-      );
-      refetch();
-    }
+    await updateCommissionSetting(
+      UPDATE_TYPES.WALLET_ADDRESS,
+      walletAddress,
+      "Wallet address updated successfully",
+      "Failed to update wallet address",
+      setIsUpdatingWallet
+    );
   };
 
+  /**
+   * Handles commission percentage update
+   */
+  const handleCommissionPercentageUpdate = async () => {
+    if (!isValidCommissionPercentage(commissionPercentage)) return;
 
-  const onClickModelOk = (e) => {
+    await updateCommissionSetting(
+      UPDATE_TYPES.COMMISSION_PERCENTAGE,
+      commissionPercentage,
+      "Commission percentage updated successfully",
+      "Failed to update commission percentage",
+      setIsUpdatingCommission
+    );
+  };
+
+  /**
+   * Handles form submission - shows 2FA modal or directly updates based on 2FA status
+   * @param {Event} e - Form submit event
+   * @param {string} updateType - Type of update being performed
+   */
+  const handleFormSubmit = (e, updateType) => {
     e.preventDefault();
-    setShowTwoFAModal(true)
-  }
-  // Handle commission percentage input change to allow decimal values
-  const handleCommissionChange = (e) => {
+
+    if (is2FAEnabled) {
+      setPendingUpdateType(updateType);
+      setIs2FAModalOpen(true);
+    } else {
+      // If 2FA is not enabled, directly perform the update
+      if (updateType === "wallet") {
+        handleWalletAddressUpdate();
+      } else if (updateType === "commission") {
+        handleCommissionPercentageUpdate();
+      }
+    }
+  };
+
+  /**
+   * Handles 2FA verification and executes pending update
+   */
+  const handle2FASubmission = async () => {
+    if (!authCode.trim()) {
+      showToast("Please enter the authentication code");
+      return;
+    }
+
+    try {
+      const response = await verify2FA({ token: authCode }).unwrap();
+
+      if (response?.message === "SUCCESS") {
+        setIs2FAModalOpen(false);
+        setAuthCode("");
+
+        // Execute the pending update based on type
+        if (pendingUpdateType === "wallet") {
+          await handleWalletAddressUpdate();
+        } else if (pendingUpdateType === "commission") {
+          await handleCommissionPercentageUpdate();
+        }
+
+        setPendingUpdateType(null);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message || "Authentication failed";
+      showToast(errorMessage);
+    }
+  };
+
+  /**
+   * Handles commission percentage input change to allow only valid decimal numbers
+   * @param {Event} e - Input change event
+   */
+  const handleCommissionInputChange = (e) => {
     const value = e.target.value;
     // Allow empty value, numbers, and numbers with decimal points
     if (value === "" || /^\d*\.?\d*$/.test(value)) {
@@ -225,98 +244,135 @@ const CommissionSetting = () => {
     }
   };
 
-  const handle2FASubmit = async () => {
-
-  setShowTwoFAModal(true)
+  /**
+   * Closes 2FA modal and resets related state
+   */
+  const close2FAModal = () => {
+    setIs2FAModalOpen(false);
+    setAuthCode("");
+    setPendingUpdateType(null);
   };
-  //////////
+
+  // Render loading state
+  if (isLoading) {
+    return (
+      <div className="commissionData">
+        <div className="commission-setting-container">
+          <p>Loading commission data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Render error state
+  if (isError) {
+    return (
+      <div className="commissionData">
+        <div className="commission-setting-container">
+          <p>Error loading commission data. Please try again.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="commissionData">
       <div className="commission-setting-container">
-        <h2>Revenue</h2>
-        {isLoading ? (
-          <p>Loading commission data...</p>
-        ) : isError ? (
-          <p>Error loading commission data. Please try again.</p>
-        ) : (
-          <div className="commission-form">
-            <form onSubmit={handleAddressSubmit} className="form-group">
-              <div className="label-wrapper">
-                <label htmlFor="contractAddress"> Wallet Address :</label>
-                <span className="info-text">
-                  (Enter your ETH/BSC address where markup revenue will be
-                  transferred.)
-                </span>
-              </div>
-              <div className="input-button-group">
-                <input
-                  style={{ color: "black" }}
-                  type="text"
-                  id="contractAddress"
-                  value={contractAddress}
-                  onChange={(e) => setContractAddress(e.target.value)}
-                  placeholder="Enter address"
-                  required
-                />
-                <button type="submit" className="submit-btn">
-                  Submit
-                </button>
-              </div>
-            </form>
+        <h2>Revenue </h2>
 
-            <form onSubmit={onClickModelOk} className="form-group">
-              <Modal
-                title="Google Authentication"
-                open={isOpenStepTwo}
-                centered
-                onOk={onSubmit2fFA}
-                okText="Submit"
-                onCancel={() => setShowTwoFAModal(false)}
-                maskClosable={false}
-              >
-                <form>
-                  <div className="row">
-                    <label style={{ marginBottom: 8 }}>
-                      Google authentication code
-                    </label>
-                    <Input
-                     value={authCode}
-                      placeholder="Enter authentication code"
-                      onChange={(e) => {
-                        setAuthCode(e.target.value);
-                      }}
-                    />
-                    {/* <p className="error">{errors.token?.message}</p> */}
-                  </div>
-                </form>
-              </Modal>
-              <div className="label-wrapper">
-                <label htmlFor="commissionPercentage">Commission (%) :</label>
-                <span className="info-text">
-                  (This is the revenue percentage admin earns per transaction on
-                  ETH/BSC chain via 1inch in the Qubetics wallet.)
-                </span>
-              </div>
-              <div className="input-button-group">
-                <input
-                  style={{ color: "black" }}
-                  type="text"
-                  id="commissionPercentage"
-                  value={commissionPercentage}
-                  onChange={handleCommissionChange}
-                  placeholder="Enter commission percentage"
-                  required
-                />
-                <button type="submit" className="submit-btn">
-                  Submit
-                </button>
-              </div>
-            </form>
+        {/* 2FA Authentication Modal */}
+        <Modal
+          title="Google Authentication"
+          open={is2FAModalOpen}
+          centered
+          onOk={handle2FASubmission}
+          okText="Submit"
+          onCancel={close2FAModal}
+          maskClosable={false}
+          confirmLoading={tokenLoading}
+        >
+          <div className="row">
+            <label style={{ marginBottom: 8 }}>
+              Google authentication code
+            </label>
+            <Input
+              value={authCode}
+              placeholder="Enter 6-digit authentication code"
+              onChange={(e) => setAuthCode(e.target.value)}
+              maxLength={6}
+            />
           </div>
-        )}
+        </Modal>
+
+        <div className="commission-form">
+          {/* Wallet Address Form */}
+          <form
+            onSubmit={(e) => handleFormSubmit(e, "wallet")}
+            className="form-group"
+          >
+            <div className="label-wrapper">
+              <label htmlFor="walletAddress">Wallet Address:</label>
+              <span className="info-text">
+                (Enter your ETH/BSC address where markup revenue will be
+                transferred.)
+              </span>
+            </div>
+            <div className="input-button-group">
+              <input
+                style={{ color: "black" }}
+                type="text"
+                id="walletAddress"
+                value={walletAddress}
+                onChange={(e) => setWalletAddress(e.target.value)}
+                placeholder="Enter wallet address"
+                required
+              />
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={isUpdatingWallet}
+              >
+                {isUpdatingWallet ? "Updating..." : "Submit"}
+              </button>
+            </div>
+          </form>
+
+          {/* Commission Percentage Form */}
+          <form
+            onSubmit={(e) => handleFormSubmit(e, "commission")}
+            className="form-group"
+          >
+            <div className="label-wrapper">
+              <label htmlFor="commissionPercentage">Commission (%):</label>
+              <span className="info-text">
+                (Revenue percentage admin earns per transaction on ETH/BSC chain
+                via 1inch.)
+              </span>
+            </div>
+            <div className="input-button-group">
+              <input
+                style={{ color: "black" }}
+                type="text"
+                id="commissionPercentage"
+                value={commissionPercentage}
+                onChange={handleCommissionInputChange}
+                placeholder="Enter commission percentage (0-100)"
+                required
+              />
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={isUpdatingCommission}
+              >
+                {isUpdatingCommission ? "Updating..." : "Submit"}
+              
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default CommissionSetting;
+export default CommissionSettings;

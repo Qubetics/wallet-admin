@@ -131,7 +131,7 @@ console.log("setValue",setValue)
           // setLoginButton(false);
         }
       } else {
-         console.log("res?.data?.data?.data?.jwt_token---------------",res?.data?.data?.twofa_status)
+         console.log("res?.data?.data?.data?.jwt_token---------------",res?.data?.data?.twofa_status);
         if (
           (res?.data && res?.data?.data?.twofa_status == 0) ||
           res?.data?.data?.twofa_status == null
@@ -160,7 +160,7 @@ console.log("setValue",setValue)
           console.log("heree we goo",res?.data?.data?.twofa_status)
           // setLoginButton(false);
           dispatch(set2FaStatus(true));
-          localStorage.setItem("google_2fa", "enabled");
+          localStorage.setItem("google_2fa", "enable");
           localStorage.setItem("isRemeber", data.remember);
           sessionStorage.setItem("isActive", 1);
           sessionStorage.setItem("activeKey", "1");

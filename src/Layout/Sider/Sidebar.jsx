@@ -69,7 +69,7 @@ function Sidebar({ collapsedState }) {
     if (e == "push-notification") return <ContainerOutlined />;
     if (e == "banner-management") return <ExceptionOutlined />;
     if (e == "sub-admin-management") return <UsergroupAddOutlined />;
-    if (e == "Revenue") return <BarChartOutlined />;
+    if (e == "revenue") return <BarChartOutlined />;
     if (e == "app_maintenance" || e == "app-maintenance")
       return <ExceptionOutlined />;
   };
@@ -84,25 +84,26 @@ function Sidebar({ collapsedState }) {
           menux?.length > 0 &&
             menux?.map((value, index) => {
               let item = {};
-              if (value.name == "Revenue") {
-                return menuItems.push(
-                  getItem(value?.name, "revenue", <BarChartOutlined />, [
-                    getItem(
-                      swapElement(value, "swap", "On chain Swap"),
-                      "swap"
-                    ),
-                    getItem(
-                      swapElement(value, "SWFTC", "Cross chain Swap"),
-                      "SWFTC"
-                    ),
-                    getItem(swapElement(value, "spritz", "Banking"), "spritz"),
-                    getItem(
-                      swapElement(value, "blockchainswap", "On/Off Ramp"),
-                      "blockchainswap"
-                    ),
-                  ])
-                );
-              } else {
+              // if (value.name == "Revenue") {
+              //   return menuItems.push(
+              //     getItem(value?.name, "revenue", <BarChartOutlined />, [
+              //       getItem(
+              //         swapElement(value, "swap", "On chain Swap"),
+              //         "swap"
+              //       ),
+              //       getItem(
+              //         swapElement(value, "SWFTC", "Cross chain Swap"),
+              //         "SWFTC"
+              //       ),
+              //       getItem(swapElement(value, "spritz", "Banking"), "spritz"),
+              //       getItem(
+              //         swapElement(value, "blockchainswap", "On/Off Ramp"),
+              //         "blockchainswap"
+              //       ),
+              //     ])
+              //   );
+              // } 
+              // else {
                 item = {
                   key: value.id.toString(),
                   label: value.name,
@@ -116,7 +117,7 @@ function Sidebar({ collapsedState }) {
                     navigate(`/${value.slug}`);
                   },
                 };
-              }
+              // }
 
               return menuItems.push(item);
             });
@@ -125,49 +126,50 @@ function Sidebar({ collapsedState }) {
           user_permission_data?.length > 0 &&
             user_permission_data?.map((value, index) => {
               let item = {};
-              if (value?.menu_list_data?.name == "Revenue") {
-                return menuItems.push(
-                  getItem(
-                    value?.menu_list_data?.name,
-                    "revenue",
-                    <BarChartOutlined />,
-                    [
-                      getItem(
-                        swapElement(
-                          value?.menu_list_data?.name,
-                          "swap",
-                          "On chain Swap"
-                        ),
-                        "swap"
-                      ),
-                      getItem(
-                        swapElement(
-                          value?.menu_list_data?.name,
-                          "SWFTC",
-                          "Cross chain Swap"
-                        ),
-                        "SWFTC"
-                      ),
-                      getItem(
-                        swapElement(
-                          value?.menu_list_data?.name,
-                          "spritz",
-                          "Banking"
-                        ),
-                        "spritz"
-                      ),
-                      getItem(
-                        swapElement(
-                          value?.menu_list_data?.name,
-                          "blockchainswap",
-                          "On/Off Ramp"
-                        ),
-                        "blockchainswap"
-                      ),
-                    ]
-                  )
-                );
-              } else {
+              // if (value?.menu_list_data?.name == "Revenue") {
+              //   return menuItems.push(
+              //     getItem(
+              //       value?.menu_list_data?.name,
+              //       "revenue",
+              //       <BarChartOutlined />,
+              //       [
+              //         getItem(
+              //           swapElement(
+              //             value?.menu_list_data?.name,
+              //             "swap",
+              //             "On chain Swap"
+              //           ),
+              //           "swap"
+              //         ),
+              //         getItem(
+              //           swapElement(
+              //             value?.menu_list_data?.name,
+              //             "SWFTC",
+              //             "Cross chain Swap"
+              //           ),
+              //           "SWFTC"
+              //         ),
+              //         getItem(
+              //           swapElement(
+              //             value?.menu_list_data?.name,
+              //             "spritz",
+              //             "Banking"
+              //           ),
+              //           "spritz"
+              //         ),
+              //         getItem(
+              //           swapElement(
+              //             value?.menu_list_data?.name,
+              //             "blockchainswap",
+              //             "On/Off Ramp"
+              //           ),
+              //           "blockchainswap"
+              //         ),
+              //       ]
+              //     )
+              //   );
+              // } 
+              // else {
                 item = {
                   key: value?.menu_list_data?.id.toString(),
                   label: value?.menu_list_data?.name === 'Commission' ? 'Revenue' : value?.menu_list_data?.name,
@@ -190,7 +192,7 @@ function Sidebar({ collapsedState }) {
                     navigate(`/${value?.menu_list_data?.slug}`);
                   },
                 };
-              }
+              // }
               return menuItems.push(item);
             });
         }
@@ -218,12 +220,12 @@ function Sidebar({ collapsedState }) {
         Array.isArray(user?.permissions_data) &&
         user?.permissions_data.filter((dt) => {
           return (
-            dt?.menu_list_data?.slug == path ||
-            (dt?.menu_list_data?.slug == "revenue" &&
-              (path == "swap" ||
-                path == "SWFTC" ||
-                path == "spritz" ||
-                path == "blockchainswap"))
+            dt?.menu_list_data?.slug == path 
+            // (dt?.menu_list_data?.slug == "revenue" &&
+            //   (path == "swap" ||
+            //     path == "SWFTC" ||
+            //     path == "spritz" ||
+            //     path == "blockchainswap"))
           );
         });
       // console.log('isExist >>>', isExist);
@@ -252,36 +254,36 @@ function Sidebar({ collapsedState }) {
           navigate(redirectPath);
         }
       } else {
-        if (isExist[0].menu_list_data?.slug == "revenue") {
-          if (
-            path == "swap" ||
-            path == "SWFTC" ||
-            path == "spritz" ||
-            path == "blockchainswap"
-          ) {
-          }
+        // if (isExist[0].menu_list_data?.slug == "revenue") {
+        //   if (
+        //     path == "swap" ||
+        //     path == "SWFTC" ||
+        //     path == "spritz" ||
+        //     path == "blockchainswap"
+        //   ) {
+        //   }
 
-          let name =
-            path == "swap"
-              ? "On chain Swap"
-              : path == "SWFTC"
-                ? "Cross chain Swap"
-                : path == "spritz"
-                  ? "Banking"
-                  : path == "blockchainswap"
-                    ? "On/Off Ramp"
-                    : "";
+        //   let name =
+        //     path == "swap"
+        //       ? "On chain Swap"
+        //       : path == "SWFTC"
+        //         ? "Cross chain Swap"
+        //         : path == "spritz"
+        //           ? "Banking"
+        //           : path == "blockchainswap"
+        //             ? "On/Off Ramp"
+        //             : "";
 
-          dispatch(
-            setKey({
-              key: path,
-              value: name,
-            })
-          );
-          sessionStorage.setItem("activeKey", path);
-          sessionStorage.setItem("page_title", name);
-          setSelectedKey(path);
-        } else {
+        //   dispatch(
+        //     setKey({
+        //       key: path,
+        //       value: name,
+        //     })
+        //   );
+        //   sessionStorage.setItem("activeKey", path);
+        //   sessionStorage.setItem("page_title", name);
+        //   setSelectedKey(path);
+        // } else {
           let keys = isExist[0].menu_list_data?.id?.toString();
           let vals = isExist[0].menu_list_data?.name;
           dispatch(
@@ -293,7 +295,7 @@ function Sidebar({ collapsedState }) {
           sessionStorage.setItem("activeKey", keys);
           sessionStorage.setItem("page_title", vals);
           setSelectedKey(keys);
-        }
+        // }
       }
     }
   };

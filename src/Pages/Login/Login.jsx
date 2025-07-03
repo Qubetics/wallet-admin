@@ -127,7 +127,7 @@ function Login() {
           localStorage.setItem("isRemeber", data.remember);
           sessionStorage.setItem("isActive", 1);
           sessionStorage.setItem("activeKey", "1");
-          localStorage.setItem("google_2fa", "enabled");
+          localStorage.setItem("google_2fa", "enable");
           sessionStorage.setItem("page_title", "Dashboard");
           dispatch(setUser(res?.data?.data));
           // dispatch(setAuthentication(res?.data));

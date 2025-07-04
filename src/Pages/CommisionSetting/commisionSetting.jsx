@@ -279,7 +279,7 @@ const CommissionSettings = () => {
   return (
     <div className="commissionData">
       <div className="commission-setting-container">
-        <h2>Revenue </h2>
+        <h2>1inch Revenue (On Chain Swap)</h2>
 
         {/* 2FA Authentication Modal */}
         <Modal

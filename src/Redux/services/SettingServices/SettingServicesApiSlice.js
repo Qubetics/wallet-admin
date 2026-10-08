@@ -1,5 +1,5 @@
 import { clearStorage } from "../../../common/constant/constant";
-import { setRequestList } from "../../slice/TransactionDetailSlice";
+import { setRequestList } from "../../slice/TransactionRequestSlice";
 import { apiSlice } from "../../slice/apiSlice";
 import { setToast } from "../../slice/toastSlice";
 

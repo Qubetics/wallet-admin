@@ -927,8 +927,6 @@ const TokenManagement = () => {
   };
 
   const handleImageError = (event) => {
-    // event.target.src =
-    //   "https://example.invalid/images/eth.png";
   };
 
   const renderTokenType = (token_type, coin_family) => {

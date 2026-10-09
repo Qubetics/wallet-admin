@@ -157,7 +157,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   // const [rank, setRank] = useState(0);
-  const [coinFamily, setCoinFamily] = useState(1);
+  const [coinFamily, setCoinFamily] = useState(0);
   const [StateCoinName, setStateCoinName] = useState("");
   console.log("🚀 ~ StateCoinName:", StateCoinName)
   const [StateCoinSymbol, setStateCoinSymbol] = useState("");
@@ -209,6 +209,9 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
   useEffect(() => {
     if (ContractAddress !== "") {
       const delayDebounceFn = setTimeout(() => {
+        const addressError = validateContractAddress(ContractAddress, coinFamily);
+        setContractError(addressError || false);
+        if (addressError) return;
         fetchCoinDataAndShow(ContractAddress, coinFamily);
         // Send Axios request here
       }, 1000);
@@ -342,6 +345,29 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
   //   ? "Enable This Token For Swappingsss"
   //   : "Token Enabled For Swapping"
   //   }`;
+
+  // coinFamily values: 1 BSC, 2 ETH, 4 POL, 5 SOL, 6 TRON, 7 TICS
+  const validateContractAddress = (address, family) => {
+    const value = address.trim();
+    const isEvm = [1, 2, 4, 7].includes(family);
+    if (isEvm) {
+      if (!/^0x[a-fA-F0-9]{40}$/.test(value)) {
+        return "Invalid contract address";
+      }
+      if (/^0x0{40}$/.test(value)) {
+        return "Zero address is not a valid token contract";
+      }
+    } else if (family === 5) {
+      if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value)) {
+        return "Invalid contract address";
+      }
+    } else if (family === 6) {
+      if (!/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(value)) {
+        return "Invalid contract address";
+      }
+    }
+    return "";
+  };
 
   const isValidEthTokenAddress = (address) => {
     const ethTokenAddressRegex = /^(0x)?[0-9a-fA-F]{40}$/;
@@ -485,6 +511,10 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
       errorMessage = error.data.message;
     }
 
+    if (errorMessage === "Token already exist") {
+      errorMessage = "Token already exists in the admin list";
+    }
+
     dispatch(setToast({ 
       message: errorMessage, 
       status: false 
@@ -596,7 +626,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                     options={select_blockchain}
                     className="selectReactCmn"
                     onChange={handleNetworkType}
-                    value={coinFamily ? select_blockchain.find(data => data.value === coinFamily.toString()) : ""}
+                    value={coinFamily ? select_blockchain.find(data => data.value === coinFamily) : null}
                   />
                 )}
               />
@@ -624,6 +654,11 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                     />
                   )}
                 />
+                {typeof ContractError === "string" && ContractError && (
+                  <div className="errorElement">
+                    <p style={{ color: "red" }}>{ContractError}</p>
+                  </div>
+                )}
                 {errors?.ContractAddress?.message && (
                   <div className="errorElement">
                     <p style={{ color: "red" }}>

@@ -9,7 +9,7 @@ import { setToast } from "../../Redux/slice/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { handleUnauthorizedError } from "../../common/constant/constant";
-import { Input, Modal } from "antd";
+import { Button, Input, Modal } from "antd";
 import { useVerify2faMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 
 // Constants for update types
@@ -271,6 +271,11 @@ const CommissionSettings = () => {
       <div className="commissionData">
         <div className="commission-setting-container">
           <p>Error loading commission data. Please try again.</p>
+          <div style={{ textAlign: "center", marginTop: 12 }}>
+            <Button type="primary" onClick={() => refetch()}>
+              Retry
+            </Button>
+          </div>
         </div>
       </div>
     );

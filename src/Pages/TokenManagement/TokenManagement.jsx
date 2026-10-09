@@ -41,6 +41,7 @@ import { CONFIG } from "../../common/constant/constant";
 import { formatNumberUSD } from "../../Helper/FormatNumber";
 // import Utils from "./solana/walletConnector";
 // import Referral from "./solana/wallet/handleReferal";
+import { getSearchError } from "../../Helper/searchValidation";
 import { encryption } from "../../common/encryption/encryption";
 import { handleUnauthorizedError } from "../../common/constant/constant";
 
@@ -118,7 +119,7 @@ const TokenManagement = () => {
       // ),
       render: (text) => (
         <p>
-          {text?.coin_symbol === null ? "N/A" : text?.coin_symbol.toUpperCase()}
+          {text?.coin_symbol === null ? "N/A" : text?.coin_symbol}
         </p>
       ),
     },
@@ -165,13 +166,17 @@ const TokenManagement = () => {
       ),
       render: (text) => (
         <p
-          style={{
-            cursor: "pointer",
-            textDecoration: "underline",
-            color: "#367CC7",
-            textAlign: "center",
-            marginBottom: "0",
-          }}
+          style={
+            text?.token_address === null
+              ? { textAlign: "center", marginBottom: "0" }
+              : {
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  color: "#367CC7",
+                  textAlign: "center",
+                  marginBottom: "0",
+                }
+          }
           onClick={() => {
             if (text?.token_address !== null) {
               redirectToExplorer(text.coin_family, text.token_address);
@@ -224,15 +229,15 @@ const TokenManagement = () => {
           {text?.coin_symbol === null
             ? "N/A"
             : text.coin_symbol?.length > 30
-            ? text?.coin_symbol?.substr(0, 30).toUpperCase() + ".."
-            : text?.coin_symbol.toUpperCase()}
+            ? text?.coin_symbol?.substr(0, 30) + ".."
+            : text?.coin_symbol}
         </p>
       ),
     },
     {
       title: "Token Type",
       render: (text) => {
-        return text?.token_type;
+        return text?.token_type || (text?.token_address === null ? "Native" : "N/A");
       },
     },
     {
@@ -274,13 +279,17 @@ const TokenManagement = () => {
       ),
       render: (text) => (
         <p
-          style={{
-            cursor: "pointer",
-            textDecoration: "underline",
-            color: "#367CC7",
-            textAlign: "center",
-            marginBottom: "0",
-          }}
+          style={
+            text?.token_address === null
+              ? { textAlign: "center", marginBottom: "0" }
+              : {
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  color: "#367CC7",
+                  textAlign: "center",
+                  marginBottom: "0",
+                }
+          }
           onClick={() => {
             if (text?.token_address !== null) {
               redirectToExplorer(text.coin_family, text.token_address);
@@ -449,6 +458,11 @@ const TokenManagement = () => {
     myPage,
     coin_family
   ) => {
+    const searchError = getSearchError(searchData);
+    if (searchError) {
+      dispatch(setToast({ message: searchError, status: false }));
+      return;
+    }
     let filter_data = {
       page: !myPage ? (SearchData != "" ? 1 : currentPage) : myPage,
       limit: perPage,
@@ -1028,6 +1042,15 @@ const TokenManagement = () => {
                         selectedDate > currentDate
                       ) {
                         // Do not update fromDate state if a future date is selected
+                        dispatch(
+                          setToast({
+                            message:
+                              selectedDate > currentDate
+                                ? "Future dates are not allowed"
+                                : "From date cannot be after To date",
+                            status: false,
+                          })
+                        );
                         return;
                       }
                       setFromDate(selectedDate);
@@ -1056,7 +1079,7 @@ const TokenManagement = () => {
                   value={toDate}
                   className="form-control"
                   style={{ cursor: "text", textTransform: "uppercase" }}
-                  //min={fromDate} // Set the minimum allowed date as the fromDate
+                  min={fromDate || undefined} // Set the minimum allowed date as the fromDate
                   max={new Date().toISOString().split("T")[0]} // Set the maximum allowed date as the current date
                   defaultValue="DD-MM-YYYY"
                   onChange={(e) => {
@@ -1076,6 +1099,15 @@ const TokenManagement = () => {
                         selectedDate > currentDate
                       ) {
                         // Do not update toDate state if a future date is selected
+                        dispatch(
+                          setToast({
+                            message:
+                              selectedDate > currentDate
+                                ? "Future dates are not allowed"
+                                : "To date cannot be before From date",
+                            status: false,
+                          })
+                        );
                         return;
                       }
 
@@ -1103,13 +1135,22 @@ const TokenManagement = () => {
                 <Input
                   // maxLength={23}
                   type="text"
-                  title="Seach by token name/ symbol/ address"
-                  placeholder="Seach by token name/ symbol/ address"
+                  title="Search by token name/ symbol/ address"
+                  placeholder="Search by token name/ symbol/ address"
                   className="form-control"
                   value={SearchData}
                   onChange={(e) => SetSearchData(e.target.value.trimStart())}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
+                      if ((fromDate == null) !== (toDate == null)) {
+                        dispatch(
+                          setToast({
+                            message: fromDate == null ? "Please select From date" : "Please select To date",
+                            status: false,
+                          })
+                        );
+                        return;
+                      }
                       setEnableSearchButton(true);
                       setCurrentPage(1);
                       getTokenDataFn(

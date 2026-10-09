@@ -9,8 +9,8 @@ const validationRule = {
 
   password: (value) =>
     value &&
-    !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{3,15}$/.test(value)
-      ? "Password must include uppercase, lowercase, number, special character, and be 3–15 characters long."
+    !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^A-Za-z0-9\s]).{8,64}$/.test(value)
+      ? "Password must be 8–64 characters and include an uppercase letter, a lowercase letter, a number and a special character."
       : undefined,
 
   email: (value) =>

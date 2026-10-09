@@ -39,7 +39,7 @@ const AddedTokenList = forwardRef((props, ref) => {
   const opts = { preflightCommitment: 'processed' };
   const connection = new Connection(network, opts.preflightCommitment);
   // const publicNetwork = 'https://api.mainnet-beta.solana.com';
-  const networkTatum = process.env.REACT_APP_TATUM_URL;
+  const networkTatum = process.env.REACT_APP_TATUM_URL || network;
 
   const connectionTatum = new Connection(networkTatum, opts.preflightCommitment);
   const provider = new AnchorProvider(connection, {}, opts.preflightCommitment);

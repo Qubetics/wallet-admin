@@ -36,7 +36,7 @@ const schema = yup.object({
       password
         ? field
           .required("New password is required")
-          .notOneOf([yup.ref("old_password")], "New password does not same!")
+          .notOneOf([yup.ref("old_password")], "New password must be different from the old password")
         : field
     ),
   confirm_password: yup
@@ -48,7 +48,7 @@ const schema = yup.object({
       password
         ? field
           .required("Confirm password is required")
-          .oneOf([yup.ref("new_password")], "Password mismatch!")
+          .oneOf([yup.ref("new_password")], "Passwords do not match")
         : field
     ),
 });
@@ -96,9 +96,6 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
         case "old_password":
           if (value === undefined || value?.length === 0) {
             error[key] = "Old password field is required";
-            isValidate = false;
-          } else if (validationRule.password(value)) {
-            error[key] = validationRule.password(value);
             isValidate = false;
           } else if (
             validationRule.passwordMatch(allState.new_password, value)
@@ -158,20 +155,20 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
   function validatePassword(password) {
     const errors = [];
 
-    if (password.length < 3) {
+    if (password.length < 8) {
       dispatch(
         setToast({
-          message: "Password should have a minimum length of 3 characters",
+          message: "Password should be at least 8 characters long",
         })
       );
-      errors.push("Password should have a minimum length of 3 characters");
-    } else if (password.length > 15) {
+      errors.push("Password should be at least 8 characters long");
+    } else if (password.length > 64) {
       dispatch(
         setToast({
-          message: "Password should not be more than 15 characters long",
+          message: "Password should not be more than 64 characters long",
         })
       );
-      errors.push("Password should not be more than 15 characters long");
+      errors.push("Password should not be more than 64 characters long");
     } else if (!/[A-Z]/.test(password)) {
       dispatch(
         setToast({

@@ -46,6 +46,17 @@ const BannerManagement = () => {
   const [disabled, setDisabled] = useState(false);
   const [bannerImage, setBannerImage] = useState(null);
   const [imageName, setImageName] = useState("");
+  const [bannerPreviewUrl, setBannerPreviewUrl] = useState("");
+
+  useEffect(() => {
+    if (!bannerImage) {
+      setBannerPreviewUrl("");
+      return undefined;
+    }
+    const url = URL.createObjectURL(bannerImage);
+    setBannerPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [bannerImage]);
   const [SaveBanner, {}] = useSaveBannerMutation();
   const [DeleteBanner, {}] = useDeleteBannerMutation();
   const [getBannerList, { isLoading }] = useGetBannerListMutation();
@@ -119,7 +130,12 @@ const BannerManagement = () => {
       message: yup
         .string()
         .required("Please enter the URL")
-        .url("Please enter a valid URL (e.g., https://example.com)"),
+        .url("Please enter a valid URL (e.g., https://example.com)")
+        .test(
+          "httpProtocol",
+          "Only http:// or https:// links are allowed",
+          (value) => !value || /^https?:\/\//i.test(value)
+        ),
       bannerImage: yup
         .mixed()
         .test("required", "Please upload a banner image", (value) => {
@@ -161,6 +177,7 @@ const BannerManagement = () => {
     touched,
     trigger,
     reset,
+    clearErrors,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
@@ -350,9 +367,18 @@ const BannerManagement = () => {
   };
 
   const handleBannerImageUpload = (file) => {
-    const isImage = file.type.startsWith("image/");
-    if (!isImage) {
-      message.error("You can only upload image files!");
+    // Drop stale messages from the previous attempt before validating this file
+    message.destroy();
+    clearErrors("bannerImage");
+
+    const isAllowedType = [
+      "image/jpeg",
+      "image/png",
+      "image/jpg",
+      "image/webp",
+    ].includes(file.type);
+    if (!isAllowedType) {
+      message.error("Unsupported file format. Please upload a JPG, PNG or WebP image.");
       return false;
     }
 
@@ -611,7 +637,7 @@ const BannerManagement = () => {
                     <Upload
                       beforeUpload={handleBannerImageUpload}
                       showUploadList={false}
-                      accept="image/*"
+                      accept="image/jpeg,image/png,image/webp"
                     >
                       <Button
                         icon={<UploadOutlined />}
@@ -622,6 +648,29 @@ const BannerManagement = () => {
                     </Upload>
                   )}
                 />
+                {bannerPreviewUrl && (
+                  <div style={{ marginTop: "8px" }}>
+                    <img
+                      src={bannerPreviewUrl}
+                      alt="Banner preview"
+                      style={{ width: 300, height: 100, objectFit: "cover" }}
+                    />
+                    <div>
+                      <Button
+                        type="link"
+                        danger
+                        onClick={() => {
+                          setBannerImage(null);
+                          setImageName("");
+                          setValue("bannerImage", null);
+                          clearErrors("bannerImage");
+                        }}
+                      >
+                        Remove image
+                      </Button>
+                    </div>
+                  </div>
+                )}
                 {errors?.bannerImage?.message && (
                   <div className="errorElement">
                     <p style={{ color: "red" }}>

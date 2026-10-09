@@ -8,7 +8,8 @@ import { useGetDeviceUserDataQuery } from "../../Redux/services/DashboardServicc
 import { setDeviceUsers } from "../../Redux/slice/DashboardDetailsSlice";
 import Tooltip from "antd/es/tooltip";
 import { encryption } from "../../common/encryption/encryption";
-import { truncate, exponentialToDecimal } from "../../Helper/StringFormat";
+import { truncate } from "../../Helper/StringFormat";
+import { formatCryptoAmount } from "../../Helper/FormatNumber";
 import { handleUnauthorizedError } from "../../common/constant/constant";
 import { setToast } from "../../Redux/slice/toastSlice";
 import { useNavigate } from "react-router-dom";
@@ -118,7 +119,7 @@ function Dashboard() {
       title: "Amount (In Crypto)",
       dataIndex: "amount",
       key: "amount",
-      render: (amount) => <p>{amount ? exponentialToDecimal(amount) : "N/A"}</p>,
+      render: (amount) => <p>{amount ? formatCryptoAmount(amount) : "N/A"}</p>,
     },
     {
       title: "Source Address",
@@ -285,7 +286,7 @@ function Dashboard() {
       },
     },
     {
-      title: "Date and Time",
+      title: "Date and Time (UTC)",
       dataIndex: "created_at",
       key: "Date and Time",
       render: (text) => (

@@ -51,11 +51,11 @@ function Login() {
   const checkRemember = () => {
     let isRemember = localStorage.getItem("isRemeber");
     let email = localStorage.getItem("email");
-    let password = localStorage.getItem("password");
+    // Passwords are never kept in the browser; drop any left over from older builds
+    localStorage.removeItem("password");
 
     if (isRemember == "true") {
       setValue("email", email);
-      setValue("password", password);
       setValue("remember", isRemember);
     }
   };
@@ -94,7 +94,6 @@ function Login() {
     // const securedData = { dataValue: enc };
     await loginAuth(newObj).then((res) => {
       localStorage.setItem("email", data?.email);
-      localStorage.setItem("password", data.password);
       if (res.error) {
         console.log("res.error", res.error);
         if (res?.error?.status == "FETCH_ERROR") {

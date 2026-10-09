@@ -29,3 +29,17 @@ export const formatNumberCrypto = (value) => {
 
   return formattedNumber;
 };
+
+// Display-only: up to 8 decimals, thousands separators, trailing zeros dropped.
+export const formatCryptoAmount = (value) => {
+  const numberValue = Number(value);
+  if (value === null || value === undefined || value === "" || isNaN(numberValue)) {
+    return value;
+  }
+  if (numberValue !== 0 && Math.abs(numberValue) < 0.00000001) {
+    return "<0.00000001";
+  }
+  return numberValue.toLocaleString("en-US", {
+    maximumFractionDigits: 8,
+  });
+};

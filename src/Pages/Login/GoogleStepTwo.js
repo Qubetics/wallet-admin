@@ -111,7 +111,6 @@ console.log("setValue",setValue)
     // const securedData = { dataValue: enc };
     await loginAuth(newObj).then((res) => {
       localStorage.setItem("email", data?.email);
-      localStorage.setItem("password", data.password);
       if (res.error) {
         console.error("❌ API returned error:", res.error);
         if (res?.error?.status == "FETCH_ERROR") {

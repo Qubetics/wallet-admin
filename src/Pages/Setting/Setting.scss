@@ -114,6 +114,10 @@
 }
 
 .submit_changes {
+  .ant-modal-title {
+    color: #000 !important;
+  }
+
   .ant-modal-footer {
     button {
       height: 45px;

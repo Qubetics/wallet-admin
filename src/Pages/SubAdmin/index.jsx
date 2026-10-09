@@ -289,8 +289,8 @@ const SubAdminManagement = () => {
                 <Input
                   // maxLength={23}
                   type='text'
-                  title='Seach by token name/ symbol/ address'
-                  placeholder='Seach by token name/ symbol/ address'
+                  title='Search by token name/ symbol/ address'
+                  placeholder='Search by token name/ symbol/ address'
                   className='form-control'
                   value={SearchData}
                   onChange={(e) => SetSearchData(e.target.value.trimStart())}

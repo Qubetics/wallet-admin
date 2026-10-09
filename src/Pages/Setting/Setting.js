@@ -260,7 +260,6 @@ function Setting() {
       </div>
       <div className="dashboardSec__dashBoardHeading settingOnly">
         <label>Google Authentication</label>
-        {cardModal}
         <Button
           disabled={action}
           onClick={(e) => {

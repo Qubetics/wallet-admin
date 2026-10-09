@@ -76,7 +76,11 @@ function Sidebar({ collapsedState }) {
 
   useEffect(() => {
     (async () => {
-      if (menus?.length > 0) {
+      const hasMenuSource =
+        user?.role_id == "0"
+          ? menus?.length > 0
+          : user?.permissions_data?.length > 0;
+      if (hasMenuSource) {
         const menuItems = [];
         let menux = [...menus];
 
@@ -200,7 +204,7 @@ function Sidebar({ collapsedState }) {
         setMenuItems(menuItems);
       }
     })();
-  }, [menus]);
+  }, [menus, user?.role_id, user?.permissions_data]);
 
   function getItem(label, key, icon, children, type, className) {
     return {
@@ -230,9 +234,6 @@ function Sidebar({ collapsedState }) {
         });
       // console.log('isExist >>>', isExist);
       if (isExist.length == 0) {
-        if (path == "solana-dashboard" || path == 'default-token-management') {
-          return;
-        }
         // alert('test');
 
         let redirectPath =

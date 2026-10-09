@@ -11,14 +11,15 @@ import Select from "react-select";
 
 import { useGetTransactionListDataMutation } from "../../Redux/services/TransactionsDetail/TransactionsDetailApiSlice";
 import { setTransactionListData } from "../../Redux/slice/TransactionDetailSlice";
-import { truncate, exponentialToDecimal } from "../../Helper/StringFormat";
+import { getSearchError } from "../../Helper/searchValidation";
+import { truncate } from "../../Helper/StringFormat";
 import { setToast } from "../../Redux/slice/toastSlice";
 import "react-date-picker/dist/DatePicker.css";
 import {
   renderCointag,
   select_blockchain,
 } from "../../common/constant/constant";
-import { formatNumberCrypto, formatNumberUSD } from "../../Helper/FormatNumber";
+import { formatNumberCrypto, formatNumberUSD, formatCryptoAmount } from "../../Helper/FormatNumber";
 import { encryption } from "../../common/encryption/encryption";
 import { handleUnauthorizedError } from "../../common/constant/constant";
 
@@ -61,12 +62,17 @@ function TransactionDetails() {
     myPage,
     coin_family
   ) => {
+    const searchError = getSearchError(searchData);
+    if (searchError) {
+      dispatch(setToast({ message: searchError, status: false }));
+      return;
+    }
     let filter_data = {
       page: myPage,
       limit: perPage,
     };
-    if (searchData && searchData !== "") {
-      filter_data.search = searchData;
+    if (searchData && searchData.trim() !== "") {
+      filter_data.search = searchData.trim();
     }
     if (myFromData && myToDate) {
       filter_data.from_date = moment(myFromData).format("YYYY-MM-DD");
@@ -365,7 +371,7 @@ function TransactionDetails() {
       title: "Amount (In Crypto)",
       dataIndex: "amount",
       key: "amount",
-      render: (amount) => <p>{amount ? exponentialToDecimal(amount) : "N/A"}</p>,
+      render: (amount) => <p>{amount ? formatCryptoAmount(amount) : "N/A"}</p>,
     },
     {
       title: "Source Address",
@@ -404,7 +410,7 @@ function TransactionDetails() {
                     "_blank"
                   )
                 : record.coin_family === 7
-                ? window.open(`https://ticsscan.com/tx/${text}`, "_blank")
+                ? window.open(`https://ticsscan.com/address/${text}`, "_blank")
                 : ""
             }
           >
@@ -451,7 +457,7 @@ function TransactionDetails() {
                     "_blank"
                   )
                 : record.coin_family === 7
-                ? window.open(`https://ticsscan.com/tx/${text}`, "_blank")
+                ? window.open(`https://ticsscan.com/address/${text}`, "_blank")
                 : ""
             }
           >
@@ -572,7 +578,7 @@ function TransactionDetails() {
       },
     },
     {
-      title: "Date and Time",
+      title: "Date and Time (UTC)",
       dataIndex: "created_at",
       // key: "created_at",
       render: (text) => (
@@ -633,6 +639,15 @@ function TransactionDetails() {
                         selectedDate > currentDate
                       ) {
                         // Do not update fromDate state if a future date is selected
+                        dispatch(
+                          setToast({
+                            message:
+                              selectedDate > currentDate
+                                ? "Future dates are not allowed"
+                                : "From date cannot be after To date",
+                            status: false,
+                          })
+                        );
                         return;
                       }
 
@@ -664,7 +679,7 @@ function TransactionDetails() {
                     className="form-control"
                     defaultValue="DD-MM-YYYY"
                     style={{ cursor: "text", textTransform: "uppercase" }}
-                    //min={fromDate} // Set the minimum allowed date as the fromDate
+                    min={fromDate || undefined} // Set the minimum allowed date as the fromDate
                     max={new Date().toISOString().split("T")[0]} // Set the maximum allowed date as the current date
                     onChange={(e) => {
                       const selectedDate = e.target.value;
@@ -682,6 +697,15 @@ function TransactionDetails() {
                           selectedDate > currentDate
                         ) {
                           // Do not update toDate state if a future date is selected
+                          dispatch(
+                            setToast({
+                              message:
+                                selectedDate > currentDate
+                                  ? "Future dates are not allowed"
+                                  : "To date cannot be before From date",
+                              status: false,
+                            })
+                          );
                           return;
                         }
 
@@ -709,8 +733,8 @@ function TransactionDetails() {
                 </label>
                 <Input
                   type="text"
-                  title="Seach by From address/ To address/ hash"
-                  placeholder="Seach by From address/ To address/ hash"
+                  title="Search by From address/ To address/ hash"
+                  placeholder="Search by From address/ To address/ hash"
                   className="form-control"
                   maxLength={100}
                   // placeholder={"coin name,symbol,address,hash"}
@@ -720,6 +744,15 @@ function TransactionDetails() {
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
+                      if ((fromDate == null) !== (toDate == null)) {
+                        dispatch(
+                          setToast({
+                            message: fromDate == null ? "Please select From date" : "Please select To date",
+                            status: false,
+                          })
+                        );
+                        return;
+                      }
                       setEnableSearchButton(true);
                       setCurrentPage(1);
                       getTransactionsDataFn(
@@ -742,11 +775,9 @@ function TransactionDetails() {
                 className="selectReactCmn"
                 onChange={onChangeBlockchainFilterHandler}
                 value={
-                  coin_family
-                    ? select_blockchain.includes(
-                        (data) => data.value == coin_family
-                      )[0]
-                    : ""
+                  select_blockchain.find(
+                    (data) => data.value == coin_family
+                  ) || null
                 }
               />
             </div>
@@ -793,23 +824,22 @@ function TransactionDetails() {
               >
                 Search
               </Button>
+              <Button
+                className="btn"
+                type="primary"
+                // style={{ marginLeft: "20px" }}
+                onClick={async () => {
+                  setFromDate(null);
+                  setToDate(null);
+                  SetSearchData("");
+                  setEnableSearchButton(false);
+                  setCoinFamily(null);
+                  await getTransactionsDataFn(null, null, null, null);
+                }}
+              >
+                Reset
+              </Button>
             </div>
-
-            <Button
-              className="btn"
-              type="primary"
-              // style={{ marginLeft: "20px" }}
-              onClick={async () => {
-                setFromDate(null);
-                setToDate(null);
-                SetSearchData("");
-                setEnableSearchButton(false);
-                setCoinFamily(null);
-                await getTransactionsDataFn(null, null, null, null);
-              }}
-            >
-              Reset
-            </Button>
           </div>
         </div>
 

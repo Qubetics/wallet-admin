@@ -470,8 +470,8 @@ function Transak() {
                 </label>
                 <Input
                   type="text"
-                  title="Seach by token name/ symbol/ address/ hash"
-                  placeholder="Seach by token name/ symbol/ address/ hash"
+                  title="Search by token name/ symbol/ address/ hash"
+                  placeholder="Search by token name/ symbol/ address/ hash"
                   className="form-control"
                   maxLength={100}
                   value={SearchData}

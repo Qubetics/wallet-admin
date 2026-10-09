@@ -42,10 +42,6 @@ function App() {
     if (sessionStorage.getItem("isActive") == null && isRemeber === "false") {
       dispatch(logout({ navigate: navigate }));
     }
-
-    if (location?.pathname == "/revenue") {
-      navigate("/swap");
-    }
   }, []);
 
   const _onActive = (e) => {

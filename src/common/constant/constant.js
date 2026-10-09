@@ -277,13 +277,11 @@ const COIN_FAMILY_TOKEN_TYPE = [
 
 const clearStorage = () => {
   const email = localStorage.getItem("email");
-  const password = localStorage.getItem("password");
   const isRemember = localStorage.getItem("isRemeber");
   localStorage.clear();
 
   if (isRemember === "true") {
     localStorage.setItem("email", email);
-    localStorage.setItem("password", password);
     localStorage.setItem("isRemeber", isRemember);
   }
 };

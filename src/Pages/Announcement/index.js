@@ -1,16 +1,7 @@
 // Know this page is cancel by shivam project
 
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Pagination,
-  Table,
-  Input,
-  Spin,
-  Select,
-  DatePicker,
-  Modal,
-} from "antd";
+import { Button, Pagination, Table, Input, Spin, DatePicker, Modal } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { setToast } from "../../Redux/slice/toastSlice";
 import { useForm, Controller } from "react-hook-form";
@@ -34,11 +25,10 @@ import encryption from "../../common/encryption/encryption";
 const { confirm } = Modal;
 
 const Announcement = () => {
-  // ...............pagination...................
   const permission_type = sessionStorage.getItem("permission_type");
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [schedule, setSchedule] = useState(false);
+  const [schedule] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [SaveAnnouncement, {}] = useSaveAnnouncementMutation();
   const [DeleteAnnouncement, {}] = useDeleteAnnouncementMutation();
@@ -47,13 +37,6 @@ const Announcement = () => {
     useGetAnnouncementNotificationMutation();
 
   const dispatch = useDispatch();
-
-  const AnnouncementDetails = useSelector(
-    (state) => state?.Announcement?.announcementList
-  );
-  const AnnouncementListMeta = useSelector(
-    (state) => state?.Announcement?.announcementListMeta
-  );
 
   const IpData = useSelector((state) => state?.userState?.ipData);
 
@@ -66,15 +49,7 @@ const Announcement = () => {
         : yup.string().notRequired(),
     })
     .required();
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    touched,
-    trigger,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  const { handleSubmit, control, setValue, trigger, reset, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   const { TextArea } = Input;
 
@@ -90,7 +65,6 @@ const Announcement = () => {
     await getAnnouncementist(securedData).then(
       (res, err) => {
         if (res?.data?.data) {
-          console.log("here i am",res?.data?.data);
           setTableData(res?.data?.data)
           dispatch(setAnnouncementList(res?.data?.data?.data));
           dispatch(setAnnouncementListMeta(res?.data?.data?.meta));
@@ -118,23 +92,10 @@ const Announcement = () => {
         // is_scheduled: data.type,
         // ip_address: IpData?.ip,
       };
-      // if (data.schedule_time && data.schedule_time !== "") {
-      //   submitted_data.schedule_time = data.schedule_time;
-      // } else {
-      //   if (data.type == "1" && data.schedule_time == "") {
-      //     dispatch(
-      //       setToast({
-      //         message: `Please set schedule date time`,
-      //         status: false,
-      //       })
-      //     );
-      //   }
-      // }
       const enc = await encryption(JSON.stringify(submitted_data));
       const securedData = { dataString: enc };
       await SaveAnnouncement(securedData).then((res) => {
         if (res?.data?.status) {
-          console.log("resssss",res?.data?.message)
           setDisabled(false);
           reset({
             schedule_time: "",
@@ -176,14 +137,6 @@ const Announcement = () => {
     setCurrentPage(event);
   };
 
-  const range = (start, end) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-      result.push(i);
-    }
-    return result;
-  };
-
   const disabledDate = (current) => {
     return current && current <= dayjs().startOf("day");
   };
@@ -219,7 +172,6 @@ const Announcement = () => {
     };
 };
 
-
   const columns = [
     {
       title: "S.No",
@@ -229,18 +181,10 @@ const Announcement = () => {
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
     },
-    // {
     //   title: "Type",
     //   dataIndex: "Type",
     //   key: "Type",
     //   render: (item, record, index) => (
-    //     <p>
-    //       {record?.is_scheduled && record?.is_scheduled == "0"
-    //         ? "Instant"
-    //         : "Scheduled"}
-    //     </p>
-    //   ),
-    // },
     {
       title: "Title",
       dataIndex: "Title",
@@ -255,19 +199,10 @@ const Announcement = () => {
         <p>{record?.message ? record.message : "N/A"}</p>
       ),
     },
-    // {
     //   title: "Scheduled Date and Time",
     //   dataIndex: "schedule_time",
     //   key: "Scheduled Date and Time",
     //   render: (text, record) => (
-    //     <p style={{ whiteSpace: "normal" }}>
-    //       {record?.schedule_time && record?.schedule_time !== null
-    //         ? moment.utc(text).local().format("MM/DD/YYYY h:mm:ss A")
-    //         : "Instant"}
-    //     </p>
-    //     // moment.utc(record?.schedule_time).format('MM/DD/YYYY HH:mm')
-    //   ),
-    // },
     {
       title: "Date and Time",
       dataIndex: "created_at",
@@ -338,7 +273,6 @@ const Announcement = () => {
                 });
               },
               onCancel() {
-                console.log("Cancel");
               },
             });
           }}
@@ -360,34 +294,7 @@ const Announcement = () => {
           
             <form onSubmit={handleSubmit(onFormSubmit)}>
               <div className="topper Send-massage">
-                {/* <div className="drop-select">
-                  <Controller
-                    name="type"
-                    control={control}
-                    render={({ field: { value } }) => (
-                      <>
-                        <Select
-                          defaultValue="0"
-                          className="selectReactCmn"
-                          getPopupContainer={(trigger) => trigger.parentNode}
-                          onChange={(value) => {
-                            if (value == "1") {
-                              setSchedule(true);
-                            } else {
-                              setSchedule(false);
-                            }
-                            setValue("type", value);
-                            trigger("type");
-                          }}
-                          options={[
-                            { value: "0", label: "Instant" },
-                            { value: "1", label: "Schedule" },
-                          ]}
-                        />
-                      </>
-                    )}
-                  />
-                </div> */}
+                {}
                 <div className="input-fields">
                   <Controller
                     name="title"

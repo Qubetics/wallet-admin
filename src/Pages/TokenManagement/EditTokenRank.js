@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { InputNumber, Button, Spin, Input } from "antd";
+import { Button, Spin, Input } from 'antd';
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -22,19 +22,10 @@ const EditTokenRankForm = ({
   TokenId,
   editTokenRank,
 }) => {
-  // const [confirmLoading, setConfirmLoading] = useState(false);
   const [tokenRank, setTokenRank] = useState(0);
   const [EditTokenRank, { isLoading }] = useEditTokenRankMutation();
   const dispatch = useDispatch();
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    touched,
-    trigger,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  const { handleSubmit, control, setValue, trigger, reset, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   useEffect(() => {}, [setValue]);
 
@@ -45,11 +36,9 @@ const EditTokenRankForm = ({
   }, []);
   useEffect(() => {
     // you can do async server request and fill up form
-    // setTimeout(() => {
     reset({
       TokenRank: editTokenRank,
     });
-    // }, 2000);
   }, [reset]);
 
   const onFormSubmit = async (data) => {
@@ -60,9 +49,7 @@ const EditTokenRankForm = ({
       };
 
       await EditTokenRank(SubmittedData).then((res) => {
-        // alert("after token submit");
         if (res?.data?.data?.status) {
-          // setConfirmLoading(false);
           toast.success(`${res?.data?.data?.message}`);
           setTimeout(() => {
             handleEditTokenCancel(false, "edit_token_rank");
@@ -104,7 +91,6 @@ const EditTokenRankForm = ({
         >
           <form
             onSubmit={handleSubmit(onFormSubmit)}
-            // confirmLoading={confirmLoading}
           >
             {
               <div>
@@ -121,7 +107,6 @@ const EditTokenRankForm = ({
                         type="text"
                         name="TokenRank"
                         value={tokenRank}
-                        // defaultValue={tokenRank}
                         onChange={(e) => {
                           if (
                             /^[0-9]{1,5}$/.test(e.target.value) ||
@@ -131,9 +116,6 @@ const EditTokenRankForm = ({
                             setTokenRank(e.target.value);
                             trigger("TokenRank");
                           }
-                          //   if (errors?.link?.message) {
-                          //     errors.link.message = "";
-                          //   }
                         }}
                       />
                     )}

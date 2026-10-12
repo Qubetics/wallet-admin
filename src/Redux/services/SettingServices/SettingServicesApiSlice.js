@@ -1,5 +1,4 @@
 import { clearStorage } from "../../../common/constant/constant";
-import { setRequestList } from "../../slice/TransactionRequestSlice";
 import { apiSlice } from "../../slice/apiSlice";
 import { setToast } from "../../slice/toastSlice";
 
@@ -11,21 +10,7 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: params,
       }),
-      // async onQueryStarted(args, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (error) {
 
-      //       if(error.error.status==408){
-      //         alert("Session timeout , please login again");
-      //         setTimeout(() => {
-      //           localStorage.clear();
-      //           window.location.reload();
-      //         }, 1000);
-      //       }
-
-      //     }
-      //   },
     }),
     getGoogleAuthSecretKey: builder.query({
       query: () => ({
@@ -35,10 +20,8 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log("data",data)
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -46,7 +29,6 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -66,7 +48,6 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error?.error?.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -74,7 +55,6 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -93,7 +73,6 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -101,7 +80,6 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -120,7 +98,6 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -128,7 +105,6 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -163,25 +139,13 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
       },
     }),
 
-    // getTransactionsRequest: builder.mutation({
-
-    //     query: params => ({
-
     //         url: '/request_list',
     //         method: 'POST',
     //         body: params,
 
-    //     }),
-    // }),
-
-    // swapAction: builder.mutation({
-    //     query: params => ({
     //         url: '/allow_swap',
     //         method: 'POST',
-    //         body: params
 
-    //     })
-    // }),
   }),
 });
 

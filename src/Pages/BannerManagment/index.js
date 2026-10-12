@@ -1,20 +1,7 @@
 // Know this page is cancel by shivam project
 
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Pagination,
-  Table,
-  Input,
-  Spin,
-  Select,
-  DatePicker,
-  Modal,
-  Upload,
-  message,
-  Switch,
-  Tooltip,
-} from "antd";
+import { Button, Pagination, Table, Input, Spin, DatePicker, Modal, Upload, message, Switch, Tooltip } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setToast } from "../../Redux/slice/toastSlice";
@@ -36,11 +23,10 @@ import  encryption  from "../../common/encryption/encryption";
 const { confirm } = Modal;
 
 const BannerManagement = () => {
-  // ...............pagination...................
   const permission_type = sessionStorage.getItem("permission_type");
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [schedule, setSchedule] = useState(false);
+  const [schedule] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [bannerImage, setBannerImage] = useState(null);
   const [imageName, setImageName] = useState("");
@@ -50,12 +36,6 @@ const BannerManagement = () => {
   const [updateBannerList, {}] = useUpdateBannerListMutation();
   const [bannerList, setBannerList] = useState([]);
   const dispatch = useDispatch();
-
-  console.log("Environment Variables:", {
-    imageUrl: CONFIG.IMAGE_URL,
-    apiUrl: CONFIG.API_URL,
-    ipTrackUrl: CONFIG.IP_TRACK_URL,
-  });
 
   const updateBannerListFn = async (data) => {
     const enc = await encryption(JSON.stringify(data));
@@ -87,16 +67,9 @@ const BannerManagement = () => {
     });
   };
 
-  console.log("bannerList222222222222", process.env.REACT_APP_PUBLIC_BASE_URL);
-
-  const AnnouncementDetails = useSelector(
-    (state) => state?.Announcement?.announcementList
-  );
   const AnnouncementListMeta = useSelector(
     (state) => state?.Announcement?.announcementListMeta
   );
-
-  const IpData = useSelector((state) => state?.userState?.ipData);
 
   const schema = yup
     .object({
@@ -124,17 +97,7 @@ const BannerManagement = () => {
         }),
     })
     .required();
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    touched,
-    trigger,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
-
-  const { TextArea } = Input;
+  const { handleSubmit, control, setValue, trigger, reset, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   useEffect(() => {
     reset({
@@ -149,7 +112,6 @@ const BannerManagement = () => {
     const securedData = { dataString: enc };
     await getBannerList(securedData).then((res, err) => {
       if (res?.data?.data) {
-        console.log("res", res?.data?.data);
         setBannerList(res?.data?.data?.banner_list);
         // Update meta information for pagination
         const meta = {
@@ -158,7 +120,6 @@ const BannerManagement = () => {
           per_page: res?.data?.data?.per_page,
           total_pages: res?.data?.data?.total_pages,
         };
-        // dispatch(setAnnouncementListMeta(meta));
       } else {
         if (res?.error?.status == "FETCH_ERROR") {
           setToast({
@@ -175,7 +136,6 @@ const BannerManagement = () => {
   }, [dispatch, currentPage]);
 
   const onFormSubmit = async (data) => {
-    console.log("data", data);
 
     // Check if bannerImage is provided
     if (!data.bannerImage) {
@@ -202,13 +162,10 @@ const BannerManagement = () => {
         formData.append("link", data.message);
       }
 
-      console.log("Form Data entries:");
       for (let pair of formData.entries()) {
-        console.log("FormData entry:", pair[0], pair[1]);
       }
 
       const response = await SaveBanner(formData).unwrap();
-      console.log("response", response?.status);
 
       if (response?.status === true) {
         setDisabled(false);
@@ -244,14 +201,6 @@ const BannerManagement = () => {
 
   const handlePagenationChange = (event) => {
     setCurrentPage(event);
-  };
-
-  const range = (start, end) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-      result.push(i);
-    }
-    return result;
   };
 
   const disabledDate = (current) => {
@@ -439,7 +388,6 @@ const BannerManagement = () => {
               centered: true,
               okText: "Delete",
               onOk() {
-                console.log("record", record);
                 DeleteBanner({ id: record?.id })
                   .then((res) => {
                     if (res?.data?.status) {
@@ -472,7 +420,6 @@ const BannerManagement = () => {
                   });
               },
               onCancel() {
-                console.log("Cancel");
               },
             });
           }}
@@ -493,34 +440,7 @@ const BannerManagement = () => {
         >
           <form onSubmit={handleSubmit(onFormSubmit)}>
             <div className="topper Send-massage">
-              {/* <div className="drop-select">
-                  <Controller
-                    name="type"
-                    control={control}
-                    render={({ field: { value } }) => (
-                      <>
-                        <Select
-                          defaultValue="0"
-                          className="selectReactCmn"
-                          getPopupContainer={(trigger) => trigger.parentNode}
-                          onChange={(value) => {
-                            if (value == "1") {
-                              setSchedule(true);
-                            } else {
-                              setSchedule(false);
-                            }
-                            setValue("type", value);
-                            trigger("type");
-                          }}
-                          options={[
-                            { value: "0", label: "Instant" },
-                            { value: "1", label: "Schedule" },
-                          ]}
-                        />
-                      </>
-                    )}
-                  />
-                </div> */}
+              {}
               <div className="input-fields">
                 <label
                   style={{

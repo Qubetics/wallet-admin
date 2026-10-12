@@ -1,4 +1,3 @@
-// import NodeRSA from 'node-rsa';
 import JSEncrypt from "jsencrypt";
 
 const RSAkey = `-----BEGIN PUBLIC KEY-----

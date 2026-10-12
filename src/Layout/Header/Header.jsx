@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import "./Header.scss";
-// import HeaderToggle from "../../Images/HeaderToggle.svg";
 import ModalComponent from "../../Components/Modal/ModalComponent";
 import { useLocation, useNavigate } from "react-router-dom";
 import LogoutIcon from "../../Images/logoutIcon.svg";
@@ -17,8 +16,6 @@ function Header({ toggleSidebar, collapsed }) {
   const menus = useSelector((state) => state?.userState?.menus);
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  const selectedTab = useSelector((state) => state.sidebarState.data);
 
   useEffect(() => {
     const path = getLocation.pathname.replace("/", "");
@@ -49,9 +46,6 @@ function Header({ toggleSidebar, collapsed }) {
       }
     }
 
-    // user?.permissions_data?.filter((data) => data?.menu_list_data?.slug == path);
-    //const sidebar_arr=[{"title":"dashboard","key":"1"},{"title":"chain-swap","key":"2"},{"title":"transaction-details","key":"3"},{"title":"token-management","key":"4"}, {"title":"settings","key":"5"}, {"title":"announcement","key":"6"},{"title":"default-token-management","key":"4"}, {"title":"revenue","key":"2"}];
-
     let path_arr = path.split("-");
 
     let page_tile = "";
@@ -68,13 +62,9 @@ function Header({ toggleSidebar, collapsed }) {
             path_arr[i]?.slice(1);
       }
     }
-    // let new_path=path.charAt(0).toUpperCase() + path.slice(1);
 
     sessionStorage.setItem("page_title", page_tile);
   }, []);
-
-  //sessionStorage.setItem("activeKey", "1");
-  // const currentRoute= this.props.location.pathname;
 
   const onLogout = () => {
     dispatch(logout({ navigate: navigate }));
@@ -86,10 +76,7 @@ function Header({ toggleSidebar, collapsed }) {
   };
   return (
     <div className="header">
-      {/* {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-        className: "trigger",
-        onClick: () => toggleSidebar(),
-      })} */}
+      {}
 
       <div className="header__left">
         <div className="outLined">
@@ -102,18 +89,8 @@ function Header({ toggleSidebar, collapsed }) {
             ? sessionStorage.getItem("page_title")
             : "Dashboard"}
         </h2>
-        {/* <button className="header__toggleBtn" onClick={toggleSidebar}>
-          {lg ? <img src={HeaderToggle} width={28} height={20} /> : true}
-        </button> */}
-        {/* <span>
-          {path === "dashboard"
-            ? "Dashboard"
-            : path === "lead"
-            ? "Lead"
-            : path === "strike"
-            ? "Strike"
-            : ""}
-        </span> */}
+        {}
+        {}
       </div>
       <div className="header__right">
         <button

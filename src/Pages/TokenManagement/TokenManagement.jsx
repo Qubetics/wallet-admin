@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
-// import { PROGRAM_ID, RPC_URL } from "./constant";
 import {
   Spin,
   Table,
@@ -14,13 +12,13 @@ import {
   Dropdown,
 } from "antd";
 import Select from "react-select";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { useGetTokenTableDataMutation } from "../../Redux/services/TokenManagement/TokenManagementApiSlice";
 import { setTokenTableData } from "../../Redux/slice/TokenTableSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
 import AddToken from "./AddToken";
 
 import {
@@ -37,9 +35,6 @@ import not_image_available from "../../Images/not_image_available.jpg";
 import { select_blockchain} from "../../common/constant/constant";
 import moment from "moment";
 import { CONFIG } from "../../common/constant/constant";
-import { formatNumberUSD } from "../../Helper/FormatNumber";
-// import Utils from "./solana/walletConnector";
-// import Referral from "./solana/wallet/handleReferal";
 import  encryption  from "../../common/encryption/encryption";
 
 const { confirm } = Modal;
@@ -48,19 +43,19 @@ const TokenManagement = () => {
   const permission_type = sessionStorage.getItem("permission_type");
   const [modal2Open, setModal2Open] = useState(false);
   const [EditModalOpen, setEditModalOpen] = useState(false);
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterAddedBy, setFilterAddedBy] = useState("1");
   const [coin_family, setCoinFamily] = useState(0);
   const [disabledButton, setDisabledButton] = useState(false);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [getTokenTableData, { isLoading }] = useGetTokenTableDataMutation();
-  const [tokenShortlist, {}] = useTokenShortlistMutation();
+  const [, {}] = useTokenShortlistMutation();
   const [swapAction, {}] = useSwapActionMutation();
   const [ActionEnableDisable, {}] = useActionEnableDisableMutation();
   const [MakeRemoveDefaultToken, {}] = useMakeRemoveDefaultTokenMutation();
-  const [saveTokenReferralAccount, { isLoading: saveAccountLoading }] =
+  const [, { isLoading: saveAccountLoading }] =
     useSaveTokenReferralAccountMutation();
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
@@ -70,18 +65,11 @@ const TokenManagement = () => {
   const [action, SetAction] = useState("");
   const [SearchData, SetSearchData] = useState("");
   const [TokenId, setTokenId] = useState("");
-  const [swapLoading, setSwapChangeLoading] = useState(false);
-  const [disableToggleShortList, setDisableToggleShortList] = useState(true);
-  const [disableToggleSwap, setDisableToggleSwap] = useState(true);
+  const [, setSwapChangeLoading] = useState(false);
+  const [, setDisableToggleSwap] = useState(true);
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const IpData = useSelector((state) => state?.userState?.ipData);
   const [tableData, setTableData] = useState([]);
-  const TokenDetails = useSelector((state) => state?.TokenTableData?.data);
-  const TokenDetailsMeta = useSelector((state) => state?.TokenTableData?.meta);
-  const swapRequestCount = useSelector(
-    (state) => state?.TokenTableData?.swapRequestCount
-  );
-console.log("TokenId",TokenId)
   const columns = [
     {
       title: "S.No.",
@@ -105,13 +93,6 @@ console.log("TokenId",TokenId)
     {
       title: "Token Symbol",
       // render: (text) => (
-      //   <p>
-      //     {text?.coin_symbol === null
-      //       ? "N/A"
-      //       : text?.coin_symbol.charAt(0).toUpperCase() +
-      //         text?.coin_symbol.slice(1)}
-      //   </p>
-      // ),
       render: (text) => (
         <p>
           {text?.coin_symbol === null ? "N/A" : text?.coin_symbol.toUpperCase()}
@@ -130,14 +111,12 @@ console.log("TokenId",TokenId)
             width={50}
             preview={false}
             src={`${CONFIG.IMAGE_URL}${text?.coin_image}`}
-            // onError={handleImageError}
           />
         ) : (
           <Image
             width={50}
             preview={false}
             src={not_image_available}
-            // onError={handleImageError}
           />
         ),
     },
@@ -185,7 +164,7 @@ console.log("TokenId",TokenId)
           {text?.created_at === null
             ? "N/A"
             : moment.utc(text?.created_at).format("MM/DD/YYYY")}
-          {/*new Date(text?.created_at).toLocaleDateString()*/}
+          {}
         </p>
       ),
     },
@@ -205,10 +184,7 @@ console.log("TokenId",TokenId)
           {text.coin_name?.length > 30
             ? text.coin_name.substr(0, 30) + "..."
             : text.coin_name}{" "}
-          {/* /{" "} */}
-          {/* <span style={{ fontSize: "10px" }}>
-            {renderCointag(text?.token_type, text?.coin_family)}
-          </span> */}
+          {}
         </p>
       ),
     },
@@ -239,14 +215,12 @@ console.log("TokenId",TokenId)
             width={50}
             preview={false}
             src={text?.coin_image}
-            // onError={handleImageError}
           />
         ) : (
           <Image
             width={50}
             preview={false}
             src={not_image_available}
-            // onError={handleImageError}
           />
         ),
     },
@@ -303,7 +277,7 @@ console.log("TokenId",TokenId)
           {text?.created_at === null
             ? "N/A"
             : moment.utc(text?.created_at).format("MM/DD/YYYY")}
-          {/*new Date(text?.created_at).toLocaleDateString()*/}
+          {}
         </p>
       ),
     },
@@ -337,30 +311,14 @@ console.log("TokenId",TokenId)
                   menu={{
                     onClick: (e, data) => showConfirm(e, data),
                     items: [
-                      // {
                       //   key: "1",
                       //   value: record,
                       //   label: "Active",
                       //   disabled:
-                      //     record.added_by == 2 || record?.status === "active"
-                      //       ? true
-                      //       : false,
-                      //   onClick: (e) => {
-                      //     showConfirm(e, record);
-                      //   },
-                      // },
-                      // {
                       //   key: "2",
                       //   value: record,
                       //   label: "Inactive",
                       //   disabled:
-                      //     record.added_by == 2 || record?.status === "inactive"
-                      //       ? true
-                      //       : false,
-                      //   onClick: (e) => {
-                      //     showConfirm(e, record);
-                      //   },
-                      // },
                       {
                         key: "3",
                         value: record,
@@ -369,22 +327,12 @@ console.log("TokenId",TokenId)
                           showConfirm(e, record);
                         },
                       },
-                      // {
                       //   key: "4",
                       //   value: record,
                       //   label: "Edit Name",
-                      //   onClick: (e) => {
-                      //     showConfirm(e, record);
-                      //   },
-                      // },
-                      // record?.added_by != "2" && {
                       //   key: "5",
                       //   value: record,
                       //   label: "Add Into Default Token List",
-                      //   onClick: (e) => {
-                      //     showConfirm(e, record);
-                      //   },
-                      // },
                     ],
                   }}
                   placement="bottomRight"
@@ -402,7 +350,6 @@ console.log("TokenId",TokenId)
       key: "action",
       render: (text, record) => (
         <Button
-          // disabled={record?.added_by == "2"}
           className="btn mr10"
           type="primary"
           onClick={(e) => {
@@ -426,14 +373,12 @@ console.log("TokenId",TokenId)
                 let disableValue = { 
                   id: record?.coin_id, 
                   status: statusValue,
-                  // ip_address: IpData?.ip
                 };
                 const enc = await encryption(JSON.stringify(disableValue));
                 const securedData = { dataString: enc };
                 ActionEnableDisable(securedData).then((res, err) => {
                   SetAction("disable_token");
                   if (res?.data) {
-                    console.log("here we go",res?.data?.message)
                     dispatch(
                       setToast({
                         message: `${res?.data?.message}`,
@@ -451,7 +396,6 @@ console.log("TokenId",TokenId)
                 });
               },
               onCancel() {
-                console.log("Cancel");
               },
             });
           }}
@@ -477,12 +421,9 @@ console.log("TokenId",TokenId)
       from_date: myFromData || null,
       to_date: myToDate || null,
     };
-    console.log("filterAddedBy",typeof filterAddedBy)
-    // if (filterAddedBy !== "0") {
     if(filterAddedBy !== "0"){
     filter_data["added_by"] = filterAddedBy;
     }
-    // }
     if (coin_family > 0) {
       filter_data.coin_family = coin_family;
     }
@@ -493,7 +434,6 @@ console.log("TokenId",TokenId)
         setTableData(res?.data?.data);
         dispatch(setTokenTableData(res?.data?.data));
       } else if (res?.error?.data) {
-        console.log("res?.error?.data", res?.error?.data);
         dispatch(
           setToast({
             message: `${res?.error?.data?.message || "Something went wrong"}`,
@@ -501,7 +441,6 @@ console.log("TokenId",TokenId)
           })
         );
       } else {
-        console.log("res?.error", res?.error?.error);
         dispatch(
           setToast({
             message: `${res?.error?.error || "Something went wrong"}`,
@@ -514,7 +453,6 @@ console.log("TokenId",TokenId)
 
   useEffect(() => {
     (async () => {
-      // alert('testddd')
       getTokenDataFn(fromDate, toDate, SearchData, currentPage, coin_family);
     })();
   }, [
@@ -531,7 +469,6 @@ console.log("TokenId",TokenId)
   useEffect(() => {
     (async () => {
       if (action !== "") {
-        //  alert('testddd22')
         SetAction("");
         getTokenDataFn(fromDate, toDate, SearchData, currentPage, coin_family);
       }
@@ -543,8 +480,6 @@ console.log("TokenId",TokenId)
     { key: "key2", label: "Added by User", value: "2" },
     { key: "key3", label: "Added by Admin", value: "1" },
   ];
-  const navigate = useNavigate();
-
 
   const handlePagenationChange = (event) => {
     if (!enableSearchButton) {
@@ -556,7 +491,6 @@ console.log("TokenId",TokenId)
   };
 
   const onChangeSwitch = async (value) => {
-    console.log("value",value)
     confirm({
       title:
         value.status == 1
@@ -566,20 +500,12 @@ console.log("TokenId",TokenId)
       centered: true,
       async onOk() {
         SetAction("");
-        let swap_data = {
-          id: value.id,
-          status: value.status,
-          // ip_address: IpData?.ip,
-        };
         setDisableToggleSwap(false);
         setSwapChangeLoading(true);
         const enc = await encryption(JSON.stringify({id:value.id,status:value.status}));
         const securedData = { dataString: enc };
         swapAction(securedData).then(async (res, err) => {
-          console.log("res222222222222",res?.data?.message)
-          // await getTokenDataFn(fromDate, toDate, SearchData, currentPage);
           if (res?.data?.status === true) {
-            console.log("res333333333",res?.data)
             SetAction("token_swap_enable_disable");
             dispatch(
               setToast({ message: `${res?.data?.message}`, status: true })
@@ -605,58 +531,6 @@ console.log("TokenId",TokenId)
         });
       },
       onCancel() {
-        console.log("Cancel");
-      },
-    });
-  };
-
-  const onChangeShortlist = async (value) => {
-    confirm({
-      title:
-        value.status == 1
-          ? "Do you want to shortlist this token?"
-          : "Do you want to unshortlist this token?",
-      icon: <ExclamationCircleFilled />,
-      centered: true,
-      onOk() {
-        SetAction("");
-        let shortlist_data = {
-          id: value.id,
-          is_shortlist: value.status,
-          ip_address: IpData?.ip,
-        };
-        setDisableToggleShortList(false);
-        setSwapChangeLoading(true);
-
-        tokenShortlist(shortlist_data).then(async (res, err) => {
-          //await getTokenDataFn(fromDate, toDate, SearchData, currentPage);
-          if (res?.data?.data?.status) {
-            SetAction("token_shortlist");
-            dispatch(
-              setToast({ message: `${res?.data?.data?.message}`, status: true })
-            );
-            setSwapChangeLoading(false);
-            setDisableToggleShortList(true);
-          } else {
-            if (!res?.error?.data?.status && res?.error?.data?.message) {
-              dispatch(
-                setToast({
-                  message: `${res?.error?.data?.message}`,
-                  status: false,
-                })
-              );
-            } else {
-              dispatch(
-                setToast({ message: `Something went wrong`, status: false })
-              );
-            }
-            setSwapChangeLoading(false);
-            setDisableToggleShortList(true);
-          }
-        });
-      },
-      onCancel() {
-        console.log("Cancel");
       },
     });
   };
@@ -664,14 +538,11 @@ console.log("TokenId",TokenId)
   const onChangeFilterHandler = (data) => {
     setFilterAddedBy(data.value);
     setCurrentPage(1);
-    // getTokenDataFn(fromDate, toDate, SearchData, 1, coin_family);
   };
 
   const onChangeBlockchainFilterHandler = (data) => {
     setCoinFamily(data.value);
     setCurrentPage(1);
-    // SetSearchData("");
-    // getTokenDataFn(fromDate, toDate, "", 1, data.value);
   };
 
   const handleAddTokenCancel = (value, action) => {
@@ -722,7 +593,6 @@ console.log("TokenId",TokenId)
   };
 
   const showConfirm = (e, parsedValue) => {
-    console.log("parsedValue",parsedValue)
     SetAction("");
     if (e.key == "1" && parsedValue) {
       confirm({
@@ -730,7 +600,6 @@ console.log("TokenId",TokenId)
         icon: <ExclamationCircleFilled />,
         centered: true,
         onOk() {
-          // let enableValue ={id:'1',token_status:'inactive'}
 
           let disableValue = {
             id: parsedValue?.id,
@@ -742,7 +611,6 @@ console.log("TokenId",TokenId)
             SetAction("enable_token");
 
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -756,12 +624,10 @@ console.log("TokenId",TokenId)
                   status: false,
                 })
               );
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
             }
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (e.key == "2" && parsedValue) {
@@ -778,7 +644,6 @@ console.log("TokenId",TokenId)
           ActionEnableDisable(disableValue).then((res, err) => {
             SetAction("disable_token");
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -786,7 +651,6 @@ console.log("TokenId",TokenId)
                 })
               );
             } else {
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
               dispatch(
                 setToast({
                   message: `${res?.error?.data?.message}`,
@@ -797,7 +661,6 @@ console.log("TokenId",TokenId)
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (e.key == "6" && parsedValue) {
@@ -817,7 +680,6 @@ console.log("TokenId",TokenId)
           ActionEnableDisable(disableValue).then((res, err) => {
             SetAction("blacklist_token");
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -825,7 +687,6 @@ console.log("TokenId",TokenId)
                 })
               );
             } else {
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
               dispatch(
                 setToast({
                   message: `${res?.error?.data?.message}`,
@@ -836,7 +697,6 @@ console.log("TokenId",TokenId)
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (e.key === "4" && parsedValue) {
@@ -864,7 +724,6 @@ console.log("TokenId",TokenId)
           MakeRemoveDefaultToken(disableValue).then((res, err) => {
             SetAction("set_default_token");
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -878,20 +737,12 @@ console.log("TokenId",TokenId)
                   status: false,
                 })
               );
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
             }
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
-      // setTokenId(parsedValue?.id);
-      // setEditRank(parsedValue?.rank);
-      // setEditTokenName("");
-      // setEditAction('edit_token_rank');
-      // setEditTokenTitle('Edit Token Order')
-      // setEditModalOpen(true);
     } else if (e.key === "inactive" || e.key === "blacklist") {
       confirm({
         title:
@@ -903,7 +754,6 @@ console.log("TokenId",TokenId)
         okText: null,
         okButtonProps: { style: { display: "none" } },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (parsedValue) {
@@ -912,9 +762,6 @@ console.log("TokenId",TokenId)
       setEditTokenTitle("Upload Token Image");
       setEditModalOpen(true);
     }
-  };
-
-  const handleImageError = (event) => {
   };
 
   const renderTokenType = (token_type, coin_family) => {
@@ -966,10 +813,10 @@ console.log("TokenId",TokenId)
 
   return (
     <div className="main_page_outer">
-      {/* <Utils /> */}
+      {}
 
       <ToastContainer />
-      {/* <Referral /> */}
+      {}
 
       <Spin
         spinning={isLoading || loading || saveAccountLoading}
@@ -1044,7 +891,6 @@ console.log("TokenId",TokenId)
                   value={toDate}
                   className="form-control"
                   style={{ cursor: "text", textTransform: "uppercase" }}
-                  //min={fromDate} // Set the minimum allowed date as the fromDate
                   max={new Date().toISOString().split("T")[0]} // Set the maximum allowed date as the current date
                   defaultValue="DD-MM-YYYY"
                   onChange={(e) => {
@@ -1089,7 +935,6 @@ console.log("TokenId",TokenId)
                   Search
                 </label>
                 <Input
-                  // maxLength={23}
                   type="text"
                   title="Seach by token name/ symbol/ address"
                   placeholder="Seach by token name/ symbol/ address"
@@ -1184,7 +1029,6 @@ console.log("TokenId",TokenId)
                       coin_family
                     );
                   }
-                  // getTokenDataFn(fromDate, toDate, SearchData, 1);
                 }}
               >
                 Search
@@ -1192,7 +1036,6 @@ console.log("TokenId",TokenId)
               <Button
                 className="btn"
                 type="primary"
-                // style={{ marginLeft: "20px" }}
                 onClick={async () => {
                   setFromDate(null);
                   setToDate(null);
@@ -1208,12 +1051,6 @@ console.log("TokenId",TokenId)
             </div>
           </div>
 
-          {/* <div className="select-Design select-width firstSelect mangTonkn">
-            <Option value='0'>ALL</Option>
-              <Option value='2'>Added by User</Option>
-              <Option value='1'>Added by Admin</Option>
-            </Select>
-          </div> */}
             <Button
               className="btn mr10"
               type="primary"
@@ -1223,30 +1060,7 @@ console.log("TokenId",TokenId)
               Add Tokens
             </Button>
           
-          {/* <Button
-            className="btn mb30"
-            type="primary"
-            onClick={() => {
-              navigate("/default-token-management");
-            }}
-          >
-            Default tokens
-            {swapRequestCount > 0 ? swapRequestCount : ""}
-          </Button>
-
-          <Button
-            style={{ marginLeft: 10 }}
-            className="btn mb30"
-            type="primary"
-            onClick={() => {
-              navigate("/solana-dashboard");
-            }}
-          >
-            Solana Referral
-          </Button> */}
-          {/* <div className="soalanalink">
-            <Link to="/solana-dashboard">Solana Referral </Link>
-          </div> */}
+          {}
         </div>
 
         <Table
@@ -1286,7 +1100,6 @@ console.log("TokenId",TokenId)
             editTokenName={editTokenName}
             editTokenTitle={editTokenTitle}
             editAction={editAction}
-            // editTokenRank={editTokenRank}
             handleSuccess={handleSuccess}
           />
         )}

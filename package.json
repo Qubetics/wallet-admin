@@ -7,25 +7,18 @@
     "@ant-design/icons": "^5.0.1",
     "@hookform/resolvers": "^2.9.11",
     "@reduxjs/toolkit": "^1.9.1",
+    "@solana/spl-token": "^0.4.15",
     "@tanstack/react-query": "^5.50.1",
-    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "antd": "^4.24.5",
     "axios": "^1.4.0",
-    "babel-preset-react-app": "^10.0.1",
-    "bfj": "^7.0.2",
+    "dayjs": "^1.11.23",
     "env-cmd": "^10.1.0",
-    "eslint": "^8.3.0",
-    "eslint-config-react-app": "^7.0.1",
-    "fs-extra": "^10.0.0",
-    "jest": "^27.4.3",
-    "jest-watch-typeahead": "^1.0.0",
     "jsencrypt": "^3.3.2",
     "moment": "^2.29.4",
+    "node-rsa": "^1.1.1",
     "react": "^18.2.0",
-    "react-app-polyfill": "^3.0.0",
     "react-date-picker": "^11.0.0",
-    "react-dev-utils": "^12.0.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.0",
     "react-idle-timer": "^5.7.2",
@@ -35,12 +28,7 @@
     "react-select": "^5.7.3",
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
-    "semver": "^7.3.5",
-    "source-map-loader": "^5.0.0",
-    "style-loader": "^4.0.0",
     "web-vitals": "^2.1.4",
-    "webpack": "^5.64.4",
-    "webpack-dev-server": "^4.6.0",
     "yup": "^1.6.1"
   },
   "scripts": {
@@ -49,9 +37,7 @@
     "start:prod": "env-cmd -f .env.production react-scripts start",
     "build:local": "GENERATE_SOURCEMAP=false env-cmd -f .env.development react-scripts build",
     "build": "GENERATE_SOURCEMAP=false env-cmd -f .env.production react-scripts build",
-    "build:prod": "GENERATE_SOURCEMAP=false env-cmd -f .env.production react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build:prod": "GENERATE_SOURCEMAP=false env-cmd -f .env.production react-scripts build"
   },
   "eslintConfig": {
     "extends": [
@@ -71,78 +57,12 @@
       "last 1 safari version"
     ]
   },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ],
-    "resetMocks": true
-  },
   "babel": {
     "presets": [
       "react-app"
     ]
   },
   "devDependencies": {
-    "@types/react": "^18.3.7",
-    "@types/react-dom": "^18.3.7",
-    "css-loader": "^6.5.1",
-    "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.4.5",
-    "node-polyfill-webpack-plugin": "^4.1.0",
-    "postcss": "^8.4.4",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-loader": "^6.2.1",
-    "postcss-normalize": "^10.0.1",
-    "postcss-preset-env": "^7.0.1",
-    "resolve-url-loader": "^4.0.0",
-    "sass": "^1.56.2",
-    "sass-loader": "^12.6.0",
-    "terser-webpack-plugin": "^5.2.5",
-    "webpack-manifest-plugin": "^4.0.2"
+    "sass": "^1.56.2"
   }
 }

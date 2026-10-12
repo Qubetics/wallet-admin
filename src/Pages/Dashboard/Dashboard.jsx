@@ -2,27 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Spin, Table, Row, Col, Card } from "antd";
 import "./Dashboard.scss";
 import * as moment from "moment";
-import { exponentialToDecimal, truncate } from "../../Helper/StringFormat";
+import { truncate } from '../../Helper/StringFormat';
 import { useDispatch, useSelector } from "react-redux";
 import { useGetTransactionsDataMutation } from "../../Redux/services/TransactionsDetail/TransactionsDetailApiSlice";
-import { setTransactionData } from "../../Redux/slice/TransactionDetailSlice";
 import { useGetDeviceUserDataQuery } from "../../Redux/services/DashboardServicces/DashboardApiSlice";
 import { setDeviceUsers } from "../../Redux/slice/DashboardDetailsSlice";
 import Tooltip from "antd/es/tooltip";
-import { formatNumberCrypto, formatNumberUSD } from "../../Helper/FormatNumber";
 import encryption from "../../common/encryption/encryption";
 
 function Dashboard() {
   const [getTransactionsData, { isLoading }] = useGetTransactionsDataMutation();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const [transactionData, setTransactionData] = useState();
   const { data: DeviceUserData, refetch } = useGetDeviceUserDataQuery();
   const [deviceUsers, setDashboardUsers] = useState([]);
-  let TransactionsDetails = useSelector(
-    (state) => state?.TransactionData?.data
-  );
-  console.log("TransactionsDetails", transactionData);
-  let DashBoardList = useSelector((state) => state?.DashboardList?.DeviceUsers);
 
   const dispatch = useDispatch();
 
@@ -32,9 +25,7 @@ function Dashboard() {
       const securedData = { dataString: enc };
       const res = await getTransactionsData(securedData);
       if (res && res.data) {
-        console.log("res?.data?.data >>.", res?.data?.data);
         setTransactionData(res?.data?.data?.transaction_history);
-        // dispatch(setTransactionData(res?.data?.data));
       }
     } catch (err) {
       console.error("Error fetching transaction data:", err);
@@ -57,30 +48,9 @@ function Dashboard() {
           dispatch(setDeviceUsers(GetDeviceUserData?.data?.data));
         }
       } catch {
-        console.log("error");
       }
     })();
   }, [DeviceUserData?.data]);
-
-  const calculateUsedAmount = (amount, trxn_fiat_price_detail) => {
-    let usd_amount = 0;
-    if (trxn_fiat_price_detail?.length > 0) {
-      let filter_price_data = trxn_fiat_price_detail.filter(
-        (data) => data.fiat_currency.toLowerCase() === "usd"
-      );
-
-      if (filter_price_data?.length > 0) {
-        usd_amount = amount * filter_price_data[0].current_price;
-      }
-    }
-
-    return usd_amount;
-  };
-  const calculateCryptoAmount = (amount, decimals) => {
-    let decimals_length = Number(decimals?.toString()?.length) - 1;
-    let amount_crypto = amount?.toFixed(decimals_length);
-    return amount_crypto;
-  };
 
   const columns = [
     {
@@ -101,21 +71,16 @@ function Dashboard() {
       title: " Token Symbol",
       dataIndex: "coin_data",
       // render: (text) => <p>{text?.coin_symbol === null ? "N/A" : text?.coin_symbol.charAt(0).toUpperCase() +
-      // text?.coin_symbol.slice(1)}</p>,
       render: (text) => (
         <p>
           {text?.coin_symbol === null ? "N/A" : text?.coin_symbol.toUpperCase()}
         </p>
       ),
-      // render: (text) => <p>{text?.coin_symbol}</p>,
     },
 
-    // {
     //   title: "Decimal",
     //   dataIndex: 'coin_data',
     //   key: 'coin_data',
-    //   render: (text) => <p>{text?.decimals===null?'N/A':text?.decimals}</p>,
-    // },
     {
       title: "Amount (In Crypto)",
       dataIndex: "amount",
@@ -123,24 +88,9 @@ function Dashboard() {
       render: (amount) => <p>{amount || "N/A"}</p>,
     },
 
-    // {
     //   title: 'Fiat Amount',
-    //   // dataIndex: "amount",
-    //   // key: "amount",
     //   render: (text) => (
-    //     <p>
-    //       {formatNumberUSD(
-    //         calculateUsedAmount(text?.amount, text?.trxn_fiat_price_detail)
-    //       )}
-    //     </p>
-    //   ),
-    // },
-    // {
     //   title: 'Fiat Currency Name ',
-    //   // dataIndex: "amount",
-    //   // key: "amount",
-    //   render: (text) => <p>{'USD'}</p>,
-    // },
     {
       title: "Source Address",
       dataIndex: "from_adrs",
@@ -231,10 +181,6 @@ function Dashboard() {
       ),
 
       // render: (text) => (
-      //   <Tooltip title={text === null ? "N/A" : text}>
-      //     <p>{text === null ? "N/A" : truncate(`${text}`,16)}</p>
-      //   </Tooltip>
-      // ),
     },
     {
       title: "Transaction Hash  ",
@@ -337,59 +283,7 @@ function Dashboard() {
         <div className="dashboardSec__dashBoardHeading">
           <div className="dashboardSec">
             <div className="dashbord_upper">
-              {/* <Row gutter={16}>
-                <Col span={24}>
-                  <Card className="text-center" title="Markup Fees">
-                    <Row className="swap">
-                      <Col span={4}>
-                        <h4>
-                          PanCake-Swap (BSC) -{' '}
-                          <span>
-                            {' '}
-                            {DashBoardList?.bnb_network_fees
-                              ? DashBoardList?.bnb_network_fees
-                              : 0}
-                            %
-                          </span>
-                        </h4>
-                      </Col>
-                      <Col span={4}>
-                        <h4>
-                          Uni-Swap (ETH) -{' '}
-                          <span>
-                            {DashBoardList?.eth_network_fees
-                              ? DashBoardList?.eth_network_fees
-                              : 0}
-                            %
-                          </span>
-                        </h4>
-                      </Col>
-                      <Col span={4}>
-                        <h4>
-                          PulseX-Swap (PLS) -{' '}
-                          <span>
-                            {DashBoardList?.pls_network_fees
-                              ? DashBoardList?.pls_network_fees
-                              : 0}
-                            %
-                          </span>
-                        </h4>
-                      </Col>
-                      <Col span={4}>
-                        <h4>
-                          Solana-Swap (SOL) -{' '}
-                          <span>
-                            {DashBoardList?.sol_network_fees
-                              ? DashBoardList?.sol_network_fees
-                              : 0}
-                            %
-                          </span>
-                        </h4>
-                      </Col>
-                    </Row>
-                  </Card>
-                </Col>
-              </Row> */}
+              {}
             </div>
 
             <div className="dashbord_upper">
@@ -398,10 +292,7 @@ function Dashboard() {
                   <Card title="Newly Added Token" bordered={false}>
                     <p className="user_number">
                       {deviceUsers?.new_added_token}
-                      {/* {`${DashBoardList?.newly_added_token?.coin_name
-                        ? DashBoardList?.newly_added_token?.coin_name
-                        : '0'
-                        }`} */}
+                      {}
                     </p>
                   </Card>
                 </Col>

@@ -1,5 +1,4 @@
 import { apiSlice } from "../../slice/apiSlice";
-import { Link } from "react-router-dom";
 import { setToast } from "../../slice/toastSlice";
 import { clearStorage } from "../../../common/constant/constant";
 
@@ -19,7 +18,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -27,7 +25,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -67,7 +64,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -75,7 +71,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -90,7 +85,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...data },
       }),
-      // invalidatesTags:['list','id','addproject','data']
     }),
     removeToken: builder.mutation({
       query: (params) => ({
@@ -108,7 +102,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
         body: formData,
         formData: true
       }),
-      // invalidatesTags:['list','id','addproject','data']
     }),
     editTokenImage: builder.mutation({
       query: (data) => ({
@@ -116,7 +109,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...data },
       }),
-      // invalidatesTags:['list','id','addproject','data']
     }),
     setEnableSwap: builder.mutation({
       query: (data) => ({
@@ -124,7 +116,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      // invalidatesTags:['list','id','addproject','data']
     }),
     editTokenName: builder.mutation({
       query: (data) => ({
@@ -132,7 +123,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...data },
       }),
-      // invalidatesTags:['list','id','addproject','data']
     }),
     editTokenRank: builder.mutation({
       query: (data) => ({
@@ -140,7 +130,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...data },
       }),
-      // invalidatesTags:['list','id','addproject','data']
     }),
     assetsByPolicyId: builder.mutation({
       query: (data) => ({
@@ -148,7 +137,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...data },
       }),
-      // invalidatesTags:['list','id','addproject','data']
     }),
   }),
 });

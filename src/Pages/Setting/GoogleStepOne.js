@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Input, Modal, Button, Spin } from "antd";
-// import { UploadOutlined } from "@ant-design/icons";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/settingApi";
 import {
   // logout,
   set2FaStatus,
   // setAuthentication,
 } from "../../Redux/slice/userSlice";
 import * as yup from "yup";
-// import useSelection from "antd/lib/table/hooks/useSelection";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { render } from "@testing-library/react";
 import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
-// import QR from "../../Images/QR.png";
 import "./Setting.scss";
 import { useNavigate } from "react-router-dom";
 import { setToast } from "../../Redux/slice/toastSlice";
-// import { setUser, setLoginResponseData } from "../../Redux/slice/userSlice";
 const schema = yup
   .object({
     password: yup.string().required("Password is required"),
@@ -44,24 +38,12 @@ const GoogleStepOne = ({
   const [hideShowDivTwo, setHideShowDivTwo] = useState(true);
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
-  // const userData = useSelector((state) => state.userState.authentication);
-  const userDataState = useSelector(
-    (state) => state?.userState?.loginResponseData
-  );
-  const userState = useSelector((state) => state?.userState?.user);
   const IpData = useSelector((state) => state?.userState?.ipData);
 
   const [googleAuthEnableDisable, { isLoading }] =
     useGoogleAuthEnableDisableMutation();
 
-  const {
-    handleSubmit,
-    reset,
-    control,
-    trigger,
-    setValue,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, control, trigger, setValue, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -83,7 +65,6 @@ const GoogleStepOne = ({
   };
 
   const handleCancel = () => {
-    // reset({});
     setPassword("");
     setToken("");
     closeCardModal();
@@ -96,11 +77,8 @@ const GoogleStepOne = ({
         // If successful, update the isCopied state value
       })
       .catch((err) => {
-        console.log(err);
       });
   };
-
-  const navigate = useNavigate();
 
   const copyTextToClipboard = async (text) => {
     if ("clipboard" in navigator) {
@@ -119,13 +97,11 @@ const GoogleStepOne = ({
         data.ip_address = IpData?.ip;
       }
 
-      // data.google_secret_key = googleSecretKeyData.google_secret_key;
       googleAuthEnableDisable(data).then((res) => {
         if (res.error) {
           if (res?.error?.status == "FETCH_ERROR") {
             dispatch(setToast({ message: "Network failed", status: false }));
           } else {
-            // toast.error(res.error.data.data.message);
             if (res?.error?.data?.data?.message) {
               localStorage.setItem("google_2fa", "enabled");
               dispatch(
@@ -144,8 +120,6 @@ const GoogleStepOne = ({
             }
           }
         } else {
-          /* toast.success(res.data.data.message);
-           dispatch(logout({ navigate: navigate })); */
           dispatch(setToast({ message: res.data.data.message, status: true }));
           dispatch(set2FaStatus(true));
           setTimeout(() => {
@@ -160,10 +134,6 @@ const GoogleStepOne = ({
   };
 
   useEffect(() => {
-    // if(userData?.google2fa_status===0){
-    //   setHideShowDivOne(false);
-    //   setHideShowDivTwo(true);
-    // }
   }, []);
 
   return (
@@ -197,7 +167,7 @@ const GoogleStepOne = ({
                 <div className={`stepOne ${hideShowDivOne ? " hide" : ""}`}>
                   <div className="QRImageSec">
                     <img src={googleSecretKeyData?.qr_code} width={"200"} />
-                    {/* <img src={QR} width={"200"} /> */}
+                    {}
                   </div>
                   <div className="spantext">
                     Scan the QR code in the Google Authentication App, if you
@@ -224,43 +194,6 @@ const GoogleStepOne = ({
                 </div>
               ) : (
                 <></>
-                // <div className={`stepOne ${hideShowDivOne ? " hide" : ""}`}>
-                //   <div className="QRImageSec">
-                //     <img src={googleSecretKeyData?.qr_code} width={"200"} />
-                //     {/* <img src={QR} width={"200"} /> */}
-                //   </div>
-                //   <div className="spantext">
-                //     Scan the QR code in the Google Authentication App, if you are
-                //     unable to scan the QR Code please enter this code manually into
-                //     the app
-                //   </div>
-                //   <Input
-                //     type={"text"}
-                //     className="form-control"
-                //     value={googleSecretKeyData?.google_secret_key}
-                //     disabled
-                //   />
-                //   <div className="btnDiv">
-                //     <Button
-                //       className="steponeformbtn btn btn-primary"
-                //       onClick={() => {
-                //         handleCopyClick();
-                //         toast.success("Text copied.");
-                //       }}
-                //     >
-                //       Copy
-                //     </Button>
-                //     <Button
-                //       className="steponecontbtn"
-                //       onClick={() => {
-                //         setHideShowDivOne(true);
-                //         setHideShowDivTwo(false);
-                //       }}
-                //     >
-                //       Continue
-                //     </Button>
-                //   </div>
-                // </div>
               )}
               <div
                 id="stepTwo"
@@ -272,7 +205,6 @@ const GoogleStepOne = ({
                     placeholder="Please enter password"
                     type="password"
                     value={password}
-                    // value={value}
                     onChange={(e) => {
                       setValue("password", e.target.value);
                       setPassword(e.target.value);

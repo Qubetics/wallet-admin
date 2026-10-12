@@ -21,19 +21,14 @@ const schema = yup
     email: yup.string().required("Required").email("Invalid email"),
     password: yup.string().required("Required"),
     remember: yup.bool().default(false),
-    //   .min(8, "Password is too short - should be 8 chars minimum.")
-    //   .matches(
-    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
     //     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-    //   ),
   })
   .required();
 
 function Login() {
   const dispatch = useDispatch();
   const [loginAuth, { isLoading }] = useLoginAuthMutation();
-  const userData = useSelector((state) => state.userState.authentication);
-  const [googleSecretKeyData, setGoogleSecretKeyData] = useState(false);
+  const [googleSecretKeyData] = useState(false);
   const [loginButton, setLoginButton] = useState(false);
   const [isOpenStepTwo, setIsOpenStepTwo] = useState(false);
   const [menuList, { menuIsLoading }] = useLazyMenuListQuery();
@@ -49,7 +44,6 @@ function Login() {
   });
 
   useEffect(() => {
-    // setIsOpenStepTwo(true);
     checkRemember();
   }, []);
 
@@ -85,28 +79,22 @@ function Login() {
       password: data.password.trim(),
     };
 
-    // let enc = await encryption(JSON.stringify(data));
-    // const securedData = { dataValue: enc };
     await loginAuth(newObj).then((res) => {
       localStorage.setItem("email", data?.email);
       localStorage.setItem("password", data.password);
       if (res.error) {
-        console.log("res.error",res.error)
         if (res?.error?.status == "FETCH_ERROR") {
           dispatch(setToast({ message: "Network failed", status: false }));
           setTimeout(() => {
             setLoginButton(false);
           }, 3000);
         } else {
-          // setTimeout(() => {
           dispatch(
             setToast({ message: res?.error?.data?.message, status: false })
           );
-          // }, 1000);
           setTimeout(() => {
             setLoginButton(false);
           }, 3000);
-          // setLoginButton(false);
         }
       } else {
         if (
@@ -125,7 +113,6 @@ function Login() {
           localStorage.setItem("google_2fa", "disabled");
           sessionStorage.setItem("page_title", "Dashboard");
           dispatch(setUser(res?.data?.data));
-          // dispatch(setAuthentication(res?.data));
           dispatch(getIp());
           getMenuList();
           setTimeout(() => {
@@ -140,10 +127,8 @@ function Login() {
           sessionStorage.setItem("activeKey", "1");
           sessionStorage.setItem("page_title", "Dashboard");
 
-          // dispatch(setLoginResponseData(res?.data?.data));
           dispatch(setUser(res?.data?.data));
           dispatch(getIp());
-          // getMenuList();
           setIsOpenStepTwo(true);
         } else {
           dispatch(setToast({ message: "Invalid credentials", status: false }));
@@ -159,7 +144,6 @@ function Login() {
       <GoogleStepTwo
         isOpenStepTwo={isOpenStepTwo}
         closeCardModal={closeStepTwoModal}
-        // loginResponseData={loginResponseData}
         googleSecretKeyData={googleSecretKeyData}
         loginCred={{ email: getValues("email"), password: getValues("password") }}
       />
@@ -188,7 +172,6 @@ function Login() {
                     >
                       <Input
                         placeholder="Email"
-                        // onChange={(e) => setValue("email", e.target.value)}
                         onChange={onChange}
                         onBlur={onBlur}
                         value={getValues("email")}
@@ -196,7 +179,7 @@ function Login() {
                     </Form.Item>
                   )}
                 />
-                {/* <p className='error'>{errors.email?.message}</p> */}
+                {}
               </div>
               <div className="loginSec__inputSec">
                 <div className="inputLabel">
@@ -219,7 +202,6 @@ function Login() {
                           }
                           onChange={onChange}
                           onBlur={onBlur}
-                          // value={value}
                           value={getValues("password")}
                         />
                       </Form.Item>
@@ -241,8 +223,6 @@ function Login() {
                           onChange={onChange}
                           onBlur={onBlur}
                           checked={value}
-                          // type={"checkbox"}
-                          // defaultValue={false}
                           value={getValues("remember")}
                           width="20px"
                           height="20px"
@@ -252,7 +232,7 @@ function Login() {
                       </Form.Item>
                     )}
                   />
-                  {/* <p className='error'>{errors.email?.message}</p> */}
+                  {}
                 </span>
               </div>
             </div>

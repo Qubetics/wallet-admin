@@ -14,8 +14,6 @@ export const formatNumberUSD = (value) => {
 };
 
 export const formatNumberCrypto = (value) => {
-  // const decimalPlaces = (value.toString().split(".")[1] || "").length;
-  // return parseFloat(value).toFixed(decimalPlaces > 4 ? 4 : decimalPlaces);
   const numberValue = parseFloat(+value || 0);
   if (isNaN(numberValue) || value == undefined) {
     return value;

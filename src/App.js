@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import "./App.scss";
 import MainLayout from "./Layout/MainLayout";
 import Login from "./Pages/Login/Login";
@@ -35,32 +35,12 @@ function App() {
   }, []);
 
   const _onActive = (e) => {
-    // this.setState({isTimedOut: false})
   };
 
   const _onIdle = () => {
     dispatch(logout({ navigate: navigate }));
   };
-  const {
-    start,
-    reset,
-    activate,
-    pause,
-    resume,
-    isIdle,
-    getTabId,
-    isPrompted,
-    isLeader,
-    isLastActiveTab,
-    getRemainingTime,
-    getElapsedTime,
-    getLastIdleTime,
-    getLastActiveTime,
-    getIdleTime,
-    getTotalIdleTime,
-    getActiveTime,
-    getTotalActiveTime,
-  } = useIdleTimer({
+  useIdleTimer({
     // onPresenceChange,
     // onPrompt,
     _onIdle,
@@ -106,7 +86,6 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route path="/" element={<MainLayout />}>
             <Route index path="/dashboard" element={<Dashboard />} />
-
 
             <Route
               index

@@ -13,7 +13,6 @@ import { setToast } from "../../Redux/slice/toastSlice";
 import useSelection from "antd/lib/table/hooks/useSelection";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { render } from "@testing-library/react";
 // import { useGoogle_2fa_verifyMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 import { setUser,set2FaStatus, setMenus } from "../../Redux/slice/userSlice";
 import { useVerify2faMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";

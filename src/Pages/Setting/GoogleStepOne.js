@@ -14,7 +14,6 @@ import * as yup from "yup";
 // import useSelection from "antd/lib/table/hooks/useSelection";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { render } from "@testing-library/react";
 import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 // import QR from "../../Images/QR.png";
 import "./Setting.scss";

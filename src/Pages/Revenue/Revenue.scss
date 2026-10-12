@@ -7,11 +7,7 @@
   font-weight: 600;
 }
 .selectRevenue {
-  //width: 200px;
-  // margin-top: auto;
-  // background-color: red;
   width: 100%;
-  // max-width: 200px;
   background: linear-gradient(
     180deg,
     rgb(0, 174, 239) 20%,
@@ -28,13 +24,6 @@
     }
   }
 
-  // .css-1xc3v61-indicatorContainer {
-  //     color: white;
-
-  //     &:hover {
-  //         color: white;
-  //     }
-  // }
 }
 .revenueSec {
   border-radius: 30px;
@@ -45,7 +34,6 @@
   padding: 12px;
   .revenueHeading {
     display: flex;
-    // flex-direction: column;
     justify-content: space-evenly;
     width: 100%;
   }
@@ -58,7 +46,6 @@
 }
 .insect {
   display: flex;
-  // gap: 5px;
   justify-content: center;
 }
 .historydiv {

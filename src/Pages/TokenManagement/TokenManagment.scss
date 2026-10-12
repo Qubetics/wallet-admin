@@ -17,7 +17,6 @@
   flex-wrap: wrap;
   gap: 10px;
 
-  // justify-content: initial;
   .selectReactCmn {
     width: 100%;
     max-width: 200px;
@@ -29,7 +28,6 @@
 }
 
 .searchInput {
-  // margin-bottom: 20px;
   display: flex;
   gap: 10px;
   flex-flow: wrap;
@@ -71,16 +69,6 @@
 }
 
 .main_page_outer {
-  // .ant-table-thead {
-  //     tr {
-  //         th {
-  //             &:last-child {
-  //                 // padding-left: 60px;
-  //             }
-  //         }
-
-  //     }
-  // }
 
   td {
     p {
@@ -131,13 +119,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    // width: 80%;
   }
 
   .reactDatePicker {
     input {
       height: 37px;
-      // padding: 6px 10px 10px;
       width: 200px;
     }
   }
@@ -319,25 +305,13 @@
   }
 }
 
-// .ant-select-dropdown {
-//   max-width: 1200px !important;
-//   min-width: 500px !important;
-//   width: 700px !important;
-// }
-
 .ant-empty.ant-empty-normal.ant-empty-small {
   width: 100% !important;
 }
 
 .ant-spin-nested-loading {
-  // z-index: 999999;
 }
 
-// .ant-select-selector {
-//   min-width: 700px;
-//   max-width: 1000px;
-//   position: relative;
-// }
 .no_data {
   color: grey;
   text-align: center;
@@ -356,7 +330,6 @@ span.anticon svg {
   margin-bottom: 30px;
   color: #fff;
 }
-
 
 .panel-bg {
   background: linear-gradient(135deg, #1a1333 0%, #2d1846 100%);
@@ -441,5 +414,4 @@ button,
     }
   }
 }
-
 

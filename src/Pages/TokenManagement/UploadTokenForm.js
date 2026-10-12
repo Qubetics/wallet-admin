@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from "react";
-import {
-  Input,
-  Button,
-  Upload,
-  DatePicker,
-  Space,
-  Spin,
-  Checkbox,
-  Alert,
-  Select,
-} from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import React, { useState } from 'react';
+import { Button, Spin } from 'antd';
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import "./TokenManagment.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
 import {
   useAddTokenImageMutation,
 } from "../../Redux/services/TokenManagement/TokenManagementApiSlice";
@@ -102,7 +91,6 @@ const UploadTokenForm = ({ handleEditTokenCancel, TokenId, onSuccess }) => {
       formdata.append("id", TokenId);
       
       const imageUploadRes = await addTokenImage(formdata);
-       console.log("ereereee",imageUploadRes?.data?.status)
       if (imageUploadRes?.data?.status === true) {
         setConfirmLoading(false);
         dispatch(setToast({ message: "Image uploaded successfully", status: true }));

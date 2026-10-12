@@ -33,7 +33,6 @@ const CommissionSettings = () => {
     (state) => state?.userState?.user?.google2fa_status
   );
   const twoFaStatus = localStorage.getItem("google_2fa");
-  console.log("=====================", is2FAEnabled);
 
   // Component state
   const [walletAddress, setWalletAddress] = useState("");
@@ -343,7 +342,6 @@ const CommissionSettings = () => {
                   type="submit"
                   className="submit-btn"
                   style={{borderRadius:"30px" , width:"110px"}}
-                  // disabled={is2FAEnabled !== 1 || isUpdatingWallet}
                 >
                   {isUpdatingWallet ? "Updating..." : "Submit"}
                 </button>
@@ -388,7 +386,6 @@ const CommissionSettings = () => {
                   type="submit"
                   className="submit-btn"
                   style={{borderRadius:"30px" , width:"110px"}}
-                  // disabled={!is2FAEnabled || isUpdatingCommission}
                 >
                   {isUpdatingCommission ? "Updating..." : "Submit"}
                 </button>

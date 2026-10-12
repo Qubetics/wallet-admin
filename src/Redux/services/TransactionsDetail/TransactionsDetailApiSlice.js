@@ -1,5 +1,4 @@
 import { clearStorage } from "../../../common/constant/constant";
-import { setRequestList } from "../../slice/TransactionRequestSlice";
 import { apiSlice } from "../../slice/apiSlice";
 import { setToast } from "../../slice/toastSlice";
 
@@ -16,7 +15,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -24,7 +22,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -43,7 +40,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -51,7 +47,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -70,7 +65,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -78,7 +72,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -96,7 +89,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -104,7 +96,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -123,7 +114,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -131,7 +121,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -150,7 +139,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -158,7 +146,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -177,7 +164,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -185,7 +171,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -212,7 +197,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -220,7 +204,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -239,7 +222,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status == 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -247,7 +229,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -260,7 +241,6 @@ export const transactionApiSlice = apiSlice.injectEndpoints({
       query: (params) => ({
         url: "wallet/sol_token_list",
         method: "GET",
-        // params: { ...params },
       }),
     }),
 

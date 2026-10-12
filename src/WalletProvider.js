@@ -11,15 +11,11 @@ import { clusterApiUrl } from "@solana/web3.js";
 
 const WalletContextProvider = ({ children }) => {
   const network = WalletAdapterNetwork.Mainnet;
-  // console.log("children ", children);
-  // console.log("NETWORKKKK ", network);
   const endpoint = useMemo(
     () => process.env.REACT_APP_RPC_URL || clusterApiUrl("mainnet-beta"),
     [network]
   );
-  // console.log("endpointsss ", endpoint);
   const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
-  // console.log("walletswallets ", wallets);
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets ? wallets : []} autoConnect>

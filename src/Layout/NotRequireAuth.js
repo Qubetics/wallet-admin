@@ -1,6 +1,5 @@
-import { useLocation, Navigate, Outlet, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useLocation, Navigate, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const NotRequireAuth = () => {
   const token = useSelector((state) => state?.userState?.user?.token);
@@ -8,10 +7,6 @@ const NotRequireAuth = () => {
     (state) => state?.userState?.user?.permissions_data
   );
   const location = useLocation();
-
-  const [jwtExpiration, setJwtExpiration] = useState("");
-  const navigate = useNavigate();
-  let dispatch = useDispatch();
 
   return !token ? (
     <Outlet />

@@ -1,20 +1,17 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { Input, Modal } from "antd";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/settingApi";
 import { set2FaStatus } from "../../Redux/slice/userSlice";
 import * as yup from "yup";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 import { setToast } from "../../Redux/slice/toastSlice";
-import { useNavigate } from "react-router-dom";
 import { encryption } from "../../common/encryption/encryption";
 import eye1 from "../../Images/hidden.png";
 import eye2 from "../../Images/eye.png";
-import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 
 const schema = yup
   .object({
@@ -34,22 +31,14 @@ const GoogleStepTwo = ({
   closeCardModal,
 }) => {
   const dispatch = useDispatch();
-  const [hideShowDivOne, setHideShowDivOne] = useState(false);
-  const [hideShowDivTwo, setHideShowDivTwo] = useState(true);
+  const [, setHideShowDivOne] = useState(false);
+  const [, setHideShowDivTwo] = useState(true);
   const [disabledButton, setDisabledButton] = useState(false);
 
-  const userData = useSelector((state) => state?.userState?.user);
   const [googleAuthEnableDisable, { isLoading }] =
     useGoogleAuthEnableDisableMutation();
 
-  const {
-    handleSubmit,
-    control,
-    trigger,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, trigger, setValue, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -76,8 +65,6 @@ const GoogleStepTwo = ({
     reset();
   };
 
-  const navigate = useNavigate();
-
   const onSubmit = async (data) => {
     let validation = await trigger();
     if (validation) {
@@ -97,7 +84,6 @@ const GoogleStepTwo = ({
               setDisabledButton(false);
             }, 3000);
           } else {
-            // toast.error(res.error.data.data.message);
             if (res?.error?.data?.data?.message) {
               dispatch(set2FaStatus(false));
               dispatch(
@@ -114,17 +100,14 @@ const GoogleStepTwo = ({
                 })
               );
             }
-            // dispatch(setToast({ message: `${res.error.data.data.message}`, status: false }));
             setTimeout(() => {
               setDisabledButton(false);
             }, 3000);
           }
         } else {
-          /* toast.success(res.data.data.message); */
           localStorage.setItem("google_2fa", "enable");
           dispatch(setToast({ message: res.data.data.message, status: true }));
           dispatch(set2FaStatus(false));
-          // localStorage.setItem("google_2fa", "disabled");
           setTimeout(() => {
             dispatch(setToast({ message: null, status: false }));
           }, 2000);
@@ -136,8 +119,6 @@ const GoogleStepTwo = ({
   };
   const [passwordVisible, setPasswordVisible] = React.useState(false);
 
-  // useEffect(() => {});
-
   return (
     <>
       <ToastContainer />
@@ -146,9 +127,7 @@ const GoogleStepTwo = ({
         open={isOpenStepTwo}
         onOk={handleOk}
         centered
-        // okText={false}
         onCancel={handleCancel}
-        // cancelText="Disable"
         footer={false}
         maskClosable={false}
       >

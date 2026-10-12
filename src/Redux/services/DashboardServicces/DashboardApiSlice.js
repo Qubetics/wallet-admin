@@ -1,4 +1,3 @@
-// import { setRequestList } from "../../slice/TransactionDetailSlice";
 import { clearStorage } from "../../../common/constant/constant";
 import { apiSlice } from "../../slice/apiSlice";
 import { setToast } from "../../slice/toastSlice";
@@ -20,7 +19,7 @@ export const DashboardApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
+          await queryFulfilled;
         } catch (error) {
           if (error.error.status === 408) {
             dispatch(
@@ -30,7 +29,6 @@ export const DashboardApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);

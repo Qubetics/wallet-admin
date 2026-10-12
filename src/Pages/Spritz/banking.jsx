@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Spin, Table, Button, Input, Pagination, Tooltip, Select } from "antd";
 import * as moment from "moment";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { setTransactionData } from "../../Redux/slice/TransactionDetailSlice";
-import { truncate, exponentialToDecimal } from "../../Helper/StringFormat";
+import { truncate } from '../../Helper/StringFormat';
 import { setToast } from "../../Redux/slice/toastSlice";
 import "react-date-picker/dist/DatePicker.css";
 import {
@@ -17,21 +17,17 @@ import { useGetRevenueTransactionsDataMutation } from "../../Redux/services/reve
 import { formatNumberCrypto, formatNumberUSD } from "../../Helper/FormatNumber";
 
 function Banking() {
-  const [checked, setChecked] = useState(true);
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [SearchData, SetSearchData] = useState("");
-  const [baseUrl, setbaseUrl] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
-  const inputRef = useRef();
   const dispatch = useDispatch();
   const [search, setSearch] = useState(false);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const [coin_family, setCoinFamily] = useState(0);
-  const [filterAddedBy, setFilterAddedBy] = useState("0");
-  // const [getTransactionsData, { isLoading }] = useGetRevenueTransactionsDataMutation();
+  const [filterAddedBy] = useState("0");
   const [getRevenueTransactionsData, { isLoading }] =
     useGetRevenueTransactionsDataMutation();
 
@@ -69,14 +65,6 @@ function Banking() {
           dispatch(setTransactionData(res?.data?.data));
           setSearch(false);
         } else {
-          // getTransactionsDataFn(
-          //   fromDate,
-          //   toDate,
-          //   SearchData,
-          //   currentPage,
-          //   coin_family,
-          //   revenueType
-          // );
         }
       } else {
       }
@@ -85,8 +73,6 @@ function Banking() {
   const onChangeBlockchainFilterHandler = (data) => {
     setCoinFamily(data);
     setCurrentPage(1);
-    // SetSearchData("");
-    // getTransactionsDataFn(fromDate, toDate, "", 1, data, coin_family);
   };
   useEffect(() => {
     (() => {
@@ -107,7 +93,6 @@ function Banking() {
       setToDate(null);
     }
     setCurrentPage(event);
-    // getTransactionsDataFn(fromDate,toDate, SearchData, 1);
   };
 
   const schema = yup
@@ -120,12 +105,7 @@ function Banking() {
     })
     .required();
 
-  const {
-    handleSubmit,
-    control,
-    // setValue,
-    formState: { errors },
-  } = useForm({
+  const { control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -406,7 +386,6 @@ function Banking() {
           {text === null
             ? "N/A"
             : moment.utc(text).format("MM/DD/YYYY h:mm:ss A")}
-          {/* :  moment.utc(text).local().format('MM/DD/YYYY h:mm:ss A') } */}
         </p>
       ),
     },
@@ -492,7 +471,6 @@ function Banking() {
                     className="form-control"
                     defaultValue="DD-MM-YYYY"
                     style={{ cursor: "text", textTransform: "uppercase" }}
-                    //min={fromDate} // Set the minimum allowed date as the fromDate
                     max={new Date().toISOString().split("T")[0]} // Set the maximum allowed date as the current date
                     onChange={(e) => {
                       const selectedDate = e.target.value;
@@ -541,7 +519,6 @@ function Banking() {
                   placeholder="Seach by token name/ symbol/ address/ hash"
                   className="form-control"
                   maxLength={100}
-                  // placeholder={"coin name,symbol,address,hash"}
                   value={SearchData}
                   onChange={(e) => {
                     SetSearchData(e.target.value.trimStart());
@@ -572,7 +549,6 @@ function Banking() {
                 placeholder="Select any chain"
                 options={select_blockchain}
                 className=" heightFixSelect"
-                // optionFilterProp='children'
                 onChange={(e) => onChangeBlockchainFilterHandler(e)}
                 value={coin_family}
               />
@@ -623,7 +599,6 @@ function Banking() {
               <Button
                 className="btn"
                 type="primary"
-                // style={{ marginLeft: "20px" }}
                 onClick={async () => {
                   setFromDate(null);
                   setToDate(null);

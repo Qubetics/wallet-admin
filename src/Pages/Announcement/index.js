@@ -1,15 +1,6 @@
 // Know this page is cancel by shivam project
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Pagination,
-  Table,
-  Input,
-  Spin,
-  Select,
-  DatePicker,
-  Modal,
-} from "antd";
+import { Button, Pagination, Table, Input, Spin, DatePicker, Modal } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { setToast } from "../../Redux/slice/toastSlice";
 import { useForm, Controller } from "react-hook-form";
@@ -30,15 +21,14 @@ import moment from "moment";
 import dayjs from "dayjs";
 import "./Announcement.scss";
 import { encryption } from "../../common/encryption/encryption";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 const { confirm } = Modal;
 
 const Announcement = () => {
-  // ...............pagination...................
   const permission_type = sessionStorage.getItem("permission_type");
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [schedule, setSchedule] = useState(false);
+  const [schedule] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [SaveAnnouncement, {}] = useSaveAnnouncementMutation();
   const [DeleteAnnouncement, {}] = useDeleteAnnouncementMutation();
@@ -47,13 +37,6 @@ const Announcement = () => {
     useGetAnnouncementNotificationMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const AnnouncementDetails = useSelector(
-    (state) => state?.Announcement?.announcementList
-  );
-  const AnnouncementListMeta = useSelector(
-    (state) => state?.Announcement?.announcementListMeta
-  );
 
   const IpData = useSelector((state) => state?.userState?.ipData);
 
@@ -76,15 +59,7 @@ const Announcement = () => {
       ? yup.string().nullable().required("Please select schedule date time")
       : yup.string().notRequired(),
   });
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    touched,
-    trigger,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  const { handleSubmit, control, setValue, trigger, reset, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   const { TextArea } = Input;
 
@@ -101,7 +76,6 @@ const Announcement = () => {
     const securedData = { dataString: enc };
     await getAnnouncementist(securedData).then((res, err) => {
       if (res?.data?.data) {
-        console.log("here i am", res?.data?.data);
         setTableData(res?.data?.data);
         dispatch(setAnnouncementList(res?.data?.data?.data));
         dispatch(setAnnouncementListMeta(res?.data?.data?.meta));
@@ -134,7 +108,6 @@ const Announcement = () => {
       const securedData = { dataString: enc };
       await SaveAnnouncement(securedData).then((res) => {
         if (res?.data?.status) {
-          console.log("resssss", res?.data?.message);
           setDisabled(false);
           reset({
             schedule_time: "",
@@ -182,14 +155,6 @@ const Announcement = () => {
 
   const handlePagenationChange = (event) => {
     setCurrentPage(event);
-  };
-
-  const range = (start, end) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-      result.push(i);
-    }
-    return result;
   };
 
   const disabledDate = (current) => {
@@ -323,7 +288,6 @@ const Announcement = () => {
                 });
               },
               onCancel() {
-                console.log("Cancel");
               },
             });
           }}

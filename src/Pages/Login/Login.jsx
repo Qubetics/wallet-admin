@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { Checkbox, Spin } from "antd";
 import { Input, Form } from "antd";
 import { useForm, Controller } from "react-hook-form";

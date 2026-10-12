@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Space, Spin, Button, Input } from 'antd';
 import Card from "antd/lib/card/Card";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import {
   useGetMarkupFeesQuery,

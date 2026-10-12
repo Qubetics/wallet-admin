@@ -1,14 +1,11 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Button, Modal } from 'antd';
+import { useSelector } from 'react-redux';
+import { Button } from 'antd';
 import "./Setting.scss";
 import ChangePasswordModal from "./ChangePasswordModal";
 import GoogleStepOne from "./GoogleStepOne";
 import GoogleStepTwo from "./GoogleStepTwo";
-import { setToast } from "../../Redux/slice/toastSlice";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
   useEnableDisableMaintananceMutation,
   useLazyAppMaintenanceQuery,

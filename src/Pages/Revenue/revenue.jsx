@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Select } from "antd";
 import "./Revenue.scss";
 
 import TransactionTotal from "./transactionTotal.js";

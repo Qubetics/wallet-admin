@@ -69,7 +69,6 @@ function ApplicationMaintenance() {
         });
       },
       onCancel() {
-        console.log("Cancel");
       },
     });
   };

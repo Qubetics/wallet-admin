@@ -25,9 +25,7 @@ const AssetData = ({
     })();
   }, [assetTokenData]);
   const handleOk = () => {
-    // setIsModalOpen(false);
   };
-  // const [modal2Open, setModal2Open] = useState(false);
   return (
     <div>
       <Modal
@@ -46,14 +44,7 @@ const AssetData = ({
           className="selectReactCmn"
           onChange={(value) => {
             setContractAddress(value);
-            //fetchCoinDataAndShow(value, coinFamily)
-            // if (value == "1") { setSchedule(true); }
-            // else {
-            //   setSchedule(false);
-            // }
-            // setValue('type', value); trigger("type");
           }}
-          //onChange={handleChange}
           options={AssetOptions}
         />
       </Modal>

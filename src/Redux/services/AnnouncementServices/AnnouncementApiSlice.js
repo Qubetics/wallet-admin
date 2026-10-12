@@ -14,7 +14,6 @@ export const AnnouncementApiSlice = apiSlice.injectEndpoints({
         url: "notification/create",
         method: "POST",
         body: { ...params },
-        // body: params
       }),
     }),
     deleteAnnouncement: builder.mutation({

@@ -4,8 +4,6 @@
     justify-content: space-between;
     margin-bottom: 30px;
 
-
-
     .ant-select {
         width: 100%;
     }
@@ -16,7 +14,6 @@
     flex-wrap: wrap;
     gap: 10px;
 
-    // justify-content: initial;
     .selectReactCmn {
         width: 100%;
         max-width: 200px;
@@ -29,7 +26,6 @@
 }
 
 .searchInput {
-    // margin-bottom: 20px;
     display: flex;
     gap: 10px;
 
@@ -71,16 +67,6 @@
 }
 
 .main_page_outer {
-    // .ant-table-thead {
-    //     tr {
-    //         th {
-    //             &:last-child {
-    //                 // padding-left: 60px;
-    //             }
-    //         }
-
-    //     }
-    // }
 
     td {
         p {
@@ -131,13 +117,11 @@
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
-        // width: 80%;
     }
 
     .reactDatePicker {
         input {
             height: 37px;
-            // padding: 6px 10px 10px;
             width: 200px;
         }
     }
@@ -249,8 +233,6 @@
             color: white;
         }
     }
-
-
 
 }
 

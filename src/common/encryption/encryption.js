@@ -1,4 +1,3 @@
-// import NodeRSA from 'node-rsa';
 import JSEncrypt from "jsencrypt";
 const RSAkey = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8T9YBBWhdZ8gZBGS7udG
@@ -14,7 +13,6 @@ twIDAQAB
 
 export const encryption = async (data) => {
   try {
-    console.log("data of payload", data);
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey(RSAkey);
     const encStr = encrypt.encrypt(data);

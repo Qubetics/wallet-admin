@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Input, Button, Spin, Checkbox, Switch, InputNumber } from "antd";
+import { Input, Button, Spin } from 'antd';
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
@@ -26,15 +26,12 @@ import {
   useAssetsByPolicyIdMutation,
 } from "../../Redux/services/TokenManagement/TokenManagementApiSlice";
 import { encryption } from "../../common/encryption/encryption";
-// import axios from "axios";
 import { setToast } from "../../Redux/slice/toastSlice";
 import { setAssetData } from "../../Redux/slice/TokenTableSlice";
 import AssetData from "./AssetsData";
 
-const schema = yup
+yup
   .object({
-    // NetworkType:yup.string().required("Network type is required"),
-    // ContractAddress:yup.string().required("Contract Address is required"),
     TokenName: yup
       .string("Token Name is required")
       .min(2, "Token Name is Too Short!")
@@ -50,7 +47,6 @@ const schema = yup
       .min(2, "Token Decimal is Too Short!")
       .max(50, "Token Decimal is Too Long!")
       .required("Token Decimal is required"),
-    // DexName:yup.string().required('Dex type is required'),
     files: yup
       .mixed()
       .required("You need to provide an Image File")
@@ -77,18 +73,9 @@ const schema = yup
       ),
       value: 2,
     },
-    // {
     //   key: "key2",
     //   label: (
-    //     <>
-    //       {" "}
-    //       <span>
-    //         <img src={btc} style={{ width: "20px" }} alt=""></img> BTC
-    //       </span>
-    //     </>
-    //   ),
     //   value: 3,
-    // },
     {
       key: "key3",
       label: (
@@ -155,26 +142,19 @@ const schema = yup
 const AddTokenForm = ({ handleAddTokenCancel }) => {
   const ref = useRef();
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [checked, setChecked] = useState(false);
-  // const [rank, setRank] = useState(0);
+  const [, setChecked] = useState(false);
   const [coinFamily, setCoinFamily] = useState(1);
   const [StateCoinName, setStateCoinName] = useState("");
-  console.log("🚀 ~ StateCoinName:", StateCoinName)
   const [StateCoinSymbol, setStateCoinSymbol] = useState("");
-  console.log("🚀 ~ StateCoinSymbol++++++++++:", StateCoinSymbol)
-  const [PolicyId, setPolicyId] = useState("");
+  const [PolicyId] = useState("");
   const [SateCoinDecimal, setSateCoinDecimal] = useState("");
   const [ContractAddress, setContractAddress] = useState("");
   const [ContractError, setContractError] = useState(false);
-  // const [DexName, setDexName] = useState();
-  const [addTokenImage, {}] = useAddTokenImageMutation();
-  const [assetsByPolicyId, {}] = useAssetsByPolicyIdMutation();
+  const [, {}] = useAddTokenImageMutation();
+  const [, {}] = useAssetsByPolicyIdMutation();
   const [seachTokenByAddress, { seachIsLoading }] = useSearchTokenMutation();
 
-  const [imageName, setImageName] = useState("");
-  // const JWTToken = useSelector(
-  //   (state) => state?.userState.authentication.token
-  // );
+  const [, setImageName] = useState("");
   const [addToken, { isLoading }] = useAddTokenMutation();
   const dispatch = useDispatch();
 
@@ -184,7 +164,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
   const AssetTokenData = useSelector(
     (state) => state?.TokenTableData?.assetData
   );
-  const ipData = useSelector((state) => state?.userState?.ipData);
 
   const handleAssetsCancel = () => {
     setAssetsModalOpen(false);
@@ -216,16 +195,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
     }
   }, [ContractAddress]);
 
-  const {
-    handleSubmit,
-    reset,
-    control,
-    setValue,
-    touched,
-    trigger,
-    formState: { errors },
-  } = useForm();
-  //useForm({ resolver: yupResolver(schema) });
+  const { handleSubmit, reset, control, setValue, trigger, formState: { errors } } = useForm();
   const STATIC_COIN_FAMILY = [
     {
       key: "ETH",
@@ -333,20 +303,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
       regex: /^0x[a-fA-F0-9]{40}$/i,
     },
   ];
-  // const DexName_type = [
-  //   { value: "pancake", label: "PancakeSwap" },
-  //   { value: "uniswap", label: "UniSwap" },
-  // ];
-
-  // const checkBoxLabel = `${!checked
-  //   ? "Enable This Token For Swappingsss"
-  //   : "Token Enabled For Swapping"
-  //   }`;
-
-  const isValidEthTokenAddress = (address) => {
-    const ethTokenAddressRegex = /^(0x)?[0-9a-fA-F]{40}$/;
-    return ethTokenAddressRegex.test(address);
-  };
 
   const fetchCoinDataAndShow = async (tokenAddress, myCoinFamily) => {
     try {
@@ -357,9 +313,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
       }));
       const securedData = { dataString: enc };
       await seachTokenByAddress(securedData).then((res) => {
-        console.log("Full response:", res);
-        console.log("Response data:", res?.data);
-        console.log("Response status:", res?.data?.status);
         if (res.error) {
           if (res?.error?.status == "FETCH_ERROR") {
             dispatch(setToast({ message: "Network failed", status: false }));
@@ -378,12 +331,9 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
             }
           }
         } else {
-          console.log("Checking data condition:", res?.data);
           if (res?.data?.status === true) {
             // Changed condition to check status
-            console.log("Inside success condition");
             const coin = res?.data?.data; // Direct access to data
-            console.log("Coin data:", coin);
             setStateCoinName(coin.name);
             setStateCoinSymbol(coin.symbol !== "" ? coin.symbol : "N/A");
             setSateCoinDecimal(coin.decimals);
@@ -397,32 +347,11 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
               })
             );
 
-            // toast.error(`${res?.error?.data?.message}`);
           }
         }
       });
-      /*const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}search_token?coin_family=${myCoinFamily}&token_address=${tokenAddress}`,
-        {
-          headers: {
-            Authorization: JWTToken,
-          },
-        }
-      );
-      if (data?.data) {
-        const coin = data.data.data;
-        
-        setStateCoinName(coin.coin_name);
-        setStateCoinSymbol(coin.coin_symbol !== "" ? coin.coin_symbol : "N/A");
-        setSateCoinDecimal(coin.decimals);
-        setConfirmLoading(false);
-      } else {
-        
-      }*/
     } catch (error) {
-      console.log("error of catch", error);
       setConfirmLoading(false);
-      //  {typeof error?.response?.data?.message === "object"} ? toast.error("Please enter valid contract address") : toast.error(error?.response?.data?.message),
       dispatch(
         setToast({
           message:
@@ -447,7 +376,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
         symbol: data?.TokenSymbol || StateCoinSymbol,
         token_type: mapping?.token_type,
       };
-      console.log("Submitted Data:", submittedData);
       const enc = await encryption(JSON.stringify(submittedData));
       const securedData = { dataString: enc };
       const response = await addToken(securedData);
@@ -495,7 +423,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
     if (ref.current) {
       ref.current.value = "";
     }
-    console.log("value", value.value);
     setCoinFamily(Number(value.value));
     setContractAddress("");
     setStateCoinName("");
@@ -514,64 +441,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
     });
   };
 
-  const setTokenShortlist = (checked) => {
-    console.log(`switch to ${checked}`);
-    setChecked(checked);
-  };
-
-  const onPolicyIdChanged = (e) => {
-    //alert(e.target.value);
-    setValue("PolicyId", e.target.value);
-    if (e.target.value !== "") {
-      setPolicyId(e.target.value);
-      setConfirmLoading(true);
-      assetsByPolicyId({ policy_id: e.target.value }).then((res) => {
-        if (res.error) {
-          if (res?.error?.status == "FETCH_ERROR") {
-            setConfirmLoading(false);
-            dispatch(setToast({ message: "Network failed", status: false }));
-          } else {
-            setConfirmLoading(false);
-            // setTimeout(() => {
-
-            if (
-              res?.error?.data?.message &&
-              Object.keys(res?.error?.data?.message).length > 0
-            ) {
-              dispatch(
-                setToast({ message: res?.error?.data?.message, status: false })
-              );
-            } else {
-              dispatch(
-                setToast({ message: "Something went wrong.", status: false })
-              );
-            }
-          }
-        } else {
-          //debugger;
-
-          if (res?.data) {
-            let token_data = res?.data?.data?.data;
-
-            dispatch(setAssetData({ data: token_data }));
-            setContractAddress(token_data[0]?.asset);
-            //fetchCoinDataAndShow(token_data[0]?.asset, coinFamily,)
-            setConfirmLoading(false);
-          } else {
-            setConfirmLoading(false);
-            dispatch(
-              setToast({
-                message: `${res?.error?.data?.message}`,
-                status: false,
-              })
-            );
-
-            // toast.error(`${res?.error?.data?.message}`);
-          }
-        }
-      });
-    }
-  };
   
 
   return (
@@ -615,10 +484,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                         setValue("ContractAddress", e.target.value);
                         setContractAddress(e.target.value);
                         trigger("ContractAddress");
-                        // setSearchTerm(e.target.value);
-                        // if (errors?.link?.message) {
-                        //   errors.link.message = "";
-                        // }
                       }}
                       value={value}
                     />
@@ -641,16 +506,12 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                   control={control}
                   render={({ field: { value } }) => (
                     <Input
-                      // placeholder={StateCoinName}
                       placeholder="Enter Token Name"
                       readOnly={true}
                       onChange={(e) => {
                         setValue("TokenName", e.target.value);
                         setStateCoinName(e.target.value);
                         trigger("TokenName");
-                        //   if (errors?.link?.message) {
-                        //     errors.link.message = "";
-                        //   }
                       }}
                       value={StateCoinName}
                     />
@@ -661,9 +522,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                     <p style={{ color: "red" }}>{errors?.TokenName?.message}</p>
                   </div>
                 )}
-                {/* {errors.TokenName && touched.password && (
-                    <span className="error">{errors.password}</span>
-                  )} */}
+                {}
               </div>
 
               <div className="inputLabel addTokenInput">
@@ -674,11 +533,9 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                   control={control}
                   render={({ field: { value } }) => (
                     <Input
-                      // placeholder={StateCoinSymbol}
                       placeholder="Enter Token Symbol"
                       readOnly={true}
                       onChange={(e) => {
-                        //   setValue("TokenSymbol",);
                         setStateCoinSymbol(e.target.value);
                         setValue("TokenSymbol", e.target.value);
                         trigger("TokenSymbol");
@@ -708,7 +565,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
                 render={({ field: { value } }) => (
                   <Input
                     readOnly={true}
-                    // placeholder={SateCoinDecimal}
                     placeholder="Enter Token Decimal"
                     onChange={(e) => {
                       setSateCoinDecimal(e.target.value);

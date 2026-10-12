@@ -16,7 +16,7 @@ import { CONFIG } from '../../../../../common/constant/constant';
 import { PROGRAM_ID, RPC_URL, ReferralAccount } from '../../constant';
 import { IDL } from '../../idl';
 import { setToast } from '../../../../../Redux/slice/toastSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   getReferralTokenAccountPubKey,
   initializeReferralTokenAccount,
@@ -47,7 +47,6 @@ export default function SelectTokenComponent() {
   const [options, setOptions] = useState([]);
   const [allOptions, setAllOptions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const user = useSelector((state) => state?.userState?.user);
   const [getSolToken, { isLoading }] = useLazyActionGetSolTokenQuery();
 
   const [saveTokenReferralAccount, { isLoading: saveAccountLoading }] =

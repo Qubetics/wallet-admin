@@ -30,26 +30,6 @@ function Sidebar({ collapsedState }) {
   const menus = useSelector((state) => state?.userState?.menus);
   const user = useSelector((state) => state?.userState?.user);
   const location = useLocation();
-  const swapElement = (value, route, name) => {
-    return (
-      <p
-        onClick={() => {
-          dispatch(
-            setKey({
-              key: route,
-              value: value.name,
-            })
-          );
-          sessionStorage.setItem("activeKey", route);
-          sessionStorage.setItem("page_title", name);
-          navigate(route);
-        }}
-        className={`subSidebar`}
-      >
-        {name}
-      </p>
-    );
-  };
 
   useEffect(() => { }, [menuItems]);
 
@@ -155,17 +135,6 @@ function Sidebar({ collapsedState }) {
       }
     })();
   }, [menus, user?.role_id, user?.permissions_data]);
-
-  function getItem(label, key, icon, children, type, className) {
-    return {
-      key,
-      icon,
-      children,
-      label,
-      type,
-      className,
-    };
-  }
 
   const checkPermission = () => {
     if (user?.permissions_data) {

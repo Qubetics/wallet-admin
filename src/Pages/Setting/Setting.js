@@ -1,20 +1,15 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Button, Modal } from 'antd';
+import { useSelector } from 'react-redux';
+import { Button } from 'antd';
 import "./Setting.scss";
 import ChangePasswordModal from "./ChangePasswordModal";
 import GoogleStepOne from "./GoogleStepOne";
 import GoogleStepTwo from "./GoogleStepTwo";
-import { setToast } from "../../Redux/slice/toastSlice";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
   useEnableDisableMaintananceMutation,
   useLazyAppMaintenanceQuery,
 } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
-
-const { confirm } = Modal;
 
 function Setting() {
 
@@ -22,16 +17,15 @@ function Setting() {
     userState: { twoFactorAuth, google2fa_status },
   } = useSelector((state) => state);
   const twoFaStatus = localStorage.getItem("google_2fa");
-  const dispatch = useDispatch();
   const [appMaintenance, { data, isLoading }] = useLazyAppMaintenanceQuery();
-  const [enableDisableMaintanance, { isLoading: loading }] =
+  const [, { isLoading: loading }] =
     useEnableDisableMaintananceMutation();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenStepOne, setIsOpenStepOne] = useState(false);
   const [googleSecretKeyData, setGoogleSecretKeyData] = useState("");
   const [isOpenStepTwo, setIsOpenStepTwo] = useState(false);
   const [action, setAction] = useState(false);
-  const [_, setCallGoogleStepone] = useState(false);
+  const [, setCallGoogleStepone] = useState(false);
   const [, setCallGoogleSteptwo] = useState(false);
   const JWTToken = localStorage.getItem("jwt_token");
   useEffect(() => {
@@ -103,47 +97,6 @@ function Setting() {
     ),
     [isOpen]
   );
-
-  const showConfirm = (item) => {
-    let field = item?.type;
-    if (item?.type == "buy_sell") {
-      field = "buy/sell";
-    } else {
-      field = field.split("_").join(" ");
-    }
-    confirm({
-      title: `Do you want to ${item?.is_maintenance ? "disable" : "enable"
-        } Maintenance for ${field}?`,
-      icon: <ExclamationCircleFilled />,
-      centered: true,
-      onOk() {
-        let payload = {
-          id: item?.id,
-          status: +!item?.is_maintenance,
-        };
-        enableDisableMaintanance(payload).then((res, err) => {
-          if (res?.data?.data?.status) {
-            appPermission();
-            dispatch(
-              setToast({
-                message: `${res?.data?.data?.message}`,
-                status: true,
-              })
-            );
-          } else {
-            dispatch(
-              setToast({
-                message: `${res?.error?.data?.message}`,
-                status: false,
-              })
-            );
-          }
-        });
-      },
-      onCancel() {
-      },
-    });
-  };
 
   return (
     <div className="dashboardSec">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { Input, Modal, Button, Spin } from "antd";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,7 +13,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 import "./Setting.scss";
-import { useNavigate } from "react-router-dom";
 import { setToast } from "../../Redux/slice/toastSlice";
 import { encryption } from "../../common/encryption/encryption";
 

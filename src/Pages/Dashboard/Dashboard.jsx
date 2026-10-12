@@ -16,16 +16,12 @@ import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [getTransactionsData, { isLoading }] = useGetTransactionsDataMutation();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const [transactionData, setTransactionData] = useState();
   const { data: DeviceUserData, refetch } = useGetDeviceUserDataQuery();
   const [deviceUsers, setDashboardUsers] = useState([]);
-  let TransactionsDetails = useSelector(
-    (state) => state?.TransactionData?.data
-  );
   const navigate = useNavigate();
   // Removed console.log
-  let DashBoardList = useSelector((state) => state?.DashboardList?.DeviceUsers);
 
   const dispatch = useDispatch();
 
@@ -70,26 +66,6 @@ function Dashboard() {
       }
     })();
   }, [DeviceUserData?.data]);
-
-  const calculateUsedAmount = (amount, trxn_fiat_price_detail) => {
-    let usd_amount = 0;
-    if (trxn_fiat_price_detail?.length > 0) {
-      let filter_price_data = trxn_fiat_price_detail.filter(
-        (data) => data.fiat_currency.toLowerCase() === "usd"
-      );
-
-      if (filter_price_data?.length > 0) {
-        usd_amount = amount * filter_price_data[0].current_price;
-      }
-    }
-
-    return usd_amount;
-  };
-  const calculateCryptoAmount = (amount, decimals) => {
-    let decimals_length = Number(decimals?.toString()?.length) - 1;
-    let amount_crypto = amount?.toFixed(decimals_length);
-    return amount_crypto;
-  };
 
   const columns = [
     {

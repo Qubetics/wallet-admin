@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
-// import { PROGRAM_ID, RPC_URL } from "./constant";
 import {
   Spin,
   Table,
@@ -15,13 +13,13 @@ import {
   Tooltip,
 } from "antd";
 import Select from "react-select";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { useGetTokenTableDataMutation } from "../../Redux/services/TokenManagement/TokenManagementApiSlice";
 import { setTokenTableData } from "../../Redux/slice/TokenTableSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
 import AddToken from "./AddToken";
 
 import {
@@ -38,9 +36,6 @@ import not_image_available from "../../Images/not_image_available.jpg";
 import { select_blockchain } from "../../common/constant/constant";
 import moment from "moment";
 import { CONFIG } from "../../common/constant/constant";
-import { formatNumberUSD } from "../../Helper/FormatNumber";
-// import Utils from "./solana/walletConnector";
-// import Referral from "./solana/wallet/handleReferal";
 import { getSearchError } from "../../Helper/searchValidation";
 import { encryption } from "../../common/encryption/encryption";
 import { handleUnauthorizedError } from "../../common/constant/constant";
@@ -51,19 +46,19 @@ const TokenManagement = () => {
   const permission_type = sessionStorage.getItem("permission_type");
   const [modal2Open, setModal2Open] = useState(false);
   const [EditModalOpen, setEditModalOpen] = useState(false);
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterAddedBy, setFilterAddedBy] = useState("1");
   const [coin_family, setCoinFamily] = useState(0);
   const [disabledButton, setDisabledButton] = useState(false);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [getTokenTableData, { isLoading }] = useGetTokenTableDataMutation();
-  const [tokenShortlist, {}] = useTokenShortlistMutation();
+  const [, {}] = useTokenShortlistMutation();
   const [swapAction, {}] = useSwapActionMutation();
   const [ActionEnableDisable, {}] = useActionEnableDisableMutation();
   const [MakeRemoveDefaultToken, {}] = useMakeRemoveDefaultTokenMutation();
-  const [saveTokenReferralAccount, { isLoading: saveAccountLoading }] =
+  const [, { isLoading: saveAccountLoading }] =
     useSaveTokenReferralAccountMutation();
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
@@ -73,19 +68,12 @@ const TokenManagement = () => {
   const [action, SetAction] = useState("");
   const [SearchData, SetSearchData] = useState("");
   const [TokenId, setTokenId] = useState("");
-  const [swapLoading, setSwapChangeLoading] = useState(false);
-  const [disableToggleShortList, setDisableToggleShortList] = useState(true);
-  const [disableToggleSwap, setDisableToggleSwap] = useState(true);
+  const [, setSwapChangeLoading] = useState(false);
+  const [, setDisableToggleSwap] = useState(true);
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const IpData = useSelector((state) => state?.userState?.ipData);
   const [tableData, setTableData] = useState([]);
-  const TokenDetails = useSelector((state) => state?.TokenTableData?.data);
-  const TokenDetailsMeta = useSelector((state) => state?.TokenTableData?.meta);
-  const swapRequestCount = useSelector(
-    (state) => state?.TokenTableData?.swapRequestCount
-  );
   
-  console.log("TokenId", TokenId);
 
   const columns = [
     {
@@ -110,13 +98,6 @@ const TokenManagement = () => {
     {
       title: "Token Symbol",
       // render: (text) => (
-      //   <p>
-      //     {text?.coin_symbol === null
-      //       ? "N/A"
-      //       : text?.coin_symbol.charAt(0).toUpperCase() +
-      //         text?.coin_symbol.slice(1)}
-      //   </p>
-      // ),
       render: (text) => (
         <p>
           {text?.coin_symbol === null ? "N/A" : text?.coin_symbol}
@@ -135,14 +116,12 @@ const TokenManagement = () => {
             width={50}
             preview={false}
             src={`${CONFIG.IMAGE_URL}${text?.coin_image}`}
-            // onError={handleImageError}
           />
         ) : (
           <Image
             width={50}
             preview={false}
             src={not_image_available}
-            // onError={handleImageError}
           />
         ),
     },
@@ -194,7 +173,7 @@ const TokenManagement = () => {
           {text?.created_at === null
             ? "N/A"
             : moment.utc(text?.created_at).format("MM/DD/YYYY")}
-          {/*new Date(text?.created_at).toLocaleDateString()*/}
+          {}
         </p>
       ),
     },
@@ -214,10 +193,7 @@ const TokenManagement = () => {
           {text.coin_name?.length > 30
             ? text.coin_name.substr(0, 30) + "..."
             : text.coin_name}{" "}
-          {/* /{" "} */}
-          {/* <span style={{ fontSize: "10px" }}>
-            {renderCointag(text?.token_type, text?.coin_family)}
-          </span> */}
+          {}
         </p>
       ),
     },
@@ -248,14 +224,12 @@ const TokenManagement = () => {
             width={50}
             preview={false}
             src={text?.coin_image}
-            // onError={handleImageError}
           />
         ) : (
           <Image
             width={50}
             preview={false}
             src={not_image_available}
-            // onError={handleImageError}
           />
         ),
     },
@@ -316,7 +290,7 @@ const TokenManagement = () => {
           {text?.created_at === null
             ? "N/A"
             : moment.utc(text?.created_at).format("MM/DD/YYYY")}
-          {/*new Date(text?.created_at).toLocaleDateString()*/}
+          {}
         </p>
       ),
     },
@@ -385,7 +359,6 @@ const TokenManagement = () => {
       key: "action",
       render: (text, record) => (
         <Button
-          // disabled={record?.added_by == "2"}
           className="btn mr10"
           type="primary"
           style={{ color: "white" }}
@@ -415,14 +388,12 @@ const TokenManagement = () => {
                 let disableValue = {
                   id: record?.coin_id,
                   status: statusValue,
-                  // ip_address: IpData?.ip
                 };
                 const enc = await encryption(JSON.stringify(disableValue));
                 const securedData = { dataString: enc };
                 ActionEnableDisable(securedData).then((res, err) => {
                   SetAction("disable_token");
                   if (res?.data) {
-                    console.log("here we go", res?.data?.message);
                     dispatch(
                       setToast({
                         message: `${res?.data?.message}`,
@@ -440,7 +411,6 @@ const TokenManagement = () => {
                 });
               },
               onCancel() {
-                console.log("Cancel");
               },
             });
           }}
@@ -470,11 +440,9 @@ const TokenManagement = () => {
       from_date: myFromData || null,
       to_date: myToDate || null,
     };
-    // // if (filterAddedBy !== "0") {
     if (filterAddedBy !== "0") {
       filter_data["added_by"] = filterAddedBy;
     }
-    // }
     if (coin_family > 0) {
       filter_data.coin_family = coin_family;
     }
@@ -488,7 +456,6 @@ const TokenManagement = () => {
         setTableData(response?.data?.data);
         dispatch(setTokenTableData(response?.data?.data));
       } else if (response?.error?.data) {
-        console.log("res?.error?.data", response?.error?.data);
         
         // Check for 401 unauthorized error in error.data
         if (response?.error?.data?.code === 401) {
@@ -503,7 +470,6 @@ const TokenManagement = () => {
           })
         );
       } else if (response?.error) {
-        console.log("res?.error", response?.error);
         
         // Check for 401 unauthorized error in error
         if (response?.error?.status === 401) {
@@ -537,7 +503,6 @@ const TokenManagement = () => {
 
   useEffect(() => {
     (async () => {
-      // alert('testddd')
       getTokenDataFn(fromDate, toDate, SearchData, currentPage, coin_family);
     })();
   }, [
@@ -554,7 +519,6 @@ const TokenManagement = () => {
   useEffect(() => {
     (async () => {
       if (action !== "") {
-        //  alert('testddd22')
         SetAction("");
         getTokenDataFn(fromDate, toDate, SearchData, currentPage, coin_family);
       }
@@ -578,7 +542,6 @@ const TokenManagement = () => {
   };
 
   const onChangeSwitch = async (value) => {
-    console.log("value", value);
     confirm({
       title:
         value.status == 1 ? (
@@ -594,11 +557,6 @@ const TokenManagement = () => {
       centered: true,
       async onOk() {
         SetAction("");
-        let swap_data = {
-          id: value.id,
-          status: value.status,
-          // ip_address: IpData?.ip,
-        };
         setDisableToggleSwap(false);
         setSwapChangeLoading(true);
         const enc = await encryption(
@@ -606,10 +564,7 @@ const TokenManagement = () => {
         );
         const securedData = { dataString: enc };
         swapAction(securedData).then(async (res, err) => {
-          console.log("res222222222222", res?.data?.message);
-          // await getTokenDataFn(fromDate, toDate, SearchData, currentPage);
           if (res?.data?.status === true) {
-            console.log("res333333333", res?.data);
             SetAction("token_swap_enable_disable");
             dispatch(
               setToast({ message: `${res?.data?.message}`, status: true })
@@ -635,58 +590,6 @@ const TokenManagement = () => {
         });
       },
       onCancel() {
-        console.log("Cancel");
-      },
-    });
-  };
-
-  const onChangeShortlist = async (value) => {
-    confirm({
-      title:
-        value.status == 1
-          ? "Do you want to shortlist this token?"
-          : "Do you want to unshortlist this token?",
-      icon: <ExclamationCircleFilled />,
-      centered: true,
-      onOk() {
-        SetAction("");
-        let shortlist_data = {
-          id: value.id,
-          is_shortlist: value.status,
-          ip_address: IpData?.ip,
-        };
-        setDisableToggleShortList(false);
-        setSwapChangeLoading(true);
-
-        tokenShortlist(shortlist_data).then(async (res, err) => {
-          //await getTokenDataFn(fromDate, toDate, SearchData, currentPage);
-          if (res?.data?.data?.status) {
-            SetAction("token_shortlist");
-            dispatch(
-              setToast({ message: `${res?.data?.data?.message}`, status: true })
-            );
-            setSwapChangeLoading(false);
-            setDisableToggleShortList(true);
-          } else {
-            if (!res?.error?.data?.status && res?.error?.data?.message) {
-              dispatch(
-                setToast({
-                  message: `${res?.error?.data?.message}`,
-                  status: false,
-                })
-              );
-            } else {
-              dispatch(
-                setToast({ message: `Something went wrong`, status: false })
-              );
-            }
-            setSwapChangeLoading(false);
-            setDisableToggleShortList(true);
-          }
-        });
-      },
-      onCancel() {
-        console.log("Cancel");
       },
     });
   };
@@ -694,14 +597,11 @@ const TokenManagement = () => {
   const onChangeFilterHandler = (data) => {
     setFilterAddedBy(data.value);
     setCurrentPage(1);
-    // getTokenDataFn(fromDate, toDate, SearchData, 1, coin_family);
   };
 
   const onChangeBlockchainFilterHandler = (data) => {
     setCoinFamily(data.value);
     setCurrentPage(1);
-    // SetSearchData("");
-    // getTokenDataFn(fromDate, toDate, "", 1, data.value);
   };
 
   const handleAddTokenCancel = (value, action) => {
@@ -752,7 +652,6 @@ const TokenManagement = () => {
   };
 
   const showConfirm = (e, parsedValue) => {
-    console.log("parsedValue", parsedValue);
     SetAction("");
     if (e.key == "1" && parsedValue) {
       confirm({
@@ -760,7 +659,6 @@ const TokenManagement = () => {
         icon: <ExclamationCircleFilled />,
         centered: true,
         onOk() {
-          // let enableValue ={id:'1',token_status:'inactive'}
 
           let disableValue = {
             id: parsedValue?.id,
@@ -772,7 +670,6 @@ const TokenManagement = () => {
             SetAction("enable_token");
 
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -786,12 +683,10 @@ const TokenManagement = () => {
                   status: false,
                 })
               );
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
             }
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (e.key == "2" && parsedValue) {
@@ -808,7 +703,6 @@ const TokenManagement = () => {
           ActionEnableDisable(disableValue).then((res, err) => {
             SetAction("disable_token");
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -816,7 +710,6 @@ const TokenManagement = () => {
                 })
               );
             } else {
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
               dispatch(
                 setToast({
                   message: `${res?.error?.data?.message}`,
@@ -827,7 +720,6 @@ const TokenManagement = () => {
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (e.key == "6" && parsedValue) {
@@ -847,7 +739,6 @@ const TokenManagement = () => {
           ActionEnableDisable(disableValue).then((res, err) => {
             SetAction("blacklist_token");
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -855,7 +746,6 @@ const TokenManagement = () => {
                 })
               );
             } else {
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
               dispatch(
                 setToast({
                   message: `${res?.error?.data?.message}`,
@@ -866,7 +756,6 @@ const TokenManagement = () => {
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (e.key === "4" && parsedValue) {
@@ -894,7 +783,6 @@ const TokenManagement = () => {
           MakeRemoveDefaultToken(disableValue).then((res, err) => {
             SetAction("set_default_token");
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -908,12 +796,10 @@ const TokenManagement = () => {
                   status: false,
                 })
               );
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
             }
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (e.key === "inactive" || e.key === "blacklist") {
@@ -927,7 +813,6 @@ const TokenManagement = () => {
         okText: null,
         okButtonProps: { style: { display: "none" } },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (parsedValue) {
@@ -938,9 +823,6 @@ const TokenManagement = () => {
       );
       setEditModalOpen(true);
     }
-  };
-
-  const handleImageError = (event) => {
   };
 
   const renderTokenType = (token_type, coin_family) => {
@@ -992,10 +874,10 @@ const TokenManagement = () => {
 
   return (
     <div className="main_page_outer">
-      {/* <Utils /> */}
+      {}
 
       <ToastContainer />
-      {/* <Referral /> */}
+      {}
 
       <Spin
         spinning={isLoading || loading || saveAccountLoading}
@@ -1133,7 +1015,6 @@ const TokenManagement = () => {
                   Search
                 </label>
                 <Input
-                  // maxLength={23}
                   type="text"
                   title="Search by token name/ symbol/ address"
                   placeholder="Search by token name/ symbol/ address"
@@ -1237,7 +1118,6 @@ const TokenManagement = () => {
                       coin_family
                     );
                   }
-                  // getTokenDataFn(fromDate, toDate, SearchData, 1);
                 }}
               >
                 Search
@@ -1245,7 +1125,6 @@ const TokenManagement = () => {
               <Button
                 className="btn"
                 type="primary"
-                // style={{ marginLeft: "20px" }}
                 onClick={async () => {
                   setFromDate(null);
                   setToDate(null);

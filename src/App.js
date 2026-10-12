@@ -36,7 +36,6 @@ function App() {
   const toastify = useMemo(() => <Toastify toast={toast} />, [toast]);
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     if (sessionStorage.getItem("isActive") == null && isRemeber === "false") {
@@ -45,32 +44,12 @@ function App() {
   }, []);
 
   const _onActive = (e) => {
-    // this.setState({isTimedOut: false})
   };
 
   const _onIdle = () => {
     dispatch(logout({ navigate: navigate }));
   };
-  const {
-    start,
-    reset,
-    activate,
-    pause,
-    resume,
-    isIdle,
-    getTabId,
-    isPrompted,
-    isLeader,
-    isLastActiveTab,
-    getRemainingTime,
-    getElapsedTime,
-    getLastIdleTime,
-    getLastActiveTime,
-    getIdleTime,
-    getTotalIdleTime,
-    getActiveTime,
-    getTotalActiveTime,
-  } = useIdleTimer({
+  useIdleTimer({
     // onPresenceChange,
     // onPrompt,
     _onIdle,
@@ -134,7 +113,7 @@ function App() {
             <Route index path="/revenue" element={<CommissionSetting />}/>
             <Route index path="/settings" element={<Setting />} />
             <Route index path="/swap" element={<Revenue />} />
-            {/* <Route index path="/revenue" element={<Revenue />} /> */}
+            {}
             <Route
               index
               path="/default-token-management"

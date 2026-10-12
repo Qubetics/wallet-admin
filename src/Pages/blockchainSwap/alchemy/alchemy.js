@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Spin, Table, Button, Input, Pagination, Tooltip, Select } from "antd";
 import * as moment from "moment";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,7 @@ import {
 } from "../../../Helper/FormatNumber";
 
 function Alchemy() {
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [SearchData, SetSearchData] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
@@ -31,7 +31,7 @@ function Alchemy() {
   const [toDate, setToDate] = useState(null);
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const [coin_family, setCoinFamily] = useState(0);
-  const [filterAddedBy, setFilterAddedBy] = useState("0");
+  const [filterAddedBy] = useState("0");
   const [getRevenueTransactionsData, { isLoading }] =
     useGetRevenueTransactionsDataMutation();
 
@@ -117,12 +117,7 @@ function Alchemy() {
     })
     .required();
 
-  const {
-    handleSubmit,
-    control,
-    // setValue,
-    formState: { errors },
-  } = useForm({
+  const { control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -421,7 +416,6 @@ function Alchemy() {
           {text === null
             ? "N/A"
             : moment.utc(text).format("MM/DD/YYYY h:mm:ss A")}
-          {/* :  moment.utc(text).local().format('MM/DD/YYYY h:mm:ss A') } */}
         </p>
       ),
     },
@@ -507,7 +501,6 @@ function Alchemy() {
                     className="form-control"
                     defaultValue="DD-MM-YYYY"
                     style={{ cursor: "text", textTransform: "uppercase" }}
-                    //min={fromDate} // Set the minimum allowed date as the fromDate
                     max={new Date().toISOString().split("T")[0]} // Set the maximum allowed date as the current date
                     onChange={(e) => {
                       const selectedDate = e.target.value;
@@ -556,7 +549,6 @@ function Alchemy() {
                   placeholder="Search by token name/ symbol/ address/ hash"
                   className="form-control"
                   maxLength={100}
-                  // placeholder={"coin name,symbol,address,hash"}
                   value={SearchData}
                   onChange={(e) => {
                     SetSearchData(e.target.value.trimStart());
@@ -587,7 +579,6 @@ function Alchemy() {
                 placeholder="Select any chain"
                 options={select_blockchain}
                 className=" heightFixSelect"
-                // optionFilterProp='children'
                 onChange={(e) => onChangeBlockchainFilterHandler(e)}
                 value={coin_family}
               />
@@ -638,7 +629,6 @@ function Alchemy() {
               <Button
                 className="btn"
                 type="primary"
-                // style={{ marginLeft: "20px" }}
                 onClick={async () => {
                   setFromDate(null);
                   setToDate(null);

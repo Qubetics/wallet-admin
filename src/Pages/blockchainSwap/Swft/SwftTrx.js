@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Spin, Table, Button, Input, Pagination, Tooltip, Select } from "antd";
 import * as moment from "moment";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ import {
 } from "../../../Helper/FormatNumber";
 
 function SwftTrnx() {
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [SearchData, SetSearchData] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
@@ -30,7 +30,7 @@ function SwftTrnx() {
   const [toDate, setToDate] = useState(null);
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const [coin_family, setCoinFamily] = useState(0);
-  const [filterAddedBy, setFilterAddedBy] = useState("0");
+  const [filterAddedBy] = useState("0");
 
   const [getRevenueTransactionsData, { isLoading }] =
     useGetRevenueTransactionsDataMutation();
@@ -117,11 +117,7 @@ function SwftTrnx() {
     })
     .required();
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 

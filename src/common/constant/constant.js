@@ -260,14 +260,11 @@ const select_blockchain = [
 
 ];
 
-// ... existing code ...
-
 const COIN_FAMILY_TOKEN_TYPE = [
   { coin_family: 2, token_type: "ERC20" }, // Ethereum
   { coin_family: 3, token_type: "BTC" }, // Bitcoin
   { coin_family: 1, token_type: "BEP20" }, // Binance Smart Chain
   { coin_family: 5, token_type: "SPL" }, // Solana
-  // { coin_family: 5, token_type: "Native" }, // Cardano
   { coin_family: 4, token_type: "ERC20" }, // Polygon
   { coin_family: 6, token_type: "TRC_20" }, // Avalanche
   { coin_family: 7, token_type: "TICS" }, // Cronos

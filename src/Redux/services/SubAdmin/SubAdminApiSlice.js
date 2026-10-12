@@ -15,7 +15,6 @@ export const SubAdminApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
         } catch (error) {
           if (error.error.status === 408) {
-            // alert("Session timeout , please login again");
 
             dispatch(
               setToast({
@@ -24,7 +23,6 @@ export const SubAdminApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);

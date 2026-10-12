@@ -58,7 +58,6 @@ export default function FilterComponent({
           <Input
             type="date"
             style={{ cursor: "text", textTransform: "uppercase" }}
-            //   value={fromDate}
             className="form-control"
             onChange={(e) => {
               dispatchFilter({ type: "fromDate", payload: e.target.value });

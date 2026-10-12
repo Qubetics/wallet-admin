@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import{decrypt} from "../../Helper/EncDec"
 
 const RevenueTableSlice = createSlice({
   name: "RevenueTableData",
@@ -14,10 +13,7 @@ const RevenueTableSlice = createSlice({
   },
 });
 
-// export const { setCredentials, logOut } = RevenueTableSlice.actions
 export const { setRevenueTableData } = RevenueTableSlice.actions;
 
 export default RevenueTableSlice.reducer;
 
-// export const selectCurrentUser = (state) => console.log(state,'=============stateuser')
-// export const selectCurrentToken = (state) => state?.auth?.token

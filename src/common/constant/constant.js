@@ -260,8 +260,6 @@ const select_blockchain = [
 
 ];
 
-// ... existing code ...
-
 const COIN_FAMILY_TOKEN_TYPE = [
   { coin_family: 2, token_type: "ERC20" }, // Ethereum
   { coin_family: 3, token_type: "BTC" }, // Bitcoin

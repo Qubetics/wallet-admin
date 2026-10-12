@@ -1,16 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Spin,
-  Table,
-  message,
-  Switch,
-  Pagination,
-  Button,
-  Dropdown,
-  InputNumber,
-  Image,
-  Modal,
-} from "antd";
+import { Spin, Table, Switch, Pagination, Button, Dropdown, Image, Modal } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
@@ -20,7 +9,6 @@ import {
   useGetDefaultTokenListMutation,
   useMakeRemoveDefaultTokenMutation,
 } from "../../Redux/services/TransactionsDetail/TransactionsDetailApiSlice";
-// import { setRequestList } from "../../Redux/slice/TransactionDetailSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   // setRequestList,
@@ -29,7 +17,6 @@ import {
   setDefaultTokenMeta,
 } from "../../Redux/slice/TransactionRequestSlice";
 import { setToast } from "../../Redux/slice/toastSlice";
-// import ModalforTransaction from "./ModalforTransaction";
 import moment from "moment";
 import UploadTokenModal from "../TokenManagement/UploadTokenModal";
 import not_image_available from "../../Images/not_image_available.jpg";
@@ -42,25 +29,19 @@ function DefaultTokenManagement() {
   const onChange = (value) => {};
   const permission_type = sessionStorage.getItem("permission_type");
 
-  // const [value, setValue] = useState("0.005");
-  // const [page,setPage] =useState('0')
   const [perPage, setPage] = useState(10);
   const [action, setAction] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [disableToggleSwap, setDisableToggleSwap] = useState(false);
 
-  // const [swapData, setSwapData] = useState();
   const [editTokenName, setEditTokenName] = useState("");
   const [EditModalOpen, setEditModalOpen] = useState(false);
 
-  // const [editRank, setEditRank] = useState(0);
   const [editAction, setEditAction] = useState("");
   const [editTokenTitle, setEditTokenTitle] = useState("");
   const [editTokenRank, setEditTokenRank] = useState(0);
   const [TokenId, setTokenId] = useState(0);
 
-  // const [getTransactionsRequest, { isLoading }] =
-  //   useGetTransactionsRequestMutation();
   const [getDefaultTokenList, { isLoading }] = useGetDefaultTokenListMutation();
   const [swapAction, {}] = useSwapActionMutation();
   const [ActionEnableDisable, {}] = useActionEnableDisableMutation();
@@ -121,8 +102,6 @@ function DefaultTokenManagement() {
           if (res?.data?.data?.status) {
             setDisableToggleSwap(false);
             setAction("token_swap_on_off");
-            // setSwapData(data);
-            // setAction("swap_token");
             dispatch(
               setToast({ message: `${res?.data?.data?.message}`, status: true })
             );
@@ -144,13 +123,11 @@ function DefaultTokenManagement() {
         });
       },
       onCancel() {
-        console.log("Cancel");
       },
     });
   };
   const handlePagenationChange = (event) => {
     setCurrentPage(event);
-    // getTokenDataFn(fromDate, toDate, SearchData);
   };
   const handleEditTokenCancel = (value, action) => {
     setEditModalOpen(value);
@@ -166,7 +143,6 @@ function DefaultTokenManagement() {
         icon: <ExclamationCircleFilled />,
         centered: true,
         onOk() {
-          // let enableValue ={id:'1',token_status:'inactive'}
           let disableValue = {
             id: parsedValue?.id,
             token_status: "active",
@@ -176,7 +152,6 @@ function DefaultTokenManagement() {
           ActionEnableDisable(disableValue).then((res, err) => {
             setAction("enable_token");
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -190,12 +165,10 @@ function DefaultTokenManagement() {
                   status: false,
                 })
               );
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
             }
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (e.key === "2" && parsedValue) {
@@ -214,7 +187,6 @@ function DefaultTokenManagement() {
             setAction("disable_token");
 
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -222,7 +194,6 @@ function DefaultTokenManagement() {
                 })
               );
             } else {
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
               dispatch(
                 setToast({
                   message: `${res?.error?.data?.message}`,
@@ -233,7 +204,6 @@ function DefaultTokenManagement() {
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
     } else if (e.key === "4" && parsedValue) {
@@ -242,7 +212,6 @@ function DefaultTokenManagement() {
       setEditAction("edit_token_name");
       setEditTokenTitle("Edit Token Name");
       setEditModalOpen(true);
-      // setAction('');
     } else if (e.key === "5" && parsedValue) {
       confirm({
         title: "Do you want to remove this token from default token list?",
@@ -257,7 +226,6 @@ function DefaultTokenManagement() {
           MakeRemoveDefaultToken(disableValue).then((res, err) => {
             setAction("default_token");
             if (res?.data?.data?.status) {
-              // toast(`${res?.data?.data?.message}`);
               dispatch(
                 setToast({
                   message: `${res?.data?.data?.message}`,
@@ -271,33 +239,23 @@ function DefaultTokenManagement() {
                   status: false,
                 })
               );
-              // setTimeout(toast(`${res?.error?.data?.message}`), 3000);
             }
           });
         },
         onCancel() {
-          console.log("Cancel");
         },
       });
-      // setTokenId(parsedValue?.id);
-      // setEditRank(parsedValue?.rank);
-      // setEditTokenName("");
-      // setEditAction('edit_token_rank');
-      // setEditTokenTitle('Edit Token Order')
-      // setEditModalOpen(true);
     } else if (e.key === "6" && parsedValue) {
       setTokenId(parsedValue?.id);
       setEditTokenRank(parsedValue?.rank);
       setEditAction("edit_token_rank");
       setEditTokenTitle("Edit Token Rank");
       setEditModalOpen(true);
-      // setAction('');
     } else if (parsedValue) {
       setTokenId(parsedValue?.id);
       setEditAction("edit_token_image");
       setEditTokenTitle("Upload Token Image");
       setEditModalOpen(true);
-      // setAction('');
     }
   };
   const redirectToExplorer = (coinFamily, contractAddress) => {
@@ -329,20 +287,6 @@ function DefaultTokenManagement() {
 
     window.open(explorerUrl, "_blank");
   };
-  // const dataSource = [
-  //   {
-  //     key: "1",
-  //     name: "Mike",
-  //     age: 32,
-  //     address: "10 Downing Street",
-  //   },
-  //   {
-  //     key: "2",
-  //     name: "John",
-  //     age: 42,
-  //     address: "10 Downing Street",
-  //   },
-  // ];
 
   const read_columns = [
     {
@@ -383,14 +327,12 @@ function DefaultTokenManagement() {
             width={50}
             preview={false}
             src={`${CONFIG.IMAGE_URL}${text?.coin_image}`}
-            // onError={handleImageError}
           />
         ) : (
           <Image
             width={50}
             preview={false}
             src={not_image_available}
-            // onError={handleImageError}
           />
         ),
     },
@@ -398,7 +340,6 @@ function DefaultTokenManagement() {
       title: "Decimal",
 
       render: (text) => (
-        // <>18</>
         <p>
           {text?.decimals === null
             ? "N/A"
@@ -434,12 +375,10 @@ function DefaultTokenManagement() {
     {
       title: "Added on ",
       render: (text) => (
-        // <></>
         <p>
           {text?.created_at === null
             ? "N/A"
             : moment.utc(text?.created_at).format("MM/DD/YYYY")}
-          {/*new Date(text?.created_at).toLocaleDateString()*/}
         </p>
       ),
     },
@@ -450,14 +389,7 @@ function DefaultTokenManagement() {
       render: (text, record) => (
         <p>
           {text?.rank === null ? "N/A" : text?.rank}
-          {/*new Date(text?.created_at).toLocaleDateString()*/}
         </p>
-        // <div style={{ textAlign: "center", marginBottom: "0" }}>
-        //   <InputNumber min={1} max={10} defaultValue={record.rank} onChange={onChange} />
-        // </div>
-        // <p>
-        //   {record.total_req_users_count ? record.total_req_users_count : "N/A"}
-        // </p>
       ),
     },
   ];
@@ -500,14 +432,12 @@ function DefaultTokenManagement() {
             width={50}
             preview={false}
             src={`${CONFIG.IMAGE_URL}${text?.coin_image}`}
-            // onError={handleImageError}
           />
         ) : (
           <Image
             width={50}
             preview={false}
             src={not_image_available}
-            // onError={handleImageError}
           />
         ),
     },
@@ -515,7 +445,6 @@ function DefaultTokenManagement() {
       title: "Decimal",
 
       render: (text) => (
-        // <>18</>
         <p>
           {text?.decimals === null
             ? "N/A"
@@ -551,12 +480,10 @@ function DefaultTokenManagement() {
     {
       title: "Added on ",
       render: (text) => (
-        // <></>
         <p>
           {text?.created_at === null
             ? "N/A"
             : moment.utc(text?.created_at).format("MM/DD/YYYY")}
-          {/*new Date(text?.created_at).toLocaleDateString()*/}
         </p>
       ),
     },
@@ -567,14 +494,7 @@ function DefaultTokenManagement() {
       render: (text, record) => (
         <p>
           {text?.rank === null ? "N/A" : text?.rank}
-          {/*new Date(text?.created_at).toLocaleDateString()*/}
         </p>
-        // <div style={{ textAlign: "center", marginBottom: "0" }}>
-        //   <InputNumber min={1} max={10} defaultValue={record.rank} onChange={onChange} />
-        // </div>
-        // <p>
-        //   {record.total_req_users_count ? record.total_req_users_count : "N/A"}
-        // </p>
       ),
     },
     {
@@ -621,32 +541,15 @@ function DefaultTokenManagement() {
           <div className="select-Design select-width firstSelect addStyle_select">
             <Dropdown
               menu={{
-                // onClick: (e, data) => showConfirm(e, data),
                 items: [
-                  // {
                   //   key: "1",
                   //   value: record,
                   //   label: "Active",
                   //   disabled:
-                  //     record.token_type == null || record?.status === "active"
-                  //       ? true
-                  //       : false,
-                  //   onClick: (e) => {
-                  //     showConfirm(e, record);
-                  //   },
-                  // },
-                  // {
                   //   key: "2",
                   //   value: record,
                   //   label: "Inactive",
                   //   disabled:
-                  //     record.token_type == null || record?.status === "inactive"
-                  //       ? true
-                  //       : false,
-                  //   onClick: (e) => {
-                  //     showConfirm(e, record);
-                  //   },
-                  // },
                   {
                     key: "3",
                     value: record,
@@ -694,17 +597,6 @@ function DefaultTokenManagement() {
 
   return (
     <div className="main_page_outer">
-      {/* <ModalforTransaction /> */}
-      {/* <div className="modal-page-btnGroup">
-        <Button
-          type="primary"
-          onClick={() => {
-            navigate("/transaction-type");
-          }}
-        >
-          Transition type
-        </Button>
-      </div> */}
       <Spin
         spinning={isLoading}
         className="spininner"
@@ -717,7 +609,6 @@ function DefaultTokenManagement() {
           columns={permission_type == "2" ? write_columns : read_columns}
           rowKey={"id"}
           dataSource={RequestDetails}
-          // dataSource={dataSource}
           bordered
         />
         {RequestListMeta?.total > 10 ? (

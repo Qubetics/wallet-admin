@@ -1,15 +1,10 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Col, Row, Button, Switch, Modal } from "antd";
-// import { useLazyGetGoogleAuthSecretKeyQuery } from "../../Redux/services/settingApi";
+import { Button, Modal } from 'antd';
 import "./Setting.scss";
 import ChangePasswordModal from "./ChangePasswordModal";
 import GoogleStepOne from "./GoogleStepOne";
 import GoogleStepTwo from "./GoogleStepTwo";
-// import {
-//   useGetGoogleAuthSecretKeyQuery,
-//   useGoogle_2fa_verifyMutation,
-// } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 import { setToast } from "../../Redux/slice/toastSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -22,21 +17,15 @@ import {
 const { confirm } = Modal;
 
 function Setting() {
-  // const permission_type = sessionStorage.getItem("permission_type");
 
   const {
     userState: { twoFactorAuth, google2fa_status },
   } = useSelector((state) => state);
-  console.log("twoFactorAuth", twoFactorAuth);
-  console.log("google2fa_status", google2fa_status);
   const twoFaStatus = localStorage.getItem("google_2fa");
-  console.log("twoFaStatus", twoFaStatus);
   const dispatch = useDispatch();
-  //   const [getGoogleAuthSecretKey, result] = useLazyGetGoogleAuthSecretKeyQuery();
   const [appMaintenance, { data, isLoading }] = useLazyAppMaintenanceQuery();
   const [enableDisableMaintanance, { isLoading: loading }] =
     useEnableDisableMaintananceMutation();
-  // const userData = useSelector((state) => state?.userState?.user);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenStepOne, setIsOpenStepOne] = useState(false);
   const [googleSecretKeyData, setGoogleSecretKeyData] = useState("");
@@ -45,7 +34,6 @@ function Setting() {
   const [_, setCallGoogleStepone] = useState(false);
   const [__, setCallGoogleSteptwo] = useState(false);
   const JWTToken = localStorage.getItem("jwt_token");
-  console.log("googleSecretKeyData",googleSecretKeyData)
   useEffect(() => {
     appPermission();
   }, []);
@@ -112,7 +100,6 @@ function Setting() {
   };
 
   const openGoogleStepone = async (data, action) => {
-    // alert('onestep')
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_URL}/auth/googleAuthSecretkey`,
@@ -122,26 +109,16 @@ function Setting() {
           },
         }
       );
-      console.log('data.data.data >>>', data);
       setGoogleSecretKeyData(data.data);
       setCallGoogleStepone(true);
       setIsOpenStepOne(true);
     } catch (error) {
-      console.log(error, "error");
     }
 
     
 
-    // getGoogleAuthSecretKey().then((res) => {
-    //   debugger;
-    //   if (res.data.status) {
-    //     setGoogleSecretKeyData(res?.data?.data);
-    //     setIsOpenStepOne(true);
-    //   }
-    // });
   };
   const getGoogleAuthSecretKey = async () => {
-    // alert('onestep')
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_URL}/auth/googleAuthSecretkey`,
@@ -151,10 +128,8 @@ function Setting() {
           },
         }
       );
-      console.log('data.data.data >>>', data?.data);
       setGoogleSecretKeyData(data?.data);
     } catch (error) {
-      console.log(error, "error");
     }
   };
   const navigate = useNavigate();
@@ -168,19 +143,9 @@ function Setting() {
     setAction(false);
   };
   const openGoogleStepTwo = async (data, action) => {
-    // alert('2step')
     setCallGoogleSteptwo(true);
     setIsOpenStepTwo(true);
-    // setCallGoogleStepone(true)
 
-    // setIsOpenStepOne(true);
-
-    // await getGoogleAuthSecretKey().then((res) => {
-    //   if (res.data.status) {
-    //     setGoogleSecretKeyData(res?.data?.data);
-    //     setIsOpenStepTwo(true);
-    //   }
-    // });
   };
   let cardModal = useMemo(
     () => (
@@ -226,7 +191,6 @@ function Setting() {
         });
       },
       onCancel() {
-        console.log("Cancel");
       },
     });
   };

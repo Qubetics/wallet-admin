@@ -25,7 +25,6 @@ const EditTokenNameForm = ({
 }) => {
   const IpData = useSelector((state) => state?.userState?.ipData);
 
-  // const [confirmLoading, setConfirmLoading] = useState(false);
   const [StateCoinName, setStateCoinName] = useState("");
   const [editTokenNames, { isLoading }] = useEditTokenNameMutation();
   const dispatch = useDispatch();
@@ -42,20 +41,13 @@ const EditTokenNameForm = ({
   useEffect(() => {
     (() => {
       setStateCoinName(editTokenName);
-      // if (editTokenName) {
-      //     setValue([
-      //         { TokenName: editTokenName }
-      //     ]);
-      // }
     })();
   }, []);
   useEffect(() => {
     // you can do async server request and fill up form
-    // setTimeout(() => {
     reset({
       TokenName: editTokenName,
     });
-    // }, 2000);
   }, [reset]);
 
   const onFormSubmit = async (data) => {
@@ -67,21 +59,17 @@ const EditTokenNameForm = ({
       };
 
       await editTokenNames(SubmittedData).then((res) => {
-        // alert("after token submit");
 
         if (res?.data?.data?.status) {
-          // setConfirmLoading(false);
           toast.success(`${res?.data?.data?.message}`);
 
           setTimeout(() => {
             handleEditTokenCancel(false, "edit_token_name");
-            // uploaded();
           }, 1500);
         } else if (res?.data) {
           toast.success(`${res?.data?.message}`);
           setTimeout(() => {
             handleEditTokenCancel(false, "");
-            // uploaded();
           }, 1500);
         } else {
           if (!res?.error?.data?.status && res?.error?.data?.message) {
@@ -96,13 +84,9 @@ const EditTokenNameForm = ({
               setToast({ message: `Something went wrong`, status: false })
             );
           }
-          // setConfirmLoading(false);
-          // toast.error(`${res?.message}`);
-          // dispatch(setToast({ message: `${res?.message}`, status: false }));
         }
       });
     } catch (er) {
-      // toast.error("something went wrong");
       dispatch(setToast({ message: "something went wrong", status: false }));
     }
   };
@@ -119,7 +103,6 @@ const EditTokenNameForm = ({
         >
           <form
             onSubmit={handleSubmit(onFormSubmit)}
-            // confirmLoading={confirmLoading}
           >
             {
               <div>
@@ -136,13 +119,9 @@ const EditTokenNameForm = ({
                         placeholder={StateCoinName}
                         // readOnly={true}
                         onChange={(e) => {
-                          // alert('tes');
                           setValue("TokenName", e.target.value);
                           setStateCoinName(e.target.value);
                           trigger("TokenName");
-                          //   if (errors?.link?.message) {
-                          //     errors.link.message = "";
-                          //   }
                         }}
                         maxLength={50}
                         value={StateCoinName}

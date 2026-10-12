@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Spin, Table, Button, Input, Pagination, Tooltip, Select } from "antd";
 import * as moment from "moment";
 import { useForm } from "react-hook-form";
@@ -507,7 +507,6 @@ function Alchemy() {
                     className="form-control"
                     defaultValue="DD-MM-YYYY"
                     style={{ cursor: "text", textTransform: "uppercase" }}
-                    //min={fromDate} // Set the minimum allowed date as the fromDate
                     max={new Date().toISOString().split("T")[0]} // Set the maximum allowed date as the current date
                     onChange={(e) => {
                       const selectedDate = e.target.value;
@@ -587,7 +586,6 @@ function Alchemy() {
                 placeholder="Select any chain"
                 options={select_blockchain}
                 className=" heightFixSelect"
-                // optionFilterProp='children'
                 onChange={(e) => onChangeBlockchainFilterHandler(e)}
                 value={coin_family}
               />

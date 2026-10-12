@@ -7,7 +7,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setTransactionData } from "../../Redux/slice/TransactionDetailSlice";
-import { truncate, exponentialToDecimal } from "../../Helper/StringFormat";
+import { truncate } from '../../Helper/StringFormat';
 import { setToast } from "../../Redux/slice/toastSlice";
 import "react-date-picker/dist/DatePicker.css";
 import {
@@ -32,7 +32,6 @@ function BillPay() {
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const [coin_family, setCoinFamily] = useState(0);
   const [filterAddedBy, setFilterAddedBy] = useState("0");
-  // const [getTransactionsData, { isLoading }] = useGetRevenueTransactionsDataMutation();
   const [getRevenueTransactionsData, { isLoading }] =
     useGetRevenueTransactionsDataMutation();
 
@@ -70,14 +69,6 @@ function BillPay() {
           dispatch(setTransactionData(res?.data?.data));
           setSearch(false);
         } else {
-          // getTransactionsDataFn(
-          //   fromDate,
-          //   toDate,
-          //   SearchData,
-          //   currentPage,
-          //   coin_family,
-          //   revenueType
-          // );
         }
       } else {
       }
@@ -86,8 +77,6 @@ function BillPay() {
   const onChangeBlockchainFilterHandler = (data) => {
     setCoinFamily(data);
     setCurrentPage(1);
-    // SetSearchData("");
-    // getTransactionsDataFn(fromDate, toDate, "", 1, data, coin_family);
   };
   useEffect(() => {
     (() => {
@@ -108,7 +97,6 @@ function BillPay() {
       setToDate(null);
     }
     setCurrentPage(event);
-    // getTransactionsDataFn(fromDate,toDate, SearchData, 1);
   };
 
   const schema = yup
@@ -493,7 +481,6 @@ function BillPay() {
                     className="form-control"
                     defaultValue="DD-MM-YYYY"
                     style={{ cursor: "text", textTransform: "uppercase" }}
-                    //min={fromDate} // Set the minimum allowed date as the fromDate
                     max={new Date().toISOString().split("T")[0]} // Set the maximum allowed date as the current date
                     onChange={(e) => {
                       const selectedDate = e.target.value;
@@ -573,7 +560,6 @@ function BillPay() {
                 placeholder="Select any chain"
                 options={select_blockchain}
                 className=" heightFixSelect"
-                // optionFilterProp='children'
                 onChange={(e) => onChangeBlockchainFilterHandler(e)}
                 value={coin_family}
               />

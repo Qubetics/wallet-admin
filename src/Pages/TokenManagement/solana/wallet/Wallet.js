@@ -1,19 +1,4 @@
-// import React from "react";
-// import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-// import { useWallet } from "@solana/wallet-adapter-react";
 
-// const Wallet = () => {
-//   let { connected } = useWallet();
-//   return (
-//     <>
-//       <WalletMultiButton>
-//         {connected ? "Disconnect Wallet" : "Connect Wallet"}
-//       </WalletMultiButton>
-//     </>
-//   );
-// };
-
-// export default Wallet;
 
 import React from 'react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
@@ -45,15 +30,11 @@ const Wallet = () => {
 
   return (
     <WalletMultiButton
-    // onClick={handleConnect}
-    // options={optionsWithoutChangeWallet}
-    // labels={{
     //   "copy-address": "Copy address",
     //   copied: "Copied",
     //   disconnect: "Disconnect",
     //   "has-wallet": "Connect",
     //   "no-wallet": "Select Wallet",
-    // }}
     >
       {connected ? 'Disconnect Wallet' : 'Connect Wallet'}
     </WalletMultiButton>

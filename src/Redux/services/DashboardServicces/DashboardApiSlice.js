@@ -1,4 +1,3 @@
-// import { setRequestList } from "../../slice/TransactionDetailSlice";
 import { clearStorage } from "../../../common/constant/constant";
 import { apiSlice } from "../../slice/apiSlice";
 import { setToast } from "../../slice/toastSlice";
@@ -30,7 +29,6 @@ export const DashboardApiSlice = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);

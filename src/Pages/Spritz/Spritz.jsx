@@ -5,66 +5,10 @@ import Banking from "./banking";
 import BillPay from "./billPay";
 import { useGetSpritzVolumeMutation } from "../../Redux/services/revenue/bakingApiServices";
 import { formatNumberUSD } from "../../Helper/FormatNumber";
-// import FilterComponent from "../../common/filterRevenue/filter";
-
-// let defaultFilter = {
-//   fromDate: "",
-//   toDate: "",
-//   search: "",
-//   filterBy: "",
-// };
-
-// const filterReducer = (state, action) => {
-//   switch (action.type) {
-//     case "fromDate":
-//       return { ...state, fromDate: action.payload };
-//     case "toDate":
-//       return { ...state, toDate: action.payload };
-//     case "search":
-//       return { ...state, search: action.payload };
-//     case "filterBy":
-//       return { ...state, filterBy: action.payload };
-//     default:
-//       return state;
-//   }
-// };
 
 function Spritz() {
   const [activeTab, setActiveTab] = useState("banking");
   const [getSpritzVolume, { data, isLoading }] = useGetSpritzVolumeMutation();
-  // const [filterState, dispatchFilter] = useReducer(
-  //   filterReducer,
-  //   defaultFilter
-  // );
-
-  // const itemsss = [
-  //   {
-  //     key: "banking",
-  //     label: "Banking",
-  //     children: (
-  //       <div>
-  //         {activeTab == "banking" && (
-  //           <Banking filter={filterState} activeTab={activeTab} />
-  //         )}
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     key: "billPay",
-  //     label: "Bill Pay",
-  //     children: (
-  //       <div>
-  //         {activeTab == "billPay" && (
-  //           <BillPay filter={filterState} activeTab={activeTab} />
-  //         )}
-  //       </div>
-  //     ),
-  //   },
-  // ];
-
-  // const handleMenuClick = (e) => {
-  //   dispatchFilter({ type: "filterBy", payload: e.key });
-  // };
 
   useEffect(() => {
     getData();
@@ -153,10 +97,6 @@ function Spritz() {
         </Row>
       </div>
       <div className="dashbord_upper">
-        {/* <FilterComponent
-          handleMenuClick={handleMenuClick}
-          dispatchFilter={dispatchFilter}
-        /> */}
       </div>
       <Tabs
         defaultActiveKey="banking"

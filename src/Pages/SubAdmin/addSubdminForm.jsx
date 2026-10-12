@@ -14,8 +14,6 @@ import { setToast } from "../../Redux/slice/toastSlice";
 
 const schema = yup
   .object({
-    // NetworkType:yup.string().required("Network type is required"),
-    // ContractAddress:yup.string().required("Contract Address is required"),
     username: yup
       .string("Username is required")
       .required("Username is required")
@@ -24,7 +22,6 @@ const schema = yup
     email: yup
       .string("Email Address is required")
       .required("Email Address is required")
-      //.min(2, "Email Address is minimum 2 characters!")
       .max(50, "Email Address is maximum 50 characters!")
       .email("Invalid email address"),
     permissions: yup.object().required("Permissions is required."),
@@ -87,7 +84,6 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
           if (res?.error?.status == "FETCH_ERROR") {
             dispatch(setToast({ message: "Network failed", status: false }));
           } else {
-            // setTimeout(() => {
 
             if (res?.error?.data?.data?.message) {
               dispatch(
@@ -103,19 +99,14 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
             }
           }
         } else {
-          // debugger;
           if (res?.data?.data?.status) {
-            // setImages(true);
-            // setConfirmLoading(false);
             dispatch(
               setToast({ message: `${res?.data?.data?.message}`, status: true })
             );
-            // toast.success(`${res?.data?.data?.message}`);
             setTimeout(() => {
               handleAddSubAdminCancel(false, 1);
             }, 1500);
           } else if (res?.data) {
-            // toast.success(`${res?.data?.message}`);
             dispatch(
               setToast({ message: `${res?.data?.data?.message}`, status: true })
             );
@@ -123,7 +114,6 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
               handleAddSubAdminCancel(false, 1);
             }, 1500);
           } else {
-            // setConfirmLoading(false);
             dispatch(
               setToast({
                 message: `${res?.error?.data?.message}`,
@@ -134,7 +124,6 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
         }
       });
     } catch (res) {
-      // toast.error(`${res?.error?.data?.message}`);
       dispatch(
         setToast({ message: `${res?.error?.data?.message}`, status: false })
       );
@@ -156,7 +145,6 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
         >
           <form
             onSubmit={handleSubmit(onFormSubmit)}
-            // confirmLoading={confirmLoading}
           >
             <div className="inputLabel">
               <label>Username:</label>
@@ -171,12 +159,7 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
                     value={value}
                     onChange={(e) => {
                       setValue("username", e.target.value);
-                      // setContractAddress(e.target.value);
                       trigger("username");
-                      // setSearchTerm(e.target.value);
-                      // if (errors?.link?.message) {
-                      //   errors.link.message = "";
-                      // }
                     }}
                   />
                 )}
@@ -187,7 +170,6 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
                 </div>
               )}
 
-              {/* <p className="error">{errors.link?.message}</p> */}
             </div>
 
             <div className="inputLabel">
@@ -202,12 +184,7 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
                     placeholder="Enter Email Address"
                     onChange={(e) => {
                       setValue("email", e.target.value);
-                      // setContractAddress(e.target.value);
                       trigger("email");
-                      // setSearchTerm(e.target.value);
-                      // if (errors?.link?.message) {
-                      //   errors.link.message = "";
-                      // }
                     }}
                     value={value}
                   />
@@ -219,7 +196,6 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
                 </div>
               )}
 
-              {/* <p className="error">{errors.link?.message}</p> */}
             </div>
 
             <div className="inputLabel">
@@ -267,11 +243,9 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
                     allowClear
                     style={{ width: "100%" }}
                     showArrow={true}
-                    // value={permissions}
                     placeholder="Please select any module"
                     defaultValue={[]}
                     onChange={(values) => {
-                      //let permissions_data = [];
                       if (Object.assign(values).length > 0) {
                         setValue("permissions", Object.assign({}, values));
                         trigger("permissions");
@@ -285,35 +259,13 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
                   />
                 )}
               />
-              {/* {permissionError !== '' && (
-                <div className="errorElement">
-                  <p style={{ color: "red" }}>
-                    {permissionError}
-                  </p>
-                </div>
-              )} */}
               {errors?.permissions?.message && (
                 <div className="errorElement">
                   <p style={{ color: "red" }}>{errors?.permissions?.message}</p>
                 </div>
               )}
 
-              {/* <p className="error">{errors.link?.message}</p> */}
             </div>
-            {/* {
-              <Spin
-                spinning={confirmLoading}
-                className="spininner"
-                tip="Loading..."
-                size="large"
-                style={{
-                  position: "fixed",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%)",
-                }}
-              ></Spin>
-            } */}
 
             <div className="submit_modal">
               <Button

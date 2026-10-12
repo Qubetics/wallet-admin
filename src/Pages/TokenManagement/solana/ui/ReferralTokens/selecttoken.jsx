@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Program, AnchorProvider } from '@project-serum/anchor';
 import * as yup from 'yup';
-// import { Select } from 'antd';
 import {
   useLazyActionGetSolTokenQuery,
   useSaveTokenReferralAccountMutation,
@@ -22,9 +21,7 @@ import {
   getReferralTokenAccountPubKey,
   initializeReferralTokenAccount,
 } from '../../referral';
-// import { Link } from 'react-router-dom';
 import not_image_available from '../../../../../Images/not_image_available.jpg';
-// import { toast } from 'react-toastify';
 import AddedTokenList from './addedTokenList';
 
 const network = RPC_URL;
@@ -70,7 +67,6 @@ export default function SelectTokenComponent() {
     let resp = token?.data?.data?.data || [];
 
     const newOptions = [];
-    // console.log("Responnnnnnnnnnnn ", resp);
     if (Array.isArray(resp)) {
       resp.map((itm) => {
         if (itm?.is_token_allow_swap == '1') {
@@ -96,7 +92,6 @@ export default function SelectTokenComponent() {
         }
       });
     }
-    // console.log("NEWWWWW ", newOptions);
     setOptions(newOptions);
     setAllOptions(newOptions);
   };
@@ -125,7 +120,6 @@ export default function SelectTokenComponent() {
         })
         .filter(nonNullable)
     );
-    // console.log('RRRRRRRRRRRRR ', referralTokenAccounts);
     let instructions = referralTokenAccounts.flatMap(({ tx }) => {
       return tx.instructions;
     });
@@ -134,7 +128,6 @@ export default function SelectTokenComponent() {
     tx.instructions = instructions;
 
     return { tx, referralTokenAccounts };
-    // return { tx, referralTokenAccounts };
   };
   const {
     reset,
@@ -146,7 +139,6 @@ export default function SelectTokenComponent() {
   });
 
   const onSubmit = async (data) => {
-    // console.log('HIT', data);
     setLoading(true);
     let jupiter_fee_address_list = [];
     const provider = new AnchorProvider(
@@ -167,7 +159,6 @@ export default function SelectTokenComponent() {
         program,
       });
       let exist = await connection.getAccountInfo(referralTokenAccountPubKey);
-      // console.log('exist >>>.', exist);
       if (exist) {
         jupiter_fee_address_list.push({
           token_address: tokenData.token_address,
@@ -180,9 +171,6 @@ export default function SelectTokenComponent() {
 
     try {
       if (Array.isArray(hashTokens)) {
-        // console.log("hashTokens >>>", hashTokens);
-        // console.log("jupiter_fee_address_list >>>", jupiter_fee_address_list);
-        // return;
         if (hashTokens?.length > 0) {
           const referrerPubKey = new PublicKey(ReferralAccount);
           const { tx, referralTokenAccounts } =
@@ -195,8 +183,6 @@ export default function SelectTokenComponent() {
           });
           const transaction = new Transaction().add(tx);
           transaction.feePayer = publicKey;
-          // if (referralTokenAccounts) {
-          // }
           const { blockhash, lastValidBlockHeight } =
             await connection.getLatestBlockhash();
           let txid = await wallet.adapter.sendTransaction(
@@ -208,12 +194,10 @@ export default function SelectTokenComponent() {
           );
           let retries = 5;
           while (retries > 0) {
-            console.log('retries >>>>', retries);
             let value = await connection.getTransaction(txid, {
               commitment: "confirmed",
               maxSupportedTransactionVersion: 0,
             });
-            console.log('value >>>', value);
             retries--;
             if (value !== null && value?.meta?.err) {
               setLoading(false);
@@ -229,22 +213,7 @@ export default function SelectTokenComponent() {
             }
             await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait before retrying
           }
-          // const { value } = await connection.confirmTransaction({
-          //   signature: txid,
-          //   blockhash,
-          //   lastValidBlockHeight,
-          // });
 
-          // if (value.err) {
-          //   setLoading(false);
-          //   dispatch(
-          //     setToast({
-          //       message: `Transaction Failed`,
-          //       status: false,
-          //     })
-          //   );
-          //   return false;
-          // }
         }
         saveTokenReferralAccount({ jupiter_fee_address_list }).then(
           (res, err) => {
@@ -275,7 +244,6 @@ export default function SelectTokenComponent() {
       }
     } catch (error) {
       setLoading(false);
-      console.log('Error submit ', error);
       if (error.message.includes('block height exceeded')) {
         console.error(`createReferralTokenAmount>>>.`, error);
         dispatch(
@@ -287,12 +255,10 @@ export default function SelectTokenComponent() {
         return true
       } else if (error.message.includes('insufficient lamports')) {
         if (error instanceof SendTransactionError) {
-          console.log('createReferralTokenAmount error22 >>>', error);
           let errorRes = await handleSendTransactionError(error);
           let requiredBal = errorRes.requiredLamports / 1000000000;
           let availableBal = errorRes.availableLamports / 1000000000;
           let message = `Insufficient Solana: ${availableBal} SOL available, ${requiredBal} SOL needed.`;
-          // errorMsg.push(`Insufficient lamports for transaction. Please fund the account.`)
           dispatch(
             setToast({
               message: message,
@@ -324,7 +290,6 @@ export default function SelectTokenComponent() {
   };
   const handleSendTransactionError = async (error) => {
     const { logs, transactionSignature } = error;
-    console.log('logs <<<', logs);
     return await parseInsufficientLamportsError(logs);
   };
 
@@ -360,7 +325,6 @@ export default function SelectTokenComponent() {
     });
 
     let result = allOptionCopy.reduce(function (acc, obj) {
-      // console.log("acc, obj ", acc, obj);
       return acc + +obj?.isTicked;
     }, 0);
 
@@ -371,10 +335,8 @@ export default function SelectTokenComponent() {
 
   const filterOption = (val) => {
     let optionCopy = [...allOptions];
-    // console.log("LLLLLLLLLLLLL ", optionCopy);
     let filterOption = optionCopy.filter((data) => {
       if (val == '') {
-        // console.log("HHHHHHHHHHHh");
         return true;
       }
       return (
@@ -388,7 +350,6 @@ export default function SelectTokenComponent() {
 
   const itemSubmit = () => {
     let selected = allOptions.filter((itm) => itm?.isTicked);
-    // console.log("============>", selected);
     let payload = { solToken: selected };
     if (!connected) {
       dispatch(
@@ -467,7 +428,6 @@ export default function SelectTokenComponent() {
                               }}
                               color="default"
                             >
-                              {/* <Link to="">{item.token_address}</Link> */}
                               {item.token_address}
                             </Tag>
                           </Space>
@@ -498,48 +458,6 @@ export default function SelectTokenComponent() {
                   </Button>
                 </div>
 
-                {/* <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="openedSelectOuter multipleSelect">
-                  <Controller
-                    name="solToken"
-                    control={control}
-                    render={({ field: { value } }) => (
-                      <>
-                        <Select
-                          getPopupContainer={(trigger) => trigger.parentNode}
-                          style={{ marginBottom: "20px" }}
-                          defaultOpen={true}
-                          popupClassName="openedSelect"
-                          mode="tags"
-                          placeholder="Token Address / Symbol"
-                          value={value}
-                          onChange={(e) => {
-                            setValue("solToken", e);
-                          }}
-                          options={options}
-                          onSearch={() => {}} // Keep the search option empty
-                          showSearch={false} // Disable search option
-                        />
-                      </>
-                    )}
-                  />
-                  {errors?.solToken?.message && (
-                    <div className="errorElement">
-                      <p style={{ color: "red" }}>
-                        {errors?.solToken?.message}
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                <button
-                  className="ant-btn-primary paddingBtnStyle"
-                  //   style={{ marginTop: 200 }}
-                  type="submit"
-                >
-                  Submit
-                </button>
-              </form> */}
               </div>
               <div></div>
             </div>

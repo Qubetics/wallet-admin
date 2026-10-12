@@ -33,7 +33,6 @@ const CommissionSettings = () => {
     (state) => state?.userState?.user?.google2fa_status
   );
   const twoFaStatus = localStorage.getItem("google_2fa");
-  console.log("=====================", is2FAEnabled);
 
   // Component state
   const [walletAddress, setWalletAddress] = useState("");

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import { Spin, Table, Button, message, Input, Pagination, Tooltip } from "antd";
 import * as moment from "moment";
 
@@ -15,11 +15,8 @@ import { getSearchError } from "../../Helper/searchValidation";
 import { truncate } from "../../Helper/StringFormat";
 import { setToast } from "../../Redux/slice/toastSlice";
 import "react-date-picker/dist/DatePicker.css";
-import {
-  renderCointag,
-  select_blockchain,
-} from "../../common/constant/constant";
-import { formatNumberCrypto, formatNumberUSD, formatCryptoAmount } from "../../Helper/FormatNumber";
+import { select_blockchain } from '../../common/constant/constant';
+import { formatCryptoAmount } from '../../Helper/FormatNumber';
 import { encryption } from "../../common/encryption/encryption";
 import { handleUnauthorizedError } from "../../common/constant/constant";
 
@@ -32,7 +29,6 @@ function TransactionDetails() {
   const [disabledButton, setDisabledButton] = useState(false);
 
   const inputRef = useRef();
-  // const [input, setInput] = useState(true);
   const dispatch = useDispatch();
 
   const [search, setSearch] = useState(false);
@@ -45,12 +41,9 @@ function TransactionDetails() {
   const [getTransactionsListData, { isLoading }] =
     useGetTransactionListDataMutation();
 
-  // const {data:TransactionHistoryData, isLoading } = useGetTransactionsDataQuery({page:currentPage,limit:perPage,search:SearchData?SearchData:undefined});
-
   let TransactionsDetails = useSelector(
     (state) => state?.TransactionData?.listData
   );
-  console.log("TransactionsDetails >>>", TransactionsDetails);
   let TransactionsDetailsMeta = useSelector(
     (state) => state?.TransactionData?.meta
   );
@@ -91,7 +84,6 @@ function TransactionDetails() {
       const response = await getTransactionsListData(securedData);
       
       if (response?.data) {
-        console.log("res?.data >>>", response?.data?.data);
         setTableData(response?.data?.data);
         dispatch(
           setTransactionListData(response?.data?.data?.transaction_history)
@@ -112,8 +104,6 @@ function TransactionDetails() {
   const onChangeBlockchainFilterHandler = (data) => {
     setCoinFamily(data?.value);
     setCurrentPage(1);
-    // SetSearchData("");
-    // getTransactionsDataFn(fromDate, toDate, "", 1, data.value, coin_family);
   };
   useEffect(() => {
     (() => {
@@ -127,33 +117,14 @@ function TransactionDetails() {
     })();
   }, [dispatch, currentPage, filterAddedBy]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       // const GetTransactionHistoryData = await TransactionHistoryData;
-  //       // if (GetTransactionHistoryData) {
   //       //  dispatch( setTransactionData(GetTransactionHistoryData?.data))
   //       // }
-  //     } catch {
-  //       console.log("error");
-  //     }
-  //   })();
-  // },
 
   // // [TransactionHistoryData?.data,currentPage,SearchData]
 
-  // );
-  // useEffect(() => {
   //   // alert('oooopp')
-  //   (async () => {
-  //     let resp = await getTransactionsData({
   //       "page":currentPage,
   //       "limit":perPage
-  //     });
-
-  //     if (resp?.data?.data) dispatch(setTransactionData(resp?.data?.data));
-  //   })();
-  // }, [currentPage]);
 
   const renderSwitch = (type) => {
     switch (type) {
@@ -162,95 +133,61 @@ function TransactionDetails() {
         break;
 
       default:
-        console.log("ether trx");
     }
-    // switch (type) {
 
     //   // Live
     //   case "1":
     //   case 1:
-    //     return setbaseUrl({ baseUrl: "https://etherscan.io/tx/" }); //"https://etherscan.io/address/"
     //   case "2":
     //   case 2:
-    //     return setbaseUrl({
     //       baseUrl: "https://live.blockcypher.com/btc/tx/", //https://live.blockcypher.com/btc/address/"
-    //     });
     //   case "3":
     //   case 3:
-    //     return setbaseUrl({ baseUrl: "https://bscscan.com/tx/" }); // https://bscscan.com/address/
     //   case "4":
     //   case 4:
-    //     return setbaseUrl({
     //       baseUrl: "https://tronscan.org/#/transaction/", //https://tronscan.org/#/address/
-    //     });
     //   case "5":
     //   case 5:
-    //     return setbaseUrl({
     //       baseUrl: "https://blockexplorer.one/ltc/mainnet/tx/", //https://live.blockcypher.com/ltc/address/
-    //     });
     //   case "6":
     //   case 6:
-    //     return setbaseUrl({
     //       baseUrl: "https://blockexplorer.one/dash/mainnet/tx/", //https://live.blockcypher.com/dash/address/
-    //     });
     //   case "7":
     //   case 7:
-    //     return setbaseUrl({
     //       baseUrl: "https://blockexplorer.one/bch/mainnet/tx/", //https://blockchair.com/bitcoin-cash/address/
-    //     });
     //   case "9":
     //   case 9:
-    //     return setbaseUrl({
     //       baseUrl: "https://polkadot.subscan.io/extrinsic/",
-    //     }); //https://polkadot.subscan.io/account/
     //   case "10":
     //   case 10:
-    //     return setbaseUrl({
     //       baseUrl: "https://kusama.subscan.io/extrinsic/",
-    //     }); //https://kusama.subscan.io/account/
 
     //   case "11":
     //   case 11:
-    //     return setbaseUrl({
     //       baseUrl: "https://blockchair.com/dogecoin/transaction/",
-    //     }); //https://blockchair.com/dogecoin/address/
 
     //   case "12":
     //   case 12:
-    //     return setbaseUrl({
     //       baseUrl: "https://www.confluxscan.io/transaction/",
-    //     }); //https://www.confluxscan.io/address/
     //   case "13":
     //   case 13:
-    //     return setbaseUrl({ baseUrl: "https://explorer.rsk.co/tx/" }); //https://explorer.rsk.co/address/
     //   case "14":
     //   case 14:
-    //     return setbaseUrl({ baseUrl: "https://explorer.celo.org/tx/" }); //https://explorer.celo.org/address/
 
     //   case "17":
     //   case 17:
-    //     return setbaseUrl({ baseUrl: "https://snowtrace.io/tx/" }); //https://explorer.rsk.co/address
     //   case "18":
     //   case 18:
-    //     return setbaseUrl({ baseUrl: "https://polygonscan.com/tx/" }); //https://polygonscan.com/address/
     //   case "19":
     //   case 19:
-    //     return setbaseUrl({ baseUrl: "https://hecoinfo.com/tx/" }); //https://polygonscan.com/address/
     //   case "20":
     //   case 20:
-    //     return setbaseUrl({
     //       baseUrl: "https://tzkt.io/", //https://hecoinfo.com/tx/
-    //     });
     //   case "21":
     //   case 21:
-    //     return setbaseUrl({
     //       baseUrl: "https://stellarchain.io/tx/",
-    //     });
     //   default:
-    //     return setbaseUrl({
     //       baseUrl: "",
-    //     }); //Working
-    // }
   };
 
   const handlePagenationChange = (event) => {
@@ -260,7 +197,6 @@ function TransactionDetails() {
       setToDate(null);
     }
     setCurrentPage(event);
-    // getTransactionsDataFn(fromDate,toDate, SearchData, 1);
   };
   const onSearchHandler = (value) => {
     SetSearchData(value);
@@ -291,7 +227,6 @@ function TransactionDetails() {
   };
 
   const onChangeTabs = (key) => {
-    console.log(key);
   };
 
   const toggleChecked = () => {
@@ -365,7 +300,6 @@ function TransactionDetails() {
         </p>
       ),
 
-      // render: (text) => <p>{text?.coin_symbol}</p>,
     },
     {
       title: "Amount (In Crypto)",
@@ -570,9 +504,6 @@ function TransactionDetails() {
               ? "N/A"
               : record?.blockchain_status?.charAt(0)?.toUpperCase() +
                 record?.blockchain_status?.slice(1)}
-            {/* {text === null
-              ? "N/A"
-              : text.charAt(0).toUpperCase() + text.slice(1)}{" "} */}
           </p>
         );
       },
@@ -844,7 +775,6 @@ function TransactionDetails() {
         </div>
 
         <>
-          {/* <Tabs defaultActiveKey="1" items={TabItems} onChange={onChangeTabs} /> */}
           <Table
             pagination={false}
             columns={columns}

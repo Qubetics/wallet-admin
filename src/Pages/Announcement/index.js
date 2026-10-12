@@ -1,15 +1,6 @@
 // Know this page is cancel by shivam project
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Pagination,
-  Table,
-  Input,
-  Spin,
-  Select,
-  DatePicker,
-  Modal,
-} from "antd";
+import { Button, Pagination, Table, Input, Spin, DatePicker, Modal } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { setToast } from "../../Redux/slice/toastSlice";
 import { useForm, Controller } from "react-hook-form";
@@ -30,11 +21,10 @@ import moment from "moment";
 import dayjs from "dayjs";
 import "./Announcement.scss";
 import { encryption } from "../../common/encryption/encryption";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 const { confirm } = Modal;
 
 const Announcement = () => {
-  // ...............pagination...................
   const permission_type = sessionStorage.getItem("permission_type");
   const [perPage, setPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -101,7 +91,6 @@ const Announcement = () => {
     const securedData = { dataString: enc };
     await getAnnouncementist(securedData).then((res, err) => {
       if (res?.data?.data) {
-        console.log("here i am", res?.data?.data);
         setTableData(res?.data?.data);
         dispatch(setAnnouncementList(res?.data?.data?.data));
         dispatch(setAnnouncementListMeta(res?.data?.data?.meta));
@@ -134,7 +123,6 @@ const Announcement = () => {
       const securedData = { dataString: enc };
       await SaveAnnouncement(securedData).then((res) => {
         if (res?.data?.status) {
-          console.log("resssss", res?.data?.message);
           setDisabled(false);
           reset({
             schedule_time: "",
@@ -323,7 +311,6 @@ const Announcement = () => {
                 });
               },
               onCancel() {
-                console.log("Cancel");
               },
             });
           }}

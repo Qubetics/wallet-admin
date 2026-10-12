@@ -78,9 +78,7 @@ export const getOptimalComputeUnitLimitAndPrice = async (payload, connection) =>
         await getReferralReferenceFeeInMicroLamports();
 
     return {
-        // `computeUnitLimit`
         units: simulationUnitsWithMarginError,
-        // `computeUnitPrice`
         microLamports: referenceFeeInMicroLamports,
     };
 };

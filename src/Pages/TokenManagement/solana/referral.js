@@ -29,8 +29,6 @@ export const getReferralTokenAccountPubKey = ({
   program,
 }) => {
   try {
-    // console.log('referralAccountPubKey222 >>>', referralAccountPubKey);
-    console.log('getReferralTokenAccountPubKey mint >>>', mint.toBase58());
     const [referralTokenAccountPubKey] = PublicKey.findProgramAddressSync(
       [
         Buffer?.from('referral_ata'),
@@ -39,10 +37,8 @@ export const getReferralTokenAccountPubKey = ({
       ],
       program.programId
     );
-    console.log('getReferralTokenAccountPubKey >>>', referralTokenAccountPubKey);
     return referralTokenAccountPubKey;
   } catch (error) {
-    console.log('getReferralTokenAccountPubKey error >>>>', error);
   }
 
 };
@@ -54,7 +50,6 @@ export const initializeReferralTokenAccount = async ({
   connection,
   program,
 }) => {
-  console.log('mint >>>', mint);
   const mintAccount = await connection.getAccountInfo(mint);
   if (!mintAccount) throw new Error('Invalid mint');
 
@@ -64,17 +59,14 @@ export const initializeReferralTokenAccount = async ({
     )
   )
     throw new Error('Invalid mint');
-  console.log('mint22 >>>', mint);
   const referralAccount = await program.account.referralAccount.fetch(
     referralAccountPubKey
   );
-  console.log('mint33 >>>', mint);
   const referralTokenAccountPubKey = getReferralTokenAccountPubKey({
     referralAccountPubKey,
     mint,
     program,
   });
-  console.log('mint44 >>>', mint.toBase58());
   const tx = await program.methods
     .initializeReferralTokenAccount()
     .accounts({
@@ -86,19 +78,14 @@ export const initializeReferralTokenAccount = async ({
       tokenProgram: mintAccount.owner,
     })
     .transaction();
-  //   return { tx, referralTokenAccountPubKey };
-  console.log('mint555 >>>', mint);
   let resData = {
     tx,
     referralTokenAccountPubKey,
   };
   let token = mint.toBase58();
-  //   resData[token] = referralTokenAccountPubKey;
   resData['token'] = token;
   resData['key'] = referralTokenAccountPubKey;
-  console.log('RESPONSE DATASSSSSSSSSSSS ', resData);
   return resData;
-  // return { tx, `${token}`: referralTokenAccountPubKey };
 };
 
 export const getReferralTokenAccountsWithStrategy = async (
@@ -117,11 +104,9 @@ export const getReferralTokenAccountsWithStrategy = async (
       ).slice(0, strategy.topN);
       return topTokens;
     } else if (strategy.type === 'token-list') {
-      console.log('token-list >>>>>>>>', referralAccountAddress);
       const tokens = (
         await (await fetch(`https://token.jup.ag/${strategy.tokenList}`)).json()
       ).map(({ address }) => address);
-      console.log('tokens >>>>>>>>', tokens);
       return tokens;
     } else {
       throw new Error('Invalid strategy');
@@ -142,7 +127,6 @@ export const getReferralTokenAccountsWithStrategy = async (
     connection,
     referralTokenAccounts
   );
-  console.log('accountInfos >>>', accountInfos);
   for (const [index, accountInfo] of accountInfos.entries()) {
     if (!accountInfo) continue;
     const address = referralTokenAccounts[index];
@@ -158,8 +142,6 @@ export const getReferralTokenAccountsWithStrategy = async (
       token2022Accounts.push(rawAccountWithPubkey);
     }
   }
-  console.log('tokenAccounts >>>>>', tokenAccounts);
-  console.log('tokenAccounts token2022Accounts>>>>>', token2022Accounts);
   return {
     tokenAccounts,
     token2022Accounts,
@@ -174,7 +156,6 @@ export const getReferralTokenAccounts = async (
   const referralAccount = await program.account.referralAccount.fetch(
     new PublicKey(referralAccountAddress),
   );
-  console.log('referralAccount >>>.', referralAccount);
   const [tokenAccounts, token2022Accounts] = await Promise.all(
     [TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID].map(async (programId) => {
       const mintSet = new Set();
@@ -186,8 +167,6 @@ export const getReferralTokenAccounts = async (
         referralAccount.project,
         { programId },
       );
-
-      //console.log('allTokenAccounts >>>.', allTokenAccounts);
 
       // get unique mint and all token accounts
       allTokenAccounts.value.map((tokenAccount) => {
@@ -205,14 +184,10 @@ export const getReferralTokenAccounts = async (
 
         tokenAccountMap.set(tokenAccount.pubkey.toBase58(), accountData);
       });
-      console.log('possibleTokenAccountSet >>>', possibleTokenAccountSet);
       // loop through mint and find token account belong to referral account
       return Array.from(possibleTokenAccountSet).reduce((acc, address) => {
 
-        console.log('acc >>.', acc);
-        console.log('address >>.', address);
         const tokenAccount = tokenAccountMap.get(address);
-        console.log('tokenAccount >>.', tokenAccount);
         if (tokenAccount) {
           acc = { pubkey: new PublicKey(address), account: tokenAccount };
         }
@@ -232,15 +207,11 @@ export const ReferralTokenAccountsWithStrategy = async (
   connection
 ) => {
   const tokensPrices = await (async () => {
-    // console.log('tokenDatatokenDatatokenData', tokens);
-    //return false;
 
     if (tokens.length > 100) {
       const chunkedTokens = chunk(tokens, 100);
-      console.log('chunkedTokens >>>', chunkedTokens);
 
       let fetchPromises = chunkedTokens.map(async (chunkToken) => {
-        console.log('chunkToken >>>', chunkToken);
         const tokenData = chunkToken.length > 0 && chunkToken[0].token_address != undefined ? chunkToken?.map((token) => token.token_address).join(',') : chunkToken.join(',');
 
         const response = await fetch(
@@ -248,16 +219,11 @@ export const ReferralTokenAccountsWithStrategy = async (
         );
         const data = await response.json();
 
-        console.log('data >>.', data?.data);
-
         // Return the fetched data
         return data?.data;
 
       });
       const results = await Promise.all(fetchPromises);
-      // console.log('results22 >>.', results );
-      // console.log('results22 >>.', Object.keys(results[0]).length);
-      // console.log('results22 >>.', Object.keys(results[1]).length);
       // Merge all results into a single object
       const prices = results.reduce((acc, current) => {
         if (current) {
@@ -265,7 +231,6 @@ export const ReferralTokenAccountsWithStrategy = async (
         }
         return acc;
       }, {});
-      console.log('prices >>.', Object.keys(prices).length);
       return prices;
     } else {
       const tokenData = tokens.length > 0 && tokens[0].token_address != undefined ? tokens?.map((token) => token.token_address).join(',') : tokens.join(',');
@@ -273,30 +238,11 @@ export const ReferralTokenAccountsWithStrategy = async (
         `https://price.jup.ag/v4/price?ids=${tokenData}`
       );
       const data = await response.json();
-      console.log('data22 >>.', data);
       return data?.data;
     }
 
-
-    // if (strategy.type === 'top-tokens') {
-    //   const topTokens = (
-    //     await (await fetch('https://cache.jup.ag/top-tokens')).json()
-    //   ).slice(0, strategy.topN);
-    //   return topTokens;
-    // } else if (strategy.type === 'token-list') {
-    //   console.log('token-list >>>>>>>>', referralAccountAddress);
-    //   const tokens = (
-    //     await (await fetch(`https://token.jup.ag/${strategy.tokenList}`)).json()
-    //   ).map(({ address }) => address);
-    //   console.log('tokens >>>>>>>>', tokens);
-    //   return tokens;
-    // } else {TransactionMessage,
-    //   throw new Error('Invalid strategy');
-    // }
   })();
 
-  // console.log('tokensPrices >>>', tokensPrices);
-  // console.log('tokens222 >>>', tokens);
   const referralTokenAccounts = tokens?.map((topToken) =>
     getReferralTokenAccountPubKey({
       referralAccountPubKey: new PublicKey(referralAccountAddress),
@@ -304,7 +250,6 @@ export const ReferralTokenAccountsWithStrategy = async (
       program,
     })
   );
-  // console.log('tokensPrices referralTokenAccounts >>>', referralTokenAccounts);
 
   const tokenAccounts = [];
   const token2022Accounts = [];
@@ -312,7 +257,6 @@ export const ReferralTokenAccountsWithStrategy = async (
     connection,
     referralTokenAccounts
   );
-  // console.log('accountInfos >>>', accountInfos);
   for (const [index, accountInfo] of accountInfos.entries()) {
     if (!accountInfo) continue;
     const address = referralTokenAccounts[index];
@@ -328,8 +272,6 @@ export const ReferralTokenAccountsWithStrategy = async (
       token2022Accounts.push(rawAccountWithPubkey);
     }
   }
-  //console.log('tokenAccounts >>>>>', tokenAccounts);
-  //console.log('tokenAccounts token2022Accounts>>>>>', token2022Accounts);
   return {
     tokenAccounts,
     token2022Accounts,
@@ -353,9 +295,6 @@ export const claim = async (
   program,
   connection
 ) => {
-  console.log('mint >>>>', mint)
-  console.log('payerPubKey >>>>', payerPubKey)
-  console.log('referralAccountPubKey >>>>', referralAccountPubKey)
   const mintAccount = await connection.getAccountInfo(mint);
   if (!mintAccount) throw new Error("Invalid mint");
 
@@ -365,7 +304,6 @@ export const claim = async (
     )
   )
     throw new Error("Invalid mint");
-  console.log('mintAccount.owner >>>', mintAccount.owner);
   const referralAccount = await program.account.referralAccount.fetch(
     referralAccountPubKey,
   );
@@ -402,8 +340,6 @@ export const claim = async (
   ]);
 
   let preInstructions = [];
-  console.log('createPartnerTokenAccountIx ', createPartnerTokenAccountIx);
-  console.log('createProjectAdminTokenAccountIx ', createProjectAdminTokenAccountIx);
   if (createPartnerTokenAccountIx)
     preInstructions.push(createPartnerTokenAccountIx);
   if (createProjectAdminTokenAccountIx) {
@@ -422,7 +358,6 @@ export const claim = async (
 
     preInstructions.push(ix);
   }
-  console.log('preInstructions >>>', preInstructions);
   const transaction = await program.methods
     .claim()
     .accounts({
@@ -558,9 +493,7 @@ export const claimPartially = async (
       };
     }),
   );
-  console.log('claimInstructionParams ', claimInstructionParams);
   const chunkedInstructions = chunk(claimInstructionParams, 4);
-  console.log('chunkedInstructions >>>', chunkedInstructions);
   const txs = await Promise.all(
     chunkedInstructions.map(async (chunkParams) => {
       let instructions = [];
@@ -629,7 +562,6 @@ export const claimPartially = async (
   return txs;
 }
 
-
 export const claimAll = async (
   payerPubKey,
   referralAccountPubKey,
@@ -661,8 +593,6 @@ export const claimAll = async (
     )
     : await getReferralTokenAccounts(referralAccountPubKey.toString(), program,
       connection);
-  console.log('tokenAccounts >>>', tokenAccounts);
-  console.log('token2022Accounts >>>', token2022Accounts);
   const vtTxs = await Promise.all(
     [tokenAccounts, token2022Accounts].map(async (accounts, idx) => {
       const tokenProgramId =

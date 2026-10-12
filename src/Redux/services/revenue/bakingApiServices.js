@@ -24,9 +24,7 @@ export const BankingApiService = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
-              //   window.location.reload();
               dispatch(setUser(null));
             }, 1000);
           }
@@ -45,7 +43,6 @@ export const BankingApiService = apiSlice.injectEndpoints({
           await queryFulfilled;
         } catch (error) {
           if (error.error.status === 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -53,9 +50,7 @@ export const BankingApiService = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
-              //   window.location.reload();
               dispatch(setUser(null));
             }, 1000);
           }
@@ -74,7 +69,6 @@ export const BankingApiService = apiSlice.injectEndpoints({
            await queryFulfilled;
         } catch (error) {
           if (error.error.status === 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -82,7 +76,6 @@ export const BankingApiService = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -102,7 +95,6 @@ export const BankingApiService = apiSlice.injectEndpoints({
          await queryFulfilled;
         } catch (error) {
           if (error.error.status === 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -110,7 +102,6 @@ export const BankingApiService = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);
@@ -130,7 +121,6 @@ export const BankingApiService = apiSlice.injectEndpoints({
           await queryFulfilled;
         } catch (error) {
           if (error.error.status === 408) {
-            // alert("Session timeout , please login again");
             dispatch(
               setToast({
                 message: "Session timeout , please login again",
@@ -138,7 +128,6 @@ export const BankingApiService = apiSlice.injectEndpoints({
               })
             );
             setTimeout(() => {
-              // localStorage.clear();
               clearStorage();
               window.location.reload();
             }, 1000);

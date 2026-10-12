@@ -45,7 +45,6 @@ function App() {
   }, []);
 
   const _onActive = (e) => {
-    // this.setState({isTimedOut: false})
   };
 
   const _onIdle = () => {
@@ -134,7 +133,6 @@ function App() {
             <Route index path="/revenue" element={<CommissionSetting />}/>
             <Route index path="/settings" element={<Setting />} />
             <Route index path="/swap" element={<Revenue />} />
-            {/* <Route index path="/revenue" element={<Revenue />} /> */}
             <Route
               index
               path="/default-token-management"

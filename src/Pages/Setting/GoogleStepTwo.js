@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { Input, Modal } from "antd";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,7 +9,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 import { setToast } from "../../Redux/slice/toastSlice";
-import { useNavigate } from "react-router-dom";
 const schema = yup
   .object({
     password: yup.string().required("Password is required"),

@@ -3,7 +3,7 @@ import { Spin, Table, Row, Col, Card } from "antd";
 import "./Dashboard.scss";
 import * as moment from "moment";
 import { truncate } from '../../Helper/StringFormat';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { useGetTransactionsDataMutation } from "../../Redux/services/TransactionsDetail/TransactionsDetailApiSlice";
 import { useGetDeviceUserDataQuery } from "../../Redux/services/DashboardServicces/DashboardApiSlice";
 import { setDeviceUsers } from "../../Redux/slice/DashboardDetailsSlice";

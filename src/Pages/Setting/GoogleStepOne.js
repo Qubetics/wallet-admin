@@ -13,7 +13,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGoogleAuthEnableDisableMutation } from "../../Redux/services/SettingServices/SettingServicesApiSlice";
 import "./Setting.scss";
-import { useNavigate } from "react-router-dom";
 import { setToast } from "../../Redux/slice/toastSlice";
 const schema = yup
   .object({

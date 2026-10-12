@@ -17,20 +17,17 @@ import { useGetRevenueTransactionsDataMutation } from "../../Redux/services/reve
 import { formatNumberCrypto, formatNumberUSD } from "../../Helper/FormatNumber";
 
 function Banking() {
-  const [checked, setChecked] = useState(true);
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [SearchData, SetSearchData] = useState("");
-  const [baseUrl, setbaseUrl] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
-  const inputRef = useRef();
   const dispatch = useDispatch();
   const [search, setSearch] = useState(false);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const [coin_family, setCoinFamily] = useState(0);
-  const [filterAddedBy, setFilterAddedBy] = useState("0");
+  const [filterAddedBy] = useState("0");
   const [getRevenueTransactionsData, { isLoading }] =
     useGetRevenueTransactionsDataMutation();
 
@@ -108,12 +105,7 @@ function Banking() {
     })
     .required();
 
-  const {
-    handleSubmit,
-    control,
-    // setValue,
-    formState: { errors },
-  } = useForm({
+  const { control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 

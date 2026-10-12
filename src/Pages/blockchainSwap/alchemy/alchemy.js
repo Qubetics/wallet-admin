@@ -21,7 +21,7 @@ import {
 } from "../../../Helper/FormatNumber";
 
 function Alchemy() {
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [SearchData, SetSearchData] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
@@ -31,7 +31,7 @@ function Alchemy() {
   const [toDate, setToDate] = useState(null);
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const [coin_family, setCoinFamily] = useState(0);
-  const [filterAddedBy, setFilterAddedBy] = useState("0");
+  const [filterAddedBy] = useState("0");
   const [getRevenueTransactionsData, { isLoading }] =
     useGetRevenueTransactionsDataMutation();
 
@@ -117,12 +117,7 @@ function Alchemy() {
     })
     .required();
 
-  const {
-    handleSubmit,
-    control,
-    // setValue,
-    formState: { errors },
-  } = useForm({
+  const { control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 

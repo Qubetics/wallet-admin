@@ -61,15 +61,7 @@ const EditPermissionsForm = ({
     })();
   }, [menus, edit_data?.permission_data]);
 
-  const {
-    handleSubmit,
-    reset,
-    control,
-    setValue,
-    touched,
-    trigger,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  const { handleSubmit, control, setValue, trigger, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   const onFormSubmit = async (data) => {
     try {

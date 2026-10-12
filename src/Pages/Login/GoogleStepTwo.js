@@ -22,13 +22,6 @@ const schema = yup.object({
 
 const GoogleStepTwo = ({ isOpenStepTwo, closeCardModal, action ,loginCred }) => {
   const dispatch = useDispatch();
-  const [hideShowDivOne, setHideShowDivOne] = useState(false);
-  const [hideShowDivTwo, setHideShowDivTwo] = useState(true);
-  const userData = useSelector((state) => state?.userState);
-  const [apiError, setApiError] = useState("");
-  const loginResponseData = useSelector(
-    (state) => state?.userState?.loginResponseData
-  );
 
   const [menuList, { menuIsLoading }] = useLazyMenuListQuery();
   const [loginAuth, { isLoading }] = useLoginAuthMutation();
@@ -46,20 +39,9 @@ const GoogleStepTwo = ({ isOpenStepTwo, closeCardModal, action ,loginCred }) => 
     });
   };
 
-  const {
-    handleSubmit,
-    control,
-    trigger,
-    setValue,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, trigger, setValue, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
-  const handleOk = () => {
-    closeCardModal();
-    resetModal();
-    // this is use for ok button loading
-  };
 
   const resetModal = () => {
     if (errors?.token?.message) {

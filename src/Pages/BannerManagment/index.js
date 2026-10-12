@@ -26,9 +26,9 @@ const { confirm } = Modal;
 
 const BannerManagement = () => {
   const permission_type = sessionStorage.getItem("permission_type");
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [schedule, setSchedule] = useState(false);
+  const [schedule] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [bannerImage, setBannerImage] = useState(null);
   const [imageName, setImageName] = useState("");
@@ -96,14 +96,9 @@ const BannerManagement = () => {
     }
   };
 
-  const AnnouncementDetails = useSelector(
-    (state) => state?.Announcement?.announcementList
-  );
   const AnnouncementListMeta = useSelector(
     (state) => state?.Announcement?.announcementListMeta
   );
-
-  const IpData = useSelector((state) => state?.userState?.ipData);
 
   const schema = yup
     .object({
@@ -150,18 +145,7 @@ const BannerManagement = () => {
         }),
     })
     .required();
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    touched,
-    trigger,
-    reset,
-    clearErrors,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
-
-  const { TextArea } = Input;
+  const { handleSubmit, control, setValue, trigger, reset, clearErrors, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   useEffect(() => {
     reset({
@@ -296,14 +280,6 @@ const BannerManagement = () => {
 
   const handlePagenationChange = (event) => {
     setCurrentPage(event);
-  };
-
-  const range = (start, end) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-      result.push(i);
-    }
-    return result;
   };
 
   const disabledDate = (current) => {

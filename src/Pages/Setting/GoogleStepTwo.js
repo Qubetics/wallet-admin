@@ -32,22 +32,14 @@ const GoogleStepTwo = ({
   closeCardModal,
 }) => {
   const dispatch = useDispatch();
-  const [hideShowDivOne, setHideShowDivOne] = useState(false);
-  const [hideShowDivTwo, setHideShowDivTwo] = useState(true);
+  const [, setHideShowDivOne] = useState(false);
+  const [, setHideShowDivTwo] = useState(true);
   const [disabledButton, setDisabledButton] = useState(false);
 
-  const userData = useSelector((state) => state?.userState?.user);
   const [googleAuthEnableDisable, { isLoading }] =
     useGoogleAuthEnableDisableMutation();
 
-  const {
-    handleSubmit,
-    control,
-    trigger,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, trigger, setValue, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -73,8 +65,6 @@ const GoogleStepTwo = ({
     resetModal();
     reset();
   };
-
-  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     let validation = await trigger();

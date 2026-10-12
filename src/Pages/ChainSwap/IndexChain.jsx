@@ -22,7 +22,6 @@ function IndexChain() {
   const [PanCakeSwapFees, setPanCakeSwapFees] = useState(null);
   const [PulseSwapFees, setPulseSwapFees] = useState(null);
   const [solanaSwapFees, setSolanaSwapFees] = useState(null);
-  const location = useLocation();
   const user = useSelector((state) => state?.userState?.user);
   const dispatch = useDispatch();
   const { isLoading: fetchIsLoading, refetch, data } = useGetMarkupFeesQuery();

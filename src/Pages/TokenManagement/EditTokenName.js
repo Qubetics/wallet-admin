@@ -28,15 +28,7 @@ const EditTokenNameForm = ({
   const [StateCoinName, setStateCoinName] = useState("");
   const [editTokenNames, { isLoading }] = useEditTokenNameMutation();
   const dispatch = useDispatch();
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    touched,
-    trigger,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  const { handleSubmit, control, setValue, trigger, reset, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   useEffect(() => {
     (() => {

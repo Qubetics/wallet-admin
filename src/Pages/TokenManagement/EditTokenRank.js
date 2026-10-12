@@ -25,15 +25,7 @@ const EditTokenRankForm = ({
   const [tokenRank, setTokenRank] = useState(0);
   const [EditTokenRank, { isLoading }] = useEditTokenRankMutation();
   const dispatch = useDispatch();
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    touched,
-    trigger,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  const { handleSubmit, control, setValue, trigger, reset, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   useEffect(() => {}, [setValue]);
 

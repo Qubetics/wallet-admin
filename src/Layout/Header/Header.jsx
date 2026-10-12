@@ -17,8 +17,6 @@ function Header({ toggleSidebar, collapsed }) {
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const selectedTab = useSelector((state) => state.sidebarState.data);
-
   useEffect(() => {
     const path = getLocation.pathname.replace("/", "");
 

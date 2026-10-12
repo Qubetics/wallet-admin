@@ -46,19 +46,19 @@ const TokenManagement = () => {
   const permission_type = sessionStorage.getItem("permission_type");
   const [modal2Open, setModal2Open] = useState(false);
   const [EditModalOpen, setEditModalOpen] = useState(false);
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterAddedBy, setFilterAddedBy] = useState("1");
   const [coin_family, setCoinFamily] = useState(0);
   const [disabledButton, setDisabledButton] = useState(false);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [getTokenTableData, { isLoading }] = useGetTokenTableDataMutation();
-  const [tokenShortlist, {}] = useTokenShortlistMutation();
+  const [, {}] = useTokenShortlistMutation();
   const [swapAction, {}] = useSwapActionMutation();
   const [ActionEnableDisable, {}] = useActionEnableDisableMutation();
   const [MakeRemoveDefaultToken, {}] = useMakeRemoveDefaultTokenMutation();
-  const [saveTokenReferralAccount, { isLoading: saveAccountLoading }] =
+  const [, { isLoading: saveAccountLoading }] =
     useSaveTokenReferralAccountMutation();
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
@@ -68,17 +68,11 @@ const TokenManagement = () => {
   const [action, SetAction] = useState("");
   const [SearchData, SetSearchData] = useState("");
   const [TokenId, setTokenId] = useState("");
-  const [swapLoading, setSwapChangeLoading] = useState(false);
-  const [disableToggleShortList, setDisableToggleShortList] = useState(true);
-  const [disableToggleSwap, setDisableToggleSwap] = useState(true);
+  const [, setSwapChangeLoading] = useState(false);
+  const [, setDisableToggleSwap] = useState(true);
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const IpData = useSelector((state) => state?.userState?.ipData);
   const [tableData, setTableData] = useState([]);
-  const TokenDetails = useSelector((state) => state?.TokenTableData?.data);
-  const TokenDetailsMeta = useSelector((state) => state?.TokenTableData?.meta);
-  const swapRequestCount = useSelector(
-    (state) => state?.TokenTableData?.swapRequestCount
-  );
   
 
   const columns = [
@@ -564,11 +558,6 @@ const TokenManagement = () => {
       centered: true,
       async onOk() {
         SetAction("");
-        let swap_data = {
-          id: value.id,
-          status: value.status,
-          // ip_address: IpData?.ip,
-        };
         setDisableToggleSwap(false);
         setSwapChangeLoading(true);
         const enc = await encryption(
@@ -598,55 +587,6 @@ const TokenManagement = () => {
             }
             setSwapChangeLoading(false);
             setDisableToggleSwap(true);
-          }
-        });
-      },
-      onCancel() {
-      },
-    });
-  };
-
-  const onChangeShortlist = async (value) => {
-    confirm({
-      title:
-        value.status == 1
-          ? "Do you want to shortlist this token?"
-          : "Do you want to unshortlist this token?",
-      icon: <ExclamationCircleFilled />,
-      centered: true,
-      onOk() {
-        SetAction("");
-        let shortlist_data = {
-          id: value.id,
-          is_shortlist: value.status,
-          ip_address: IpData?.ip,
-        };
-        setDisableToggleShortList(false);
-        setSwapChangeLoading(true);
-
-        tokenShortlist(shortlist_data).then(async (res, err) => {
-          if (res?.data?.data?.status) {
-            SetAction("token_shortlist");
-            dispatch(
-              setToast({ message: `${res?.data?.data?.message}`, status: true })
-            );
-            setSwapChangeLoading(false);
-            setDisableToggleShortList(true);
-          } else {
-            if (!res?.error?.data?.status && res?.error?.data?.message) {
-              dispatch(
-                setToast({
-                  message: `${res?.error?.data?.message}`,
-                  status: false,
-                })
-              );
-            } else {
-              dispatch(
-                setToast({ message: `Something went wrong`, status: false })
-              );
-            }
-            setSwapChangeLoading(false);
-            setDisableToggleShortList(true);
           }
         });
       },
@@ -884,9 +824,6 @@ const TokenManagement = () => {
       );
       setEditModalOpen(true);
     }
-  };
-
-  const handleImageError = (event) => {
   };
 
   const renderTokenType = (token_type, coin_family) => {

@@ -14,7 +14,7 @@ import eye2 from "../../Images/eye.png";
 import validationRule from "../../common/validation_rules";
 import { clearStorage } from "../../common/constant/constant";
 
-const schema = yup.object({
+yup.object({
   old_password: yup
     .string()
     .required("Old password is required"),
@@ -41,10 +41,8 @@ const schema = yup.object({
 });
 
 const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [confirmLoading] = useState(false);
   const [changePassword, { isLoading }] = useChangePasswordMutation();
-
-  const IpData = useSelector((state) => state?.userState?.ipData);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -132,54 +130,6 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
     setAllState({ ...allState, errors: { ...error } });
     return isValidate;
   };
-
-  function validatePassword(password) {
-    const errors = [];
-
-    if (password.length < 8) {
-      dispatch(
-        setToast({
-          message: "Password should be at least 8 characters long",
-        })
-      );
-      errors.push("Password should be at least 8 characters long");
-    } else if (password.length > 64) {
-      dispatch(
-        setToast({
-          message: "Password should not be more than 64 characters long",
-        })
-      );
-      errors.push("Password should not be more than 64 characters long");
-    } else if (!/[A-Z]/.test(password)) {
-      dispatch(
-        setToast({
-          message: "Password should contain at least one uppercase letter",
-        })
-      );
-      errors.push("Password should contain at least one uppercase letter");
-    } else if (!/[a-z]/.test(password)) {
-      dispatch(
-        setToast({
-          message: "Password should contain at least one lowercase letter",
-        })
-      );
-      errors.push("Password should contain at least one lowercase letter");
-    } else if (!/[0-9]/.test(password)) {
-      dispatch(
-        setToast({ message: "Password should contain at least one number" })
-      );
-      errors.push("Password should contain at least one number");
-    } else if (!/[^A-Za-z0-9]/.test(password)) {
-      dispatch(
-        setToast({
-          message: "Password should contain at least one special character",
-        })
-      );
-      errors.push("Password should contain at least one special character");
-    }
-
-    return errors;
-  }
 
   const handleOk = async () => {
     var validationData = {

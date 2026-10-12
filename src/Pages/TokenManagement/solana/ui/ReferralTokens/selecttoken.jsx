@@ -39,7 +39,7 @@ const schema = yup
 export default function SelectTokenComponent() {
   const childRef = useRef();
   const [count, setCount] = useState(0);
-  const { publicKey, sendTransaction, wallet, connected } = useWallet();
+  const { publicKey, wallet, connected } = useWallet();
   const connection = new Connection(network, opts.preflightCommitment);
   window.Buffer = Buffer;
   const dispatch = useDispatch();
@@ -129,12 +129,7 @@ export default function SelectTokenComponent() {
 
     return { tx, referralTokenAccounts };
   };
-  const {
-    reset,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -183,8 +178,7 @@ export default function SelectTokenComponent() {
           });
           const transaction = new Transaction().add(tx);
           transaction.feePayer = publicKey;
-          const { blockhash, lastValidBlockHeight } =
-            await connection.getLatestBlockhash();
+          await connection.getLatestBlockhash();
           let txid = await wallet.adapter.sendTransaction(
             transaction,
             connection,
@@ -289,7 +283,7 @@ export default function SelectTokenComponent() {
     }
   };
   const handleSendTransactionError = async (error) => {
-    const { logs, transactionSignature } = error;
+    const { logs } = error;
     return await parseInsufficientLamportsError(logs);
   };
 

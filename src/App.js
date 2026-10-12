@@ -36,7 +36,6 @@ function App() {
   const toastify = useMemo(() => <Toastify toast={toast} />, [toast]);
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     if (sessionStorage.getItem("isActive") == null && isRemeber === "false") {
@@ -50,26 +49,7 @@ function App() {
   const _onIdle = () => {
     dispatch(logout({ navigate: navigate }));
   };
-  const {
-    start,
-    reset,
-    activate,
-    pause,
-    resume,
-    isIdle,
-    getTabId,
-    isPrompted,
-    isLeader,
-    isLastActiveTab,
-    getRemainingTime,
-    getElapsedTime,
-    getLastIdleTime,
-    getLastActiveTime,
-    getIdleTime,
-    getTotalIdleTime,
-    getActiveTime,
-    getTotalActiveTime,
-  } = useIdleTimer({
+  useIdleTimer({
     // onPresenceChange,
     // onPrompt,
     _onIdle,

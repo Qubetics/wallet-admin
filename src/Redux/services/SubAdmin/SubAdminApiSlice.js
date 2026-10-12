@@ -12,7 +12,7 @@ export const SubAdminApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
+          await queryFulfilled;
         } catch (error) {
           if (error.error.status === 408) {
 

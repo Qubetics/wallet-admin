@@ -25,14 +25,13 @@ import { CONFIG } from "../../common/constant/constant";
 const { confirm } = Modal;
 
 function DefaultTokenManagement() {
-  const navigate = useNavigate();
   const onChange = (value) => {};
   const permission_type = sessionStorage.getItem("permission_type");
 
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [action, setAction] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [disableToggleSwap, setDisableToggleSwap] = useState(false);
+  const [, setDisableToggleSwap] = useState(false);
 
   const [editTokenName, setEditTokenName] = useState("");
   const [EditModalOpen, setEditModalOpen] = useState(false);

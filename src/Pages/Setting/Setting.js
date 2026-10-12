@@ -32,7 +32,7 @@ function Setting() {
   const [isOpenStepTwo, setIsOpenStepTwo] = useState(false);
   const [action, setAction] = useState(false);
   const [_, setCallGoogleStepone] = useState(false);
-  const [__, setCallGoogleSteptwo] = useState(false);
+  const [, setCallGoogleSteptwo] = useState(false);
   const JWTToken = localStorage.getItem("jwt_token");
   useEffect(() => {
     appPermission();
@@ -41,55 +41,6 @@ function Setting() {
   const appPermission = async () => {
     appMaintenance();
   };
-
-  function validatePassword(password) {
-    const errors = [];
-
-    if (password.length < 8) {
-      dispatch(
-        setToast({
-          message: "Password should have a minimum length of 8 characters",
-        })
-      );
-      errors.push("Password should have a minimum length of 8 characters");
-    }
-
-    if (!/[A-Z]/.test(password)) {
-      dispatch(
-        setToast({
-          message: "Password should contain at least one uppercase letter",
-        })
-      );
-      errors.push("Password should contain at least one uppercase letter");
-    }
-
-    if (!/[a-z]/.test(password)) {
-      dispatch(
-        setToast({
-          message: "Password should contain at least one lowercase letter",
-        })
-      );
-      errors.push("Password should contain at least one lowercase letter");
-    }
-
-    if (!/[0-9]/.test(password)) {
-      dispatch(
-        setToast({ message: "Password should contain at least one number" })
-      );
-      errors.push("Password should contain at least one number");
-    }
-
-    if (!/[^A-Za-z0-9]/.test(password)) {
-      dispatch(
-        setToast({
-          message: "Password should contain at least one special character",
-        })
-      );
-      errors.push("Password should contain at least one special character");
-    }
-
-    return errors;
-  }
 
   const addUpdateCard = async (data, action) => {
     setIsOpen(true);
@@ -132,7 +83,6 @@ function Setting() {
     } catch (error) {
     }
   };
-  const navigate = useNavigate();
 
   const closeStepOneModal = () => {
     setIsOpenStepOne(false);

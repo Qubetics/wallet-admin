@@ -26,9 +26,9 @@ const { confirm } = Modal;
 
 const Announcement = () => {
   const permission_type = sessionStorage.getItem("permission_type");
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [schedule, setSchedule] = useState(false);
+  const [schedule] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [SaveAnnouncement, {}] = useSaveAnnouncementMutation();
   const [DeleteAnnouncement, {}] = useDeleteAnnouncementMutation();
@@ -37,13 +37,6 @@ const Announcement = () => {
     useGetAnnouncementNotificationMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const AnnouncementDetails = useSelector(
-    (state) => state?.Announcement?.announcementList
-  );
-  const AnnouncementListMeta = useSelector(
-    (state) => state?.Announcement?.announcementListMeta
-  );
 
   const IpData = useSelector((state) => state?.userState?.ipData);
 
@@ -66,15 +59,7 @@ const Announcement = () => {
       ? yup.string().nullable().required("Please select schedule date time")
       : yup.string().notRequired(),
   });
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    touched,
-    trigger,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  const { handleSubmit, control, setValue, trigger, reset, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   const { TextArea } = Input;
 
@@ -170,14 +155,6 @@ const Announcement = () => {
 
   const handlePagenationChange = (event) => {
     setCurrentPage(event);
-  };
-
-  const range = (start, end) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-      result.push(i);
-    }
-    return result;
   };
 
   const disabledDate = (current) => {

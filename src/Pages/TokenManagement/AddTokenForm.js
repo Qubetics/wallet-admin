@@ -30,7 +30,7 @@ import { setToast } from "../../Redux/slice/toastSlice";
 import { setAssetData } from "../../Redux/slice/TokenTableSlice";
 import AssetData from "./AssetsData";
 
-const schema = yup
+yup
   .object({
     TokenName: yup
       .string("Token Name is required")
@@ -142,19 +142,19 @@ const schema = yup
 const AddTokenForm = ({ handleAddTokenCancel }) => {
   const ref = useRef();
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [, setChecked] = useState(false);
   const [coinFamily, setCoinFamily] = useState(0);
   const [StateCoinName, setStateCoinName] = useState("");
   const [StateCoinSymbol, setStateCoinSymbol] = useState("");
-  const [PolicyId, setPolicyId] = useState("");
+  const [PolicyId] = useState("");
   const [SateCoinDecimal, setSateCoinDecimal] = useState("");
   const [ContractAddress, setContractAddress] = useState("");
   const [ContractError, setContractError] = useState(false);
-  const [addTokenImage, {}] = useAddTokenImageMutation();
-  const [assetsByPolicyId, {}] = useAssetsByPolicyIdMutation();
+  const [, {}] = useAddTokenImageMutation();
+  const [, {}] = useAssetsByPolicyIdMutation();
   const [seachTokenByAddress, { seachIsLoading }] = useSearchTokenMutation();
 
-  const [imageName, setImageName] = useState("");
+  const [, setImageName] = useState("");
   const [addToken, { isLoading }] = useAddTokenMutation();
   const dispatch = useDispatch();
 
@@ -164,7 +164,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
   const AssetTokenData = useSelector(
     (state) => state?.TokenTableData?.assetData
   );
-  const ipData = useSelector((state) => state?.userState?.ipData);
 
   const handleAssetsCancel = () => {
     setAssetsModalOpen(false);
@@ -199,15 +198,7 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
     }
   }, [ContractAddress]);
 
-  const {
-    handleSubmit,
-    reset,
-    control,
-    setValue,
-    touched,
-    trigger,
-    formState: { errors },
-  } = useForm();
+  const { handleSubmit, reset, control, setValue, trigger, formState: { errors } } = useForm();
   const STATIC_COIN_FAMILY = [
     {
       key: "ETH",
@@ -337,11 +328,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
       }
     }
     return "";
-  };
-
-  const isValidEthTokenAddress = (address) => {
-    const ethTokenAddressRegex = /^(0x)?[0-9a-fA-F]{40}$/;
-    return ethTokenAddressRegex.test(address);
   };
 
   const fetchCoinDataAndShow = async (tokenAddress, myCoinFamily) => {
@@ -485,58 +471,6 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
     });
   };
 
-  const setTokenShortlist = (checked) => {
-    setChecked(checked);
-  };
-
-  const onPolicyIdChanged = (e) => {
-    setValue("PolicyId", e.target.value);
-    if (e.target.value !== "") {
-      setPolicyId(e.target.value);
-      setConfirmLoading(true);
-      assetsByPolicyId({ policy_id: e.target.value }).then((res) => {
-        if (res.error) {
-          if (res?.error?.status == "FETCH_ERROR") {
-            setConfirmLoading(false);
-            dispatch(setToast({ message: "Network failed", status: false }));
-          } else {
-            setConfirmLoading(false);
-
-            if (
-              res?.error?.data?.message &&
-              Object.keys(res?.error?.data?.message).length > 0
-            ) {
-              dispatch(
-                setToast({ message: res?.error?.data?.message, status: false })
-              );
-            } else {
-              dispatch(
-                setToast({ message: "Something went wrong.", status: false })
-              );
-            }
-          }
-        } else {
-
-          if (res?.data) {
-            let token_data = res?.data?.data?.data;
-
-            dispatch(setAssetData({ data: token_data }));
-            setContractAddress(token_data[0]?.asset);
-            setConfirmLoading(false);
-          } else {
-            setConfirmLoading(false);
-            dispatch(
-              setToast({
-                message: `${res?.error?.data?.message}`,
-                status: false,
-              })
-            );
-
-          }
-        }
-      });
-    }
-  };
   
 
   return (

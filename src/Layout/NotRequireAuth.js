@@ -9,10 +9,6 @@ const NotRequireAuth = () => {
   );
   const location = useLocation();
 
-  const [jwtExpiration, setJwtExpiration] = useState("");
-  const navigate = useNavigate();
-  let dispatch = useDispatch();
-
   return !token ? (
     <Outlet />
   ) : (

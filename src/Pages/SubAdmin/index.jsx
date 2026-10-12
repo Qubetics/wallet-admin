@@ -17,7 +17,7 @@ const { confirm } = Modal;
 
 const SubAdminManagement = () => {
   const permission_type = sessionStorage.getItem("permission_type");
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const [subAdminList, { isLoading }] = useSubAdminListMutation();
@@ -27,7 +27,7 @@ const SubAdminManagement = () => {
   const [modalChangePermissionOpen, SetModalChangePermissionOpen] =
     useState(false);
   const [editData, setEditData] = useState(false);
-  const [enableSearchButton, setEnableSearchButton] = useState(false);
+  const [enableSearchButton] = useState(false);
 
   const IpData = useSelector((state) => state?.userState?.ipData);
 

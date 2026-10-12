@@ -40,23 +40,11 @@ const GoogleStepOne = ({
   const [hideShowDivTwo, setHideShowDivTwo] = useState(true);
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
-  const userDataState = useSelector(
-    (state) => state?.userState?.loginResponseData
-  );
-  const userState = useSelector((state) => state?.userState?.user);
-  const IpData = useSelector((state) => state?.userState?.ipData);
 
   const [googleAuthEnableDisable, { isLoading }] =
     useGoogleAuthEnableDisableMutation();
 
-  const {
-    handleSubmit,
-    reset,
-    control,
-    trigger,
-    setValue,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, control, trigger, setValue, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -92,8 +80,6 @@ const GoogleStepOne = ({
       .catch((err) => {
       });
   };
-
-  const navigate = useNavigate();
 
   const copyTextToClipboard = async (text) => {
     if ("clipboard" in navigator) {

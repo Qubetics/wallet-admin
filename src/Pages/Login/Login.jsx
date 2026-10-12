@@ -27,8 +27,7 @@ const schema = yup
 function Login() {
   const dispatch = useDispatch();
   const [loginAuth, { isLoading }] = useLoginAuthMutation();
-  const userData = useSelector((state) => state.userState.authentication);
-  const [googleSecretKeyData, setGoogleSecretKeyData] = useState(false);
+  const [googleSecretKeyData] = useState(false);
   const [loginButton, setLoginButton] = useState(false);
   const [isOpenStepTwo, setIsOpenStepTwo] = useState(false);
   const [menuList, { menuIsLoading }] = useLazyMenuListQuery();

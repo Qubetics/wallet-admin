@@ -24,7 +24,7 @@ import { setToast } from '../../../../../Redux/slice/toastSlice';
 const AddedTokenList = forwardRef((props, ref) => {
   const permission_type = sessionStorage.getItem("permission_type");
   const [page, setPage] = useState(1);
-  const [allLimit, _] = useState(1500);
+  const [allLimit] = useState(1500);
   const [tokenRecrods, settTokenRecrods] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -243,9 +243,6 @@ const AddedTokenList = forwardRef((props, ref) => {
 
     }
   }
-  function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
   const claimAllTokenReferralAmount = async () => {
     try {
@@ -445,7 +442,7 @@ const AddedTokenList = forwardRef((props, ref) => {
   }
 
   const handleSendTransactionError = async (error) => {
-    const { logs, transactionSignature } = error;
+    const { logs } = error;
     return await parseInsufficientLamportsError(logs);
   };
   const parseInsufficientLamportsError = async (logs) => {

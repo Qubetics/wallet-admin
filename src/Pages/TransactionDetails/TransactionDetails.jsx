@@ -22,31 +22,22 @@ import { handleUnauthorizedError } from "../../common/constant/constant";
 
 function TransactionDetails() {
   const [checked, setChecked] = useState(true);
-  const [perPage, setPage] = useState(10);
+  const [perPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [SearchData, SetSearchData] = useState("");
-  const [baseUrl, setbaseUrl] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
 
-  const inputRef = useRef();
   const dispatch = useDispatch();
 
-  const [search, setSearch] = useState(false);
+  const [, setSearch] = useState(false);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [enableSearchButton, setEnableSearchButton] = useState(false);
   const [coin_family, setCoinFamily] = useState(0);
-  const [filterAddedBy, setFilterAddedBy] = useState("0");
+  const [filterAddedBy] = useState("0");
   const [tableData, setTableData] = useState([]);
   const [getTransactionsListData, { isLoading }] =
     useGetTransactionListDataMutation();
-
-  let TransactionsDetails = useSelector(
-    (state) => state?.TransactionData?.listData
-  );
-  let TransactionsDetailsMeta = useSelector(
-    (state) => state?.TransactionData?.meta
-  );
 
   const getTransactionsDataFn = async (
     myFromData,
@@ -126,70 +117,6 @@ function TransactionDetails() {
   //       "page":currentPage,
   //       "limit":perPage
 
-  const renderSwitch = (type) => {
-    switch (type) {
-      case "1":
-        setbaseUrl({ baseUrl: "https://etherscan.io/tx/" });
-        break;
-
-      default:
-    }
-
-    //   // Live
-    //   case "1":
-    //   case 1:
-    //   case "2":
-    //   case 2:
-    //       baseUrl: "https://live.blockcypher.com/btc/tx/", //https://live.blockcypher.com/btc/address/"
-    //   case "3":
-    //   case 3:
-    //   case "4":
-    //   case 4:
-    //       baseUrl: "https://tronscan.org/#/transaction/", //https://tronscan.org/#/address/
-    //   case "5":
-    //   case 5:
-    //       baseUrl: "https://blockexplorer.one/ltc/mainnet/tx/", //https://live.blockcypher.com/ltc/address/
-    //   case "6":
-    //   case 6:
-    //       baseUrl: "https://blockexplorer.one/dash/mainnet/tx/", //https://live.blockcypher.com/dash/address/
-    //   case "7":
-    //   case 7:
-    //       baseUrl: "https://blockexplorer.one/bch/mainnet/tx/", //https://blockchair.com/bitcoin-cash/address/
-    //   case "9":
-    //   case 9:
-    //       baseUrl: "https://polkadot.subscan.io/extrinsic/",
-    //   case "10":
-    //   case 10:
-    //       baseUrl: "https://kusama.subscan.io/extrinsic/",
-
-    //   case "11":
-    //   case 11:
-    //       baseUrl: "https://blockchair.com/dogecoin/transaction/",
-
-    //   case "12":
-    //   case 12:
-    //       baseUrl: "https://www.confluxscan.io/transaction/",
-    //   case "13":
-    //   case 13:
-    //   case "14":
-    //   case 14:
-
-    //   case "17":
-    //   case 17:
-    //   case "18":
-    //   case 18:
-    //   case "19":
-    //   case 19:
-    //   case "20":
-    //   case 20:
-    //       baseUrl: "https://tzkt.io/", //https://hecoinfo.com/tx/
-    //   case "21":
-    //   case 21:
-    //       baseUrl: "https://stellarchain.io/tx/",
-    //   default:
-    //       baseUrl: "",
-  };
-
   const handlePagenationChange = (event) => {
     if (!enableSearchButton) {
       SetSearchData("");
@@ -197,9 +124,6 @@ function TransactionDetails() {
       setToDate(null);
     }
     setCurrentPage(event);
-  };
-  const onSearchHandler = (value) => {
-    SetSearchData(value);
   };
 
   const schema = yup
@@ -211,27 +135,11 @@ function TransactionDetails() {
         .min(yup.ref("startDate"), "end date can't be before start date"),
     })
     .required();
-  const {
-    handleSubmit,
-    control,
-    // setValue,
-    formState: { errors },
-  } = useForm({
+  const { control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
  
-  const sharedProps = {
-    style: { width: "100%" },
-    defaultValue: "the value",
-    ref: inputRef,
-  };
 
-  const onChangeTabs = (key) => {
-  };
-
-  const toggleChecked = () => {
-    setChecked(!checked);
-  };
   const onChange = (e) => {
     setChecked(e.target.checked);
   };
@@ -242,32 +150,9 @@ function TransactionDetails() {
       : "disable this token for swapping"
   }`;
 
-  const [value, setValue] = useState("0.005");
+  const [value] = useState("0.005");
 
   const navigate = useNavigate();
-  const handleMenuClick = (e) => {
-    message.info("Click on menu item.");
-  };
-
-  const calculateUsedAmount = (amount, trxn_fiat_price_detail) => {
-    let usd_amount = 0;
-    if (trxn_fiat_price_detail?.length > 0) {
-      let filter_price_data = trxn_fiat_price_detail.filter(
-        (data) => data.fiat_currency.toLowerCase() == "usd"
-      );
-      if (filter_price_data?.length > 0) {
-        usd_amount = amount * filter_price_data[0].current_price;
-      }
-    }
-    return usd_amount;
-  };
-
-  const calculateCryptoAmount = (amount, decimals) => {
-    let decimals_length = Number(decimals?.toString()?.length) - 1;
-    let amount_crypto = amount?.toFixed(decimals_length);
-
-    return amount_crypto;
-  };
 
   const columns = [
     {

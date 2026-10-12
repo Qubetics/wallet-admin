@@ -21,7 +21,6 @@ function Dashboard() {
   const { data: DeviceUserData, refetch } = useGetDeviceUserDataQuery();
   const [deviceUsers, setDashboardUsers] = useState([]);
   const navigate = useNavigate();
-  // Removed console.log
 
   const dispatch = useDispatch();
 
@@ -62,7 +61,6 @@ function Dashboard() {
           dispatch(setDeviceUsers(GetDeviceUserData?.data?.data));
         }
       } catch {
-        // Removed console.log
       }
     })();
   }, [DeviceUserData?.data]);

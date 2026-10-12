@@ -40,7 +40,6 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
     (async () => {
       if (menus?.length > 0) {
         const menuOptions = [];
-        // { label: "Revenue", value: 7 }
         menus?.length > 0 &&
           menus?.map((value) => {
             if (value.id !== 7 && value.id !== 9) {
@@ -191,13 +190,11 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
             </div>
 
             <div className="inputLabel">
-              {/* <div className="aline-input"> */}
               <p>Permission Type:</p>
               <Controller
                 name="permission_type"
                 control={control}
                 defaultValue={"1"}
-                // rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
                   <Radio.Group
                     value={value}
@@ -211,7 +208,6 @@ const AddSubAdminForm = ({ handleAddSubAdminCancel }) => {
                   </Radio.Group>
                 )}
               />
-              {/* </div> */}
 
               {errors?.permission_type?.message && (
                 <div className="errorElement">

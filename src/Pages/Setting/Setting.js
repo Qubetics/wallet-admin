@@ -191,42 +191,6 @@ function Setting() {
         </Button>
       </div>
 
-      {/* <div className="dashboardSec__dashBoardHeading maintanance">
-        <label className="maintanance_lbl">Application maintenance</label>
-        <br />
-        <div className="parent">
-          {Array.isArray(data?.data?.data) &&
-            data?.data?.data.map((itm, idx) => (
-              <div className="maintatance" key={idx}>
-                <span>
-                  {itm?.type == "buy_sell"
-                    ? "Buy/Sell"
-                    : itm?.type.split("_").join(" ")}
-                </span>
-                <Switch
-                  checked={itm?.is_maintenance}
-                  onChange={(e) => {
-                    showConfirm(itm);
-                  }}
-                />
-              </div>
-            ))}
-        </div>
-        {/* <Button
-          disabled={action}
-          onClick={(e) => {
-            e.preventDefault();
-            setAction(true);
-            if (!twoFactorAuth) {
-              openGoogleStepone({}, "edit");
-            } else {
-              openGoogleStepTwo({}, "edit");
-            }
-          }}
-        >
-          {!twoFactorAuth ? "Enable" : "Disable"}
-        </Button> */}
-      {/* </div> */}
     </div>
   );
 }

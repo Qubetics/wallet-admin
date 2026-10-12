@@ -14,11 +14,8 @@ const AddToken = ({ modal2Open, handleAddTokenCancel }) => {
         style={{
           top: 20,
         }}
-        // cancelText={false}
         open={modal2Open}
-        // onOk={false}
         onCancel={() => handleAddTokenCancel(false, "Cancel")}
-        // onCancel={false}
         okText={false}
         closable={true}
         centered={true}

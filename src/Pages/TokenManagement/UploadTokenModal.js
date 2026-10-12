@@ -26,11 +26,8 @@ const UploadTokenModal = ({
         style={{
           top: 20,
         }}
-        // cancelText={false}
         open={modal2Open}
-        // onOk={false}
         onCancel={() => handleEditTokenCancel(false, "")}
-        // onCancel={false}
         okText={false}
         closable={true}
         centered={true}

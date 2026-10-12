@@ -181,7 +181,6 @@ function Login() {
                     >
                       <Input
                         placeholder="Email"
-                        // onChange={(e) => setValue("email", e.target.value)}
                         onChange={onChange}
                         onBlur={onBlur}
                         value={getValues("email")}
@@ -232,8 +231,6 @@ function Login() {
                           onChange={onChange}
                           onBlur={onBlur}
                           checked={value}
-                          // type={"checkbox"}
-                          // defaultValue={false}
                           value={getValues("remember")}
                           width="20px"
                           height="20px"

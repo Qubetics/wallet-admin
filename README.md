@@ -67,9 +67,3 @@ docker run -p 80:80 qubetics-admin
 ```
 
 Provide `.env.production` in the project root before building, since the image runs `npm run build`.
-
-## Tests
-
-```bash
-npm test
-```

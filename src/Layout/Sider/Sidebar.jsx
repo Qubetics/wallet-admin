@@ -82,12 +82,8 @@ function Sidebar({ collapsedState }) {
           menux?.length > 0 &&
             menux?.map((value, index) => {
               let item = {};
-              //     getItem(value?.name, "revenue", <BarChartOutlined />, [
-              //       getItem(
               //         "swap"
-              //       getItem(
               //         "SWFTC"
-              //       getItem(
               //         "blockchainswap"
                 item = {
                   key: value.id.toString(),
@@ -110,30 +106,21 @@ function Sidebar({ collapsedState }) {
           user_permission_data?.length > 0 &&
             user_permission_data?.map((value, index) => {
               let item = {};
-              //     getItem(
               //       value?.menu_list_data?.name,
               //       "revenue",
               //       [
-              //         getItem(
-              //           swapElement(
               //             value?.menu_list_data?.name,
               //             "swap",
               //             "On chain Swap"
               //           "swap"
-              //         getItem(
-              //           swapElement(
               //             value?.menu_list_data?.name,
               //             "SWFTC",
               //             "Cross chain Swap"
               //           "SWFTC"
-              //         getItem(
-              //           swapElement(
               //             value?.menu_list_data?.name,
               //             "spritz",
               //             "Banking"
               //           "spritz"
-              //         getItem(
-              //           swapElement(
               //             value?.menu_list_data?.name,
               //             "blockchainswap",
               //             "On/Off Ramp"

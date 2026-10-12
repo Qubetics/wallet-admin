@@ -338,7 +338,6 @@ function Transak() {
           {text === null
             ? "N/A"
             : moment.utc(text).format("MM/DD/YYYY h:mm:ss A")}
-          {/* :  moment.utc(text).local().format('MM/DD/YYYY h:mm:ss A') } */}
         </p>
       ),
     },

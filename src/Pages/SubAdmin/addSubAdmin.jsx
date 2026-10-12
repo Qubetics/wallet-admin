@@ -16,11 +16,8 @@ const AddSubAdmin = ({ modalAddSubAdminOpen, handleAddSubAdminCancel }) => {
         style={{
           top: 20,
         }}
-        // cancelText={false}
         open={modalAddSubAdminOpen}
-        // onOk={false}
         onCancel={() => handleAddSubAdminCancel(false, 0)}
-        // onCancel={false}
         okText={false}
         closable={true}
         centered={true}

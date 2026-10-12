@@ -142,11 +142,8 @@ const EditPermissionsForm = ({
         style={{
           top: 20,
         }}
-        // cancelText={false}
         open={modalChangePermissionOpen}
-        // onOk={false}
         onCancel={() => handleEditPermissionsCancel(false, 0)}
-        // onCancel={false}
         okText={false}
         closable={true}
         centered={true}
@@ -166,14 +163,12 @@ const EditPermissionsForm = ({
                 onSubmit={handleSubmit(onFormSubmit)}
               >
                 <div className="inputLabel">
-                  {/* <div className="aline-input"> */}
                   <p>Permission Type:</p>
 
                   <Controller
                     name="permission_type"
                     control={control}
                     defaultValue={edit_data?.permission_type}
-                    // rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
                       <Radio.Group
                         value={value}
@@ -187,7 +182,6 @@ const EditPermissionsForm = ({
                       </Radio.Group>
                     )}
                   />
-                  {/* </div> */}
 
                   {errors?.permission_type?.message && (
                     <div className="errorElement">
@@ -204,14 +198,11 @@ const EditPermissionsForm = ({
                   <Controller
                     name="permissions"
                     control={control}
-                    //value={Object.assign({}, defaultMenuOption)}
                     render={({ field: { value } }) => (
                       <Select
                         className="select-filter"
                         mode="multiple"
-                        // suffixIcon={<DownOutlined />}
                         allowClear
-                        // showSearch={true}
                         showArrow={true}
                         style={{ width: "100%" }}
                         placeholder="Please select any module"

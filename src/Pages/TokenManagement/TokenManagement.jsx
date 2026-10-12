@@ -98,8 +98,6 @@ const TokenManagement = () => {
     {
       title: "Token Symbol",
       // render: (text) => (
-      //     {text?.coin_symbol === null
-      //         text?.coin_symbol.slice(1)}
       render: (text) => (
         <p>
           {text?.coin_symbol === null ? "N/A" : text?.coin_symbol}
@@ -194,7 +192,6 @@ const TokenManagement = () => {
           {text.coin_name?.length > 30
             ? text.coin_name.substr(0, 30) + "..."
             : text.coin_name}{" "}
-          {/* /{" "} */}
         </p>
       ),
     },
@@ -359,7 +356,6 @@ const TokenManagement = () => {
       key: "action",
       render: (text, record) => (
         <Button
-          // disabled={record?.added_by == "2"}
           className="btn mr10"
           type="primary"
           style={{ color: "white" }}
@@ -1014,7 +1010,6 @@ const TokenManagement = () => {
                   Search
                 </label>
                 <Input
-                  // maxLength={23}
                   type="text"
                   title="Search by token name/ symbol/ address"
                   placeholder="Search by token name/ symbol/ address"
@@ -1125,7 +1120,6 @@ const TokenManagement = () => {
               <Button
                 className="btn"
                 type="primary"
-                // style={{ marginLeft: "20px" }}
                 onClick={async () => {
                   setFromDate(null);
                   setToDate(null);

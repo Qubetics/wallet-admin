@@ -40,22 +40,6 @@
   }
 }
 
-// .switchDesign {
-//   button[aria-checked="true"] {
-//     background-color: green;
-//   }
-
-//   button[aria-checked="false"] {
-//     background-color: red;
-//   }
-
-//   .ant-switch-checked {
-//     &:focus {
-//       box-shadow: none;
-//     }
-//   }
-// }
-
 .height32 {
   height: 32px;
 }
@@ -177,7 +161,6 @@ body::-webkit-scrollbar {
     font-weight: 600;
     font-size: 18px;
     color: #1890ff;
-    // margin-bottom: 10px;
     display: block;
   }
 }

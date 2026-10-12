@@ -108,12 +108,6 @@ function TransactionDetails() {
     })();
   }, [dispatch, currentPage, filterAddedBy]);
 
-  //       //  dispatch( setTransactionData(GetTransactionHistoryData?.data))
-  //       // }
-
-  // // [TransactionHistoryData?.data,currentPage,SearchData]
-
-  //   // alert('oooopp')
   //       "page":currentPage,
   //       "limit":perPage
 
@@ -402,7 +396,6 @@ function TransactionDetails() {
           {text === null
             ? "N/A"
             : moment.utc(text).format("MM/DD/YYYY h:mm:ss A")}
-          {/* :  moment.utc(text).local().format('MM/DD/YYYY h:mm:ss A') } */}
         </p>
       ),
     },
@@ -553,7 +546,6 @@ function TransactionDetails() {
                   placeholder="Search by From address/ To address/ hash"
                   className="form-control"
                   maxLength={100}
-                  // placeholder={"coin name,symbol,address,hash"}
                   value={SearchData}
                   onChange={(e) => {
                     SetSearchData(e.target.value.trimStart());
@@ -643,7 +635,6 @@ function TransactionDetails() {
               <Button
                 className="btn"
                 type="primary"
-                // style={{ marginLeft: "20px" }}
                 onClick={async () => {
                   setFromDate(null);
                   setToDate(null);

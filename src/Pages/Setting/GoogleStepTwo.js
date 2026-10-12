@@ -128,7 +128,6 @@ const GoogleStepTwo = ({
         open={isOpenStepTwo}
         onOk={handleOk}
         centered
-        // okText={false}
         onCancel={handleCancel}
         footer={false}
         maskClosable={false}

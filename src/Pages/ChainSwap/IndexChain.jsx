@@ -54,7 +54,6 @@ function IndexChain() {
           setSolanaAddress(fee?.address);
         }
       }
-      // { 'uniswap_fee': UniswapFees}
     }
   }, [JSON.stringify(data)]);
 
@@ -95,12 +94,6 @@ function IndexChain() {
   const handlePulseAddress = (value) => {
     setPulseAddress(value);
   };
-
-  //   // Check if MetaMask is installed on user's browser
-
-  //   //  await window.ethereum.providers()
-  //     // Check if user is connected to Mainnet
-  //     // }
 
   const onSubmit = async (value) => {
     let fee = UniswapFees;
@@ -281,12 +274,8 @@ function IndexChain() {
         </div>
 
         <div className="swapCard-Sec">
-          {/* <Row gutter={[16, 24]}>
-              <Col sm={24} xl={7}>
-                {" "} */}
           <Card title="Ethereum">
             <>
-              {/* <Space> */}
               <Space direction="vertical" style={{ width: "100%" }}>
                 <Space>Fee(%)</Space>
                 <Input
@@ -317,7 +306,6 @@ function IndexChain() {
                     className=" ant-btn-primary paddingBtnStyle"
                     onClick={() => onSubmit("eth")}
                     disabled={UniswapFees === null}
-                    //style={{ width: '20%'}}
                   >
                     submit
                   </button>
@@ -325,14 +313,10 @@ function IndexChain() {
               </Space>
             </>
           </Card>
-          {/* </Col>
-              <Col sm={24} xl={7}> */}{" "}
+{" "}
           <Card
             title="Binance Smart Chain"
-            // extra={<button type="primary" onClick={ ()=>{navigate("/revenue")}}
-            //   style ={{border:20}}>Revenue</button>}
 
-            // style={{ width: 500 }}
           >
             <>
               <Space direction="vertical" style={{ width: "100%" }}>
@@ -365,7 +349,6 @@ function IndexChain() {
                     className=" ant-btn-primary paddingBtnStyle"
                     onClick={() => onSubmit("bnb")}
                     disabled={PanCakeSwapFees === null}
-                    //style={{ width: '20%'}}
                   >
                     submit
                   </button>
@@ -373,8 +356,6 @@ function IndexChain() {
               </Space>
             </>
           </Card>
-          {/* </Col>
-            </Row> */}
           <Card title="Pulse Chain">
             <>
               <Space direction="vertical" style={{ width: "100%" }}>
@@ -406,7 +387,6 @@ function IndexChain() {
                     className=" ant-btn-primary paddingBtnStyle"
                     onClick={() => onSubmit("pls")}
                     disabled={PanCakeSwapFees === null}
-                    //style={{ width: '20%'}}
                   >
                     submit
                   </button>
@@ -453,7 +433,6 @@ function IndexChain() {
                     className=" ant-btn-primary paddingBtnStyle"
                     onClick={() => onSubmit("sol")}
                     disabled={solanaSwapFees === null}
-                    //style={{ width: '20%'}}
                   >
                     submit
                   </button>

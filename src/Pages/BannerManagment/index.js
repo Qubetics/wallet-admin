@@ -496,7 +496,6 @@ const BannerManagement = () => {
       key: "action",
       render: (text, record) => (
         <Button
-          // disabled={permission_type == "2" ? false : true}
           className="btn mr10"
           type="primary"
           // danger

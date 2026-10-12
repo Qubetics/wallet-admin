@@ -26,10 +26,6 @@ const GoogleStepTwo = ({ isOpenStepTwo, closeCardModal, action ,loginCred }) => 
   const [menuList, { menuIsLoading }] = useLazyMenuListQuery();
   const [loginAuth, { isLoading }] = useLoginAuthMutation();
 
-  //     //    dispatch( setTransactionData(res?.data?.data))
-  //     //    alert('err=====',err)
-  //     //  }
-
   const getMenuList = async () => {
     await menuList().then((res, err) => {
       if (res?.data?.data) {

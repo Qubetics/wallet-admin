@@ -122,7 +122,6 @@ const SubAdminManagement = () => {
           {text?.created_at === null
             ? "N/A"
             : moment.utc(text?.created_at).format("MM/DD/YYYY")}
-          {/* {/*new Date(text?.created_at).toLocaleDateString() */}
         </p>
       ),
     },
@@ -135,7 +134,6 @@ const SubAdminManagement = () => {
             : text?.permissions_data[0]?.permission_type == "1"
             ? "Read"
             : "Write"}
-          {/* {/*new Date(text?.created_at).toLocaleDateString() */}
         </p>
       ),
     },
@@ -170,7 +168,6 @@ const SubAdminManagement = () => {
           {text?.created_at === null
             ? "N/A"
             : moment.utc(text?.created_at).format("MM/DD/YYYY")}
-          {/* {/*new Date(text?.created_at).toLocaleDateString() */}
         </p>
       ),
     },
@@ -183,7 +180,6 @@ const SubAdminManagement = () => {
             : text?.permissions_data[0]?.permission_type == "1"
             ? "Read"
             : "Write"}
-          {/* {/*new Date(text?.created_at).toLocaleDateString() */}
         </p>
       ),
     },
@@ -261,12 +257,6 @@ const SubAdminManagement = () => {
         {permission_type === "2" && (
           <div className="main_page_outer_btn">
 
-            {/* <div className="select-Design select-width firstSelect mangTonkn">
-            <Option value='0'>ALL</Option>
-              <Option value='2'>Added by User</Option>
-              <Option value='1'>Added by Admin</Option>
-            </Select>
-          </div> */}
             <Button
               className="btn mr10 mb20"
               type="primary"

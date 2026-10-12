@@ -347,7 +347,6 @@ const CommissionSettings = () => {
                   type="submit"
                   className="submit-btn"
                   style={{borderRadius:"30px" , width:"110px"}}
-                  // disabled={is2FAEnabled !== 1 || isUpdatingWallet}
                 >
                   {isUpdatingWallet ? "Updating..." : "Submit"}
                 </button>
@@ -392,7 +391,6 @@ const CommissionSettings = () => {
                   type="submit"
                   className="submit-btn"
                   style={{borderRadius:"30px" , width:"110px"}}
-                  // disabled={!is2FAEnabled || isUpdatingCommission}
                 >
                   {isUpdatingCommission ? "Updating..." : "Submit"}
                 </button>

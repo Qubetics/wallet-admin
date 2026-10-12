@@ -199,22 +199,6 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
       >
         <form>
           <div className="inputLabel changeInput">
-            {/* <Controller
-              name='old_password'
-              control={control}
-              render={({ field: { value } }) => (
-                // <Input
-                //   type='password'
-                //   placeholder='Old Password'
-                //   onChange={(e) => {
-                //     if (e.target.value.length <= 15) {
-                //       setValue("old_password", e.target.value);
-                //       setOldPassword(e.target.value);
-                //       trigger("old_password");
-                //     }
-                //   }}
-                //   value={value}
-                // /> */}
             <Input.Password
               type="password"
               placeholder="Old Password"
@@ -235,28 +219,10 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
                 )
               }
             />
-            {/* )}
-            /> */}
             <p className="error">{allState?.errors.old_password}</p>
           </div>
 
           <div className="inputLabel changeInput">
-            {/* <Controller
-              name='new_password'
-              control={control}
-              render={({ field: { value } }) => (
-                // <Input
-                //   type='password'
-                //   onChange={(e) => {
-                //     if (e.target.value.length <= 15) {
-                //       setValue("new_password", e.target.value);
-                //       setNewPassword(e.target.value);
-                //       trigger("new_password");
-                //     }
-                //   }}
-                //   value={value}
-                //   placeholder='New Password'
-                // /> */}
             <Input.Password
               type="password"
               name="new_password"
@@ -277,28 +243,10 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
                 )
               }
             />
-            {/* )}
-            /> */}
             <p className="error">{allState?.errors?.new_password}</p>
           </div>
 
           <div className="inputLabel changeInput">
-            {/* <Controller
-              name='confirm_password'
-              control={control}
-              render={({ field: { value } }) => (
-                // <Input
-                // type='password'
-                // onChange={(e) => {
-                //   if (e.target.value.length <= 15) {
-                //     setValue("confirm_password", e.target.value);
-                //     setConfirmPassword(e.target.value);
-                //     trigger("confirm_password");
-                //   }
-                // }}
-                // value={value}
-                // placeholder='Confirm Password'
-                // /> */}
             <Input.Password
               type="password"
               name="confirm_password"
@@ -320,8 +268,6 @@ const ChangePasswordModal = ({ isOpen, card, closeCardModal, action }) => {
               }
             />
 
-            {/* )}
-            /> */}
             <p className="error">{allState?.errors?.confirm_password}</p>
           </div>
         </form>

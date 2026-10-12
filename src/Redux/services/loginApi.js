@@ -3,13 +3,11 @@ import { CONFIG } from "../../common/constant/constant";
 import { generateRandomNumber } from "../../Helper/EncDec";
 
 //       baseUrl,
-//         // Add custom headers here if needed
 
 export const loginApi = createApi({
   reducerPath: "loginApi",
   baseQuery: fetchBaseQuery({ baseUrl: CONFIG.API_URL }), //customFetchBaseQuery(CONFIG.API_URL),
   endpoints: (builder) => ({
-    //   //get data
     loginAuth: builder.mutation({
       // onclick and hit api
       query: (loginData) => ({

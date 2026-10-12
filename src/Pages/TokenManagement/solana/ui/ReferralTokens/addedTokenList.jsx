@@ -161,9 +161,6 @@ const AddedTokenList = forwardRef((props, ref) => {
       //         blockhash,
       //         lastValidBlockHeight,
 
-      //         // Update blockhash and lastValidBlockHeight for retry
-      //         // throw error;
-
       let retries = 5;
       while (retries > 0) {
         let value = await connection.getTransaction(txid, {

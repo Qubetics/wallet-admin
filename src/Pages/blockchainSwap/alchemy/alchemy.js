@@ -416,7 +416,6 @@ function Alchemy() {
           {text === null
             ? "N/A"
             : moment.utc(text).format("MM/DD/YYYY h:mm:ss A")}
-          {/* :  moment.utc(text).local().format('MM/DD/YYYY h:mm:ss A') } */}
         </p>
       ),
     },
@@ -550,7 +549,6 @@ function Alchemy() {
                   placeholder="Search by token name/ symbol/ address/ hash"
                   className="form-control"
                   maxLength={100}
-                  // placeholder={"coin name,symbol,address,hash"}
                   value={SearchData}
                   onChange={(e) => {
                     SetSearchData(e.target.value.trimStart());
@@ -631,7 +629,6 @@ function Alchemy() {
               <Button
                 className="btn"
                 type="primary"
-                // style={{ marginLeft: "20px" }}
                 onClick={async () => {
                   setFromDate(null);
                   setToDate(null);

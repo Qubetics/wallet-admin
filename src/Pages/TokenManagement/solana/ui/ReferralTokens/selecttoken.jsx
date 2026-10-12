@@ -364,7 +364,6 @@ export default function SelectTokenComponent() {
           <div
             style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}
           >
-            {/* <div style={{ width: '50%' }}> */}
             <div>
               <div className="">
                 <h2>Referral Token Accounts</h2>
@@ -442,7 +441,6 @@ export default function SelectTokenComponent() {
                 >
                   <p style={{ color: 'black' }}>{count} selected</p>
                   <Button
-                    // disabled={count == 0 || user.role_id != '0'}
                     disabled={count == 0}
                     onClick={() => {
                       itemSubmit();

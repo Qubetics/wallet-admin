@@ -25,10 +25,6 @@ export default function IndexSolana() {
         <SelectTokenComponent />
       </div>
 
-      {/* <div style={{ color: 'black' }}> */}
-      {/* PPPPPPPPPPPP -- {connected} -- */}
-      {/* <ReferralRevenuePage />
-      </div> */}
     </div>
   );
 }

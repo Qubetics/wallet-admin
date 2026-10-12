@@ -109,7 +109,6 @@ const EditTokenNameForm = ({
                     render={({ field: { value } }) => (
                       <Input
                         placeholder={StateCoinName}
-                        // readOnly={true}
                         onChange={(e) => {
                           setValue("TokenName", e.target.value);
                           setStateCoinName(e.target.value);

@@ -17,8 +17,6 @@ import "./Sidebar.scss";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { setKey } from "../../Redux/slice/sidebarSlice";
 function Sidebar({ collapsedState }) {
-  // const selectedKey = useSelector((state) => state.sidebarState.data);
-  // const selectedKey = sessionStorage.getItem("activeKey");
 
   const [selectedKey, setSelectedKey] = useState(
     sessionStorage.getItem("activeKey")
@@ -32,9 +30,6 @@ function Sidebar({ collapsedState }) {
   const menus = useSelector((state) => state?.userState?.menus);
   const user = useSelector((state) => state?.userState?.user);
   const location = useLocation();
-  console.log("menus", menus);
-  console.log("user role_id:", user?.role_id);
-  console.log("user permissions_data:", user?.permissions_data);
   const swapElement = (value, route, name) => {
     return (
       <p
@@ -59,7 +54,6 @@ function Sidebar({ collapsedState }) {
   useEffect(() => { }, [menuItems]);
 
   const findIcon = (e) => {
-    console.log("sidebar eeeee",e)
     if (e == "dashboard") return <DashboardOutlined />;
     if (e == "chain-swap") return <SwapOutlined />;
     if (e == "transaction-details") return <HistoryOutlined />;
@@ -226,17 +220,14 @@ function Sidebar({ collapsedState }) {
                 path == "blockchainswap"))
           );
         });
-      // console.log('isExist >>>', isExist);
       if (isExist.length == 0) {
         if (path == "solana-dashboard" || path == 'default-token-management') {
           return;
         }
-        // alert('test');
 
         let redirectPath =
           Array.isArray(user?.permissions_data) &&
           user?.permissions_data[0]?.menu_list_data?.slug;
-        console.log('redirectPath >>>', redirectPath);
         if (redirectPath) {
           sessionStorage.setItem(
             "activeKey",
@@ -335,7 +326,7 @@ function Sidebar({ collapsedState }) {
                 navigate("/dashboard");
               }}
             >
-              {/* <img src={smallLogo} alt="img" /> */}
+              {}
             </Link>
           ))}
         {user.role_id !== "0" &&
@@ -362,7 +353,7 @@ function Sidebar({ collapsedState }) {
                 navigate(`/${user?.permissions_data[0]?.menu_list_data?.slug}`);
               }}
             >
-              {/* <img src={smallLogo} alt="img" /> */}
+              {}
             </Link>
           ) : (
             <Link

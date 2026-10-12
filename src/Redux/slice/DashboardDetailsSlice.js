@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-// import{decrypt} from "../../Helper/EncDec"
 
 const dashboardDetailsSlice = createSlice({
     name: 'DashboardData',
@@ -17,17 +16,10 @@ const dashboardDetailsSlice = createSlice({
            
         },
 
-        // setRequestList:(state,action)=>{
-
-        // state.requestList=action.payload
-        // }
     },
 })
 
-// export const { setCredentials, logOut } = dashboardDetailsSlice.actions
 export const { setNewlyAddedToken ,setDeviceUsers} = dashboardDetailsSlice.actions
 
 export default dashboardDetailsSlice.reducer
 
-// export const selectCurrentUser = (state) => console.log(state,'=============stateuser')
-// export const selectCurrentToken = (state) => state?.auth?.token

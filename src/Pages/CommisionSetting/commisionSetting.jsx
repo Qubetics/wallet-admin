@@ -6,14 +6,13 @@ import {
 } from "../../Redux/services/CommisionSetting/CommisionSettingSlice";
 import { encryption } from "../../common/encryption/encryption";
 import { setToast } from "../../Redux/slice/toastSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { handleUnauthorizedError } from "../../common/constant/constant";
 
 const CommissionSetting = () => {
   const { data, isLoading, isError, refetch } = useGetCommisionDetialsQuery();
   const [updateCommisionDetials] = useUpdateCommisionDetialsMutation();
-  console.log("data", data);
   const [contractAddress, setContractAddress] = useState("");
   const [commissionPercentage, setCommissionPercentage] = useState("");
   const dispatch = useDispatch();
@@ -29,7 +28,6 @@ const CommissionSetting = () => {
 
   const handleAddressSubmit = async (e) => {
     e.preventDefault();
-    console.log("Address Submit:", contractAddress);
 
     if (contractAddress === "") {
       dispatch(setToast({ message: "Address cannot be empty", status: false }));
@@ -43,9 +41,7 @@ const CommissionSetting = () => {
       };
       const enc = await encryption(JSON.stringify(formData));
       const securedData = { dataString: enc };
-      console.log("securedData", securedData);
       const response = await updateCommisionDetials(securedData);
-      console.log("response", response);
 
       // Check for 401 error - pass the required parameters
       if (handleUnauthorizedError(response, dispatch, navigate, setToast)) {
@@ -68,7 +64,6 @@ const CommissionSetting = () => {
         refetch();
       }
     } catch (error) {
-      console.log("error?.error?.status", error?.error?.status);
 
       // Check for 401 error in catch block - pass the required parameters
       if (error?.error?.status === 401 || error?.data?.code === 401) {
@@ -88,7 +83,6 @@ const CommissionSetting = () => {
 
   const handlePercentageSubmit = async (e) => {
     e.preventDefault();
-    console.log("Commission Percentage Submit:", commissionPercentage);
 
     if (commissionPercentage === "") {
       dispatch(
@@ -119,9 +113,7 @@ const CommissionSetting = () => {
       };
       const enc = await encryption(JSON.stringify(formData));
       const securedData = { dataString: enc };
-      console.log("securedData", securedData);
       const response = await updateCommisionDetials(securedData);
-      console.log("response", response);
 
       // Check for 401 error - pass the required parameters
       if (handleUnauthorizedError(response, dispatch, navigate, setToast)) {
@@ -148,7 +140,6 @@ const CommissionSetting = () => {
         refetch();
       }
     } catch (error) {
-      console.log("error", error);
 
       // Check for 401 error in catch block - pass the required parameters
       if (error?.error?.status === 401 || error?.data?.code === 401) {
@@ -179,7 +170,6 @@ const CommissionSetting = () => {
       setCommissionPercentage(value);
     }
   };
-//////////
   return (
     <div className="commissionData">
       <div className="commission-setting-container">

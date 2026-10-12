@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-// import{decrypt} from "../../Helper/EncDec"
 
 const transactionRequestSlice = createSlice({
     name: 'TransactionRequest',
@@ -20,10 +19,7 @@ const transactionRequestSlice = createSlice({
     },
 })
 
-// export const { setCredentials, logOut } = transactionDetailSlice.actions
 export const { setRequestList, setRequestListMeta, setDefaultTokenList, setDefaultTokenMeta } = transactionRequestSlice.actions
 
 export default transactionRequestSlice.reducer
 
-// export const selectCurrentUser = (state) => console.log(state,'=============stateuser')
-// export const selectCurrentToken = (state) => state?.auth?.token

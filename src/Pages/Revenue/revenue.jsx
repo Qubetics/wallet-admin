@@ -7,8 +7,6 @@ import SwapVolume from "./swapVolume.js";
 import SwapFee from "./swapFee.js";
 import { useGetTotalVolumeDataMutation } from "../../Redux/services/revenue/bakingApiServices.js";
 
-const { Option } = Select;
-
 function Revenue() {
   const [records, setRecords] = useState(null);
   const [getTotalVolumeData, { isLoading }] = useGetTotalVolumeDataMutation();

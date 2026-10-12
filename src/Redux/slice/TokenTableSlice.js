@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import{decrypt} from "../../Helper/EncDec"
 
 const TokenTableSlice = createSlice({
   name: "TokenTableData",
@@ -12,7 +11,6 @@ const TokenTableSlice = createSlice({
   },
   reducers: {
     setTokenTableData: (state, action) => {
-      //  console.log(action.payload,'============>>>act')
       state.data = action.payload?.data;
       state.meta = action.payload?.meta;
     },
@@ -28,7 +26,6 @@ const TokenTableSlice = createSlice({
   },
 });
 
-// export const { setCredentials, logOut } = TokenTableSlice.actions
 export const {
   setTokenTableData,
   setNativeToken,
@@ -38,5 +35,3 @@ export const {
 
 export default TokenTableSlice.reducer;
 
-// export const selectCurrentUser = (state) => console.log(state,'=============stateuser')
-// export const selectCurrentToken = (state) => state?.auth?.token

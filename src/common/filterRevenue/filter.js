@@ -58,7 +58,6 @@ export default function FilterComponent({
           <Input
             type="date"
             style={{ cursor: "text", textTransform: "uppercase" }}
-            //   value={fromDate}
             className="form-control"
             onChange={(e) => {
               dispatchFilter({ type: "fromDate", payload: e.target.value });
@@ -121,24 +120,6 @@ export default function FilterComponent({
           />
         </div>
       </div>
-      {/* <div>
-        <div className="select-Design firstSelect addStyle_select">
-          <Dropdown menu={menuPropsType}>
-            <Button style={{ width: "140px" }}>
-              <Space>Type</Space>
-            </Button>
-          </Dropdown>
-        </div>
-      </div>
-      <div>
-        <div className="select-Design firstSelect addStyle_select">
-          <Dropdown menu={menuPropsStatus}>
-            <Button style={{ width: "140px" }}>
-              <Space>Status</Space>
-            </Button>
-          </Dropdown>
-        </div>
-      </div> */}
 
       <div>
         <div className="select-Design firstSelect addStyle_select">

@@ -66,4 +66,4 @@ docker build -t qubetics-admin .
 docker run -p 80:80 qubetics-admin
 ```
 
-Provide `.env.production` in the project root before building, since the image runs `npm run build`.
+Provide `.env.production` in the project root before building, since the image runs `npm run build` and embeds the values in the bundle. The final image is nginx serving the static `build/` folder on port 80, with unknown paths routed to `index.html`. If `REACT_APP_DOMAIN_KEY` is a sub-path such as `/admin`, adjust `nginx.conf` to match.

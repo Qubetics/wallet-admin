@@ -1,25 +1,26 @@
-# Use official Node.js 18.18.0 image
-FROM node:18.20.8
+# Build stage
+FROM node:18.20.8 AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files and patches
+# Copy package files and patches (postinstall applies patches/react-scripts patch)
 COPY package*.json ./
-
 COPY patches ./patches
 
-# Install dependencies with legacy peer deps to avoid conflict
+# --force is needed because some dependencies have conflicting peer ranges
 RUN npm install --force
 
-# Copy the rest of your code
+# Copy the rest of the code. .env.production must exist here at build time,
+# because REACT_APP_* values are embedded in the bundle.
 COPY . .
-
-# Build the project (if applicable)
 RUN npm run build
 
-# Expose port (adjust if needed)
+# Serve stage
+FROM nginx:1.27-alpine
+
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 
-# Start the app
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]

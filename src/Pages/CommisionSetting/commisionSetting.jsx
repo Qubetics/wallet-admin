@@ -32,7 +32,6 @@ const CommissionSettings = () => {
   const is2FAEnabled = useSelector(
     (state) => state?.userState?.user?.google2fa_status
   );
-  const twoFaStatus = localStorage.getItem("google_2fa");
 
   // Component state
   const [walletAddress, setWalletAddress] = useState("");
@@ -332,25 +331,13 @@ const CommissionSettings = () => {
                 placeholder="Enter wallet address"
                 required
               />
-              {twoFaStatus == "enable" ? (
-                <button
-                  type="submit"
-                  className="submit-btn"
-                  style={{borderRadius:"30px" , width:"110px"}}
-                  disabled={true}
-                  title="Please enable Two-Factor Authentication (2FA) to access revenue features."
-                >
-                  {isUpdatingWallet ? "Updating..." : "Submit"}
-                </button>
-              ) : (
-                <button
+              <button
                   type="submit"
                   className="submit-btn"
                   style={{borderRadius:"30px" , width:"110px"}}
                 >
                   {isUpdatingWallet ? "Updating..." : "Submit"}
                 </button>
-              )}
             </div>
           </form>
 
@@ -376,25 +363,13 @@ const CommissionSettings = () => {
                 placeholder="Enter commission percentage (0-100)"
                 required
               />
-              {twoFaStatus == "enable" ? (
-                <button
-                  type="submit"
-                  className="submit-btn"
-                  disabled={true}
-                  style={{borderRadius:"30px" , width:"110px"}}
-                  title="Please enable 2FA first to access this functionality"
-                >
-                  {isUpdatingCommission ? "Updating..." : "Submit"}
-                </button>
-              ) : (
-                <button
+              <button
                   type="submit"
                   className="submit-btn"
                   style={{borderRadius:"30px" , width:"110px"}}
                 >
                   {isUpdatingCommission ? "Updating..." : "Submit"}
                 </button>
-              )}
             </div>
           </form>
         </div>

@@ -16,11 +16,13 @@ COPY . .
 RUN npm run build
 
 # Serve stage
-FROM nginx:1.27-alpine
+# Unprivileged nginx: runs as uid 101 and listens on 8080, so it starts under
+# restricted pod security contexts (runAsNonRoot / dropped capabilities)
+FROM nginxinc/nginx-unprivileged:1.27-alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]

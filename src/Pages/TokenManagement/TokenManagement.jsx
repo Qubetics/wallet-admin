@@ -211,7 +211,12 @@ const TokenManagement = () => {
     {
       title: "Token Type",
       render: (text) => {
-        return text?.token_type || (text?.token_address === null ? "Native" : "N/A");
+        const type = text?.token_type;
+        if (type) {
+          // TRON types arrive as TRC20 / TRC_20 / TRX20; show them all as TRC20
+          return /^TR[CX_]+20$/i.test(type) ? "TRC20" : type;
+        }
+        return text?.token_address === null ? "Native" : "N/A";
       },
     },
     {

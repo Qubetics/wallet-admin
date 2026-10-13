@@ -18,7 +18,11 @@ function Dashboard() {
   const [getTransactionsData, { isLoading }] = useGetTransactionsDataMutation();
   const [currentPage] = useState(1);
   const [transactionData, setTransactionData] = useState();
-  const { data: DeviceUserData, refetch } = useGetDeviceUserDataQuery();
+  const {
+    data: DeviceUserData,
+    refetch,
+    isFetching: isStatsFetching,
+  } = useGetDeviceUserDataQuery();
   const [deviceUsers, setDashboardUsers] = useState([]);
   const navigate = useNavigate();
 
@@ -277,7 +281,7 @@ function Dashboard() {
   return (
     <div className="main_page_outer">
       <Spin
-        spinning={isLoading}
+        spinning={isLoading || isStatsFetching}
         className="spininner"
         tip="Loading..."
         size="large"

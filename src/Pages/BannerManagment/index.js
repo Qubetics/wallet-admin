@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Pagination, Table, Input, Spin, DatePicker, Modal, Upload, message, Switch, Tooltip } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setToast } from "../../Redux/slice/toastSlice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,6 +23,8 @@ import { encryption } from "../../common/encryption/encryption";
 import { handleUnauthorizedError } from "../../common/constant/constant";
 import { useNavigate } from "react-router-dom";
 const { confirm } = Modal;
+const BANNER_WIDTH = 300;
+const BANNER_HEIGHT = 100;
 
 const BannerManagement = () => {
   const permission_type = sessionStorage.getItem("permission_type");
@@ -48,6 +50,7 @@ const BannerManagement = () => {
   const [getBannerList, { isLoading }] = useGetBannerListMutation();
   const [updateBannerList, {}] = useUpdateBannerListMutation();
   const [bannerList, setBannerList] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -96,10 +99,6 @@ const BannerManagement = () => {
     }
   };
 
-  const AnnouncementListMeta = useSelector(
-    (state) => state?.Announcement?.announcementListMeta
-  );
-
   const schema = yup
     .object({
       message: yup
@@ -129,7 +128,7 @@ const BannerManagement = () => {
             "image/webp",
           ].includes(value?.type);
         })
-        .test("imageDimensions", "Banner dimensions must be exactly 300x100 (width x height)", (value) => {
+        .test("imageDimensions", "Banner dimensions must be exactly 300x100 px (width x height)", (value) => {
           if (!value) return true; // Skip validation if no file
           return new Promise((resolve) => {
             const reader = new FileReader();
@@ -163,6 +162,7 @@ const BannerManagement = () => {
       
       if (response?.data?.data) {
         setBannerList(response?.data?.data?.banner_list);
+        setTotalRecords(response?.data?.data?.total || 0);
         // Update meta information for pagination
         const meta = {
           total_records: response?.data?.data?.total,
@@ -338,40 +338,36 @@ const BannerManagement = () => {
       return false;
     }
 
-    // Check image height
+    // Resize (centre-crop to keep the aspect ratio) to the required 300x100
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
-        if (img.height !== 100) {
-          dispatch(
-            setToast({
-              message:
-                "Banner height must be exactly 100!",
-              status: false,
-            })
-          );
-          setBannerImage(null);
-          setImageName("");
-          setValue("bannerImage", null);
-        } else if (img.width !== 300) {
-          dispatch(
-            setToast({
-              message:
-                "Banner Width must be exactly 300!",
-              status: false,
-            })
-          );
-          setBannerImage(null);
-          setImageName("");
-          setValue("bannerImage", null);
-        } else {
-          setBannerImage(file);
+        const canvas = document.createElement("canvas");
+        canvas.width = BANNER_WIDTH;
+        canvas.height = BANNER_HEIGHT;
+        const scale = Math.max(
+          BANNER_WIDTH / img.width,
+          BANNER_HEIGHT / img.height
+        );
+        const w = img.width * scale;
+        const h = img.height * scale;
+        canvas
+          .getContext("2d")
+          .drawImage(img, (BANNER_WIDTH - w) / 2, (BANNER_HEIGHT - h) / 2, w, h);
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            message.error("Could not process the image. Please try another one.");
+            return;
+          }
+          const resized = new File([blob], file.name, { type: file.type });
+          setBannerImage(resized);
           setImageName(file.name);
-          setValue("bannerImage", file);
+          setValue("bannerImage", resized);
           trigger("bannerImage");
-        }
+        }, file.type);
       };
+      img.onerror = () => message.error("Invalid image file.");
       img.src = e.target.result;
     };
     reader.readAsDataURL(file);
@@ -626,7 +622,7 @@ const BannerManagement = () => {
                 >
                   Supported formats: JPG, PNG, WebP. Max size: 5MB.
                   <br />
-                   Height must be exactly 100 and Width must be exactly 300.
+                   Images are automatically resized to 300 x 100 px.
                 </p>
               </div>
               <Controller
@@ -702,14 +698,16 @@ const BannerManagement = () => {
             bordered
             className="annoucementTable"
           />
-          <Pagination
-            pageSize={perPage}
-            current={currentPage}
-            showSizeChanger={false}
-            total={AnnouncementListMeta?.total_records}
-            onChange={handlePagenationChange}
-            style={{ bottom: "0px" }}
-          />
+          {totalRecords > 0 && (
+            <Pagination
+              pageSize={perPage}
+              current={currentPage}
+              showSizeChanger={false}
+              total={totalRecords}
+              onChange={handlePagenationChange}
+              style={{ bottom: "0px" }}
+            />
+          )}
         </Spin>
       </div>
     </>

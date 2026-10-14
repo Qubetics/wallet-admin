@@ -50,7 +50,6 @@ const GoogleStepTwo = ({ isOpenStepTwo, closeCardModal, action ,loginCred }) => 
     resetModal('');
   };
 
-  //           status: false,
 
   const onSubmit = async (data) => {
     const newObj = {

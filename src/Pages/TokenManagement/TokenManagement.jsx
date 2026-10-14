@@ -307,14 +307,6 @@ const TokenManagement = () => {
                   menu={{
                     onClick: (e, data) => showConfirm(e, data),
                     items: [
-                      //   key: "1",
-                      //   value: record,
-                      //   label: "Active",
-                      //   disabled:
-                      //   key: "2",
-                      //   value: record,
-                      //   label: "Inactive",
-                      //   disabled:
                       {
                         key: "3",
                         value: record,
@@ -323,12 +315,6 @@ const TokenManagement = () => {
                           showConfirm(e, record);
                         },
                       },
-                      //   key: "4",
-                      //   value: record,
-                      //   label: "Edit Name",
-                      //   key: "5",
-                      //   value: record,
-                      //   label: "Add Into Default Token List",
                     ],
                   }}
                   placement="bottomRight"

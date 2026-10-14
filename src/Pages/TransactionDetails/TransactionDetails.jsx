@@ -136,8 +136,6 @@ function TransactionDetails() {
     },
     {
       title: " Token Symbol",
-      // dataIndex: "coin_data",
-      // render: (text) => (
       render: (text) => (
         <p>
           {text?.coin_data?.coin_symbol === null
@@ -147,9 +145,6 @@ function TransactionDetails() {
       ),
 
     },
-    //   title: "Decimal",
-    //   dataIndex: 'coin_data',
-    //   key: 'coin_data',
     {
       title: "Amount (In Crypto)",
       dataIndex: "amount",
@@ -157,8 +152,6 @@ function TransactionDetails() {
       render: (amount) => <p>{amount || "N/A"}</p>,
     },
 
-    //   title: "Fiat Amount",
-    //   render: (text) => (
     //       
     {
       title: "Source Address",
@@ -249,7 +242,6 @@ function TransactionDetails() {
         </Tooltip>
       ),
 
-      // render: (text) => (
     },
     {
       title: "Transaction Hash  ",
@@ -367,9 +359,6 @@ function TransactionDetails() {
       ),
     },
 
-    //   title: "Action",
-    //   key: "action",
-    //   render: (text, record) => (
     //             Action
   ];
 

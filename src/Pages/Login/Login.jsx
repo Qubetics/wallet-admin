@@ -21,7 +21,6 @@ const schema = yup
     email: yup.string().required("Required").email("Invalid email"),
     password: yup.string().required("Required"),
     remember: yup.bool().default(false),
-    //     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
   })
   .required();
 

@@ -67,7 +67,6 @@ function Dashboard() {
     {
       title: " Token Symbol",
       dataIndex: "coin_data",
-      // render: (text) => <p>{text?.coin_symbol === null ? "N/A" : text?.coin_symbol.charAt(0).toUpperCase() +
       render: (text) => (
         <p>
           {text?.coin_symbol === null ? "N/A" : text?.coin_symbol.toUpperCase()}
@@ -75,9 +74,6 @@ function Dashboard() {
       ),
     },
 
-    //   title: "Decimal",
-    //   dataIndex: 'coin_data',
-    //   key: 'coin_data',
     {
       title: "Amount (In Crypto)",
       dataIndex: "amount",
@@ -85,9 +81,6 @@ function Dashboard() {
       render: (amount) => <p>{amount || "N/A"}</p>,
     },
 
-    //   title: 'Fiat Amount',
-    //   render: (text) => (
-    //   title: 'Fiat Currency Name ',
     {
       title: "Source Address",
       dataIndex: "from_adrs",
@@ -177,7 +170,6 @@ function Dashboard() {
         </Tooltip>
       ),
 
-      // render: (text) => (
     },
     {
       title: "Transaction Hash  ",

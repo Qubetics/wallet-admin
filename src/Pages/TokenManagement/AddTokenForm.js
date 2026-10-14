@@ -225,14 +225,8 @@ const AddTokenForm = ({ handleAddTokenCancel }) => {
   const fetchCoinDataAndShow = async (tokenAddress, myCoinFamily) => {
     try {
       setConfirmLoading(true);
-      //         message: "Please enter valid contract address",
-      //         status: false,
 
-      //   myCoinFamily != "4" &&
-      //   myCoinFamily != "5" &&
       //   family &&
-      //       message: "Please enter valid blockchain contract address",
-      //       status: false,
 
       const enc = await encryption(JSON.stringify({
         tokenAddress: tokenAddress,

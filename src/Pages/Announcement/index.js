@@ -179,10 +179,6 @@ const Announcement = () => {
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
     },
-    //   title: "Type",
-    //   dataIndex: "Type",
-    //   key: "Type",
-    //   render: (item, record, index) => (
     {
       title: "Title",
       dataIndex: "Title",
@@ -197,10 +193,6 @@ const Announcement = () => {
         <p>{record?.message ? record.message : "N/A"}</p>
       ),
     },
-    //   title: "Scheduled Date and Time",
-    //   dataIndex: "schedule_time",
-    //   key: "Scheduled Date and Time",
-    //   render: (text, record) => (
     {
       title: "Date and Time",
       dataIndex: "created_at",

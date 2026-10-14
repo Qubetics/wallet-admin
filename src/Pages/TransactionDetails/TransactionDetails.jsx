@@ -101,9 +101,6 @@ function TransactionDetails() {
     })();
   }, [dispatch, currentPage, filterAddedBy]);
 
-  //       "page":currentPage,
-  //       "limit":perPage
-
   const handlePagenationChange = (event) => {
     if (!enableSearchButton) {
       SetSearchData("");
@@ -144,16 +141,12 @@ function TransactionDetails() {
   const columns = [
     {
       title: "S.No.",
-      // dataIndex:data.index,
-      // key: data.index,
       render: (item, record, index) => (
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
     },
     {
       title: " Token Name",
-      // dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text, recrod) => (
         <p>
           {text?.coin_data?.coin_name === null || text === null
@@ -275,7 +268,6 @@ function TransactionDetails() {
     {
       title: "Transaction Hash  ",
       dataIndex: "tx_id",
-      // key: "block_hash",
       render: (text, record) => (
         <Tooltip title={<p>{text === null ? "N/A" : text}</p>}>
           <div
@@ -326,8 +318,6 @@ function TransactionDetails() {
     },
     {
       title: "Transaction Status",
-      // dataIndex: "blockchain_status",
-      // key: "status",
       render: (text, record) => {
         let style;
         if (
@@ -384,7 +374,6 @@ function TransactionDetails() {
     {
       title: "Date and Time",
       dataIndex: "created_at",
-      // key: "created_at",
       render: (text) => (
         <p>
           {text === null

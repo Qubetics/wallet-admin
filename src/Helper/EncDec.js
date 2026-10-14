@@ -1,6 +1,5 @@
 import CryptoJS from "crypto-js";
 
-//     datastring: encodedData,
 
 export const encryptData = (data) => {
   let enc = CryptoJS.AES.encrypt(
@@ -39,6 +38,4 @@ export const generateRandomNumber = () => {
   return randomNumber;
 };
 
-//         newData?.data,
-//         process.env.REACT_APP_DATA_ENCRYPTION_KEY,
 

@@ -131,8 +131,6 @@ function BillPay() {
   const columns = [
     {
       title: "S.No.",
-      // dataIndex:data.index,
-      // key: data.index,
       render: (item, record, index) => (
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
@@ -145,7 +143,6 @@ function BillPay() {
     {
       title: " Token Name",
       dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text, recrod) => (
         <p>
           {text?.coin_name === null || text === null ? "N/A" : text?.coin_name}
@@ -167,8 +164,6 @@ function BillPay() {
     },
     {
       title: "Amount (In Crypto)",
-      // dataIndex: "amount",
-      // key: "amount",
       render: (text) => (
         <p>
           {formatNumberCrypto(
@@ -180,8 +175,6 @@ function BillPay() {
 
     {
       title: "Fiat Amount",
-      // dataIndex: "amount",
-      // key: "amount",
       render: (text) => (
         <p>
           {formatNumberUSD(
@@ -193,14 +186,11 @@ function BillPay() {
 
     {
       title: "Fiat Currency Name ",
-      // dataIndex: "amount",
-      // key: "amount",
       render: (text) => <p>USD</p>,
     },
     {
       title: "Source Address",
       dataIndex: "from_adrs",
-      // key: "from_adrs",
       render: (text, record) => (
         <Tooltip title={<p>{text === null ? "N/A" : text}</p>}>
           <u
@@ -250,7 +240,6 @@ function BillPay() {
     {
       title: "Destination Address",
       dataIndex: "to_adrs",
-      // key: "to_adrs",
 
       render: (text, record) => (
         <Tooltip title={<p>{text === null ? "N/A" : text}</p>}>
@@ -301,7 +290,6 @@ function BillPay() {
     {
       title: "Transaction Hash  ",
       dataIndex: "tx_id",
-      // key: "block_hash",
       render: (text, record) => (
         <Tooltip title={<p>{text === null ? "N/A" : text || "N/A"}</p>}>
           <div>
@@ -355,7 +343,6 @@ function BillPay() {
     {
       title: "Transaction Status",
       dataIndex: "blockchain_status",
-      // key: "status",
       render: (text) => {
         let style;
         if (text == "confirmed") {
@@ -381,7 +368,6 @@ function BillPay() {
     {
       title: "Date and Time",
       dataIndex: "created_at",
-      // key: "created_at",
       render: (text) => (
         <p>
           {text === null

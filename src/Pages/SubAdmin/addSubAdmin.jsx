@@ -9,7 +9,6 @@ const AddSubAdmin = ({ modalAddSubAdminOpen, handleAddSubAdminCancel }) => {
     <div>
       <Modal
         title="Add"
-        //   children: "Submit",
         cancelButtonProps={{
           children: "cancel",
         }}

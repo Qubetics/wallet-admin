@@ -157,9 +157,6 @@ const AddedTokenList = forwardRef((props, ref) => {
       );
 
       // Confirm the transaction with retries
-      //         signature,
-      //         blockhash,
-      //         lastValidBlockHeight,
 
       let retries = 5;
       while (retries > 0) {
@@ -423,8 +420,6 @@ const AddedTokenList = forwardRef((props, ref) => {
         );
         return true
       }
-      //       message: `Insufficient lamports for transaction. Please fund the account.`,
-      //       status: false,
       else {
         dispatch(
           setToast({
@@ -466,8 +461,6 @@ const AddedTokenList = forwardRef((props, ref) => {
   const columns = [
     {
       title: 'S.No.',
-      // dataIndex:data.index,
-      // key: data.index,
       render: (item, record, index) => (
         <>{page > 1 ? (page - 1) * 10 + index + 1 : index + 1}</>
       ),
@@ -476,7 +469,6 @@ const AddedTokenList = forwardRef((props, ref) => {
     {
       title: 'Coin Symbol',
       dataIndex: 'coin_symbol',
-      // key: "coin_data",
       render: (text, record) => (
         <div style={{ gap: '10px' }}>
           <img
@@ -497,7 +489,6 @@ const AddedTokenList = forwardRef((props, ref) => {
     {
       title: 'Token Names',
       dataIndex: 'coin_data',
-      // key: "coin_data",
       render: (text, recrod) => <div>{recrod?.coin_name}</div>,
     },
     {
@@ -507,7 +498,6 @@ const AddedTokenList = forwardRef((props, ref) => {
     {
       title: 'Received Amount (In Crypto)',
       dataIndex: 'amount_in_crypto',
-      // defaultSortOrder: 'descend',
       render: (text, record) => (<div>{formatNumberCrypto(record.amount_in_crypto.toFixed())}</div>),
     },
     {

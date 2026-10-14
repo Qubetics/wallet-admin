@@ -77,8 +77,6 @@ const TokenManagement = () => {
   const columns = [
     {
       title: "S.No.",
-      // dataIndex:data.index,
-      // key: data.index,
       render: (item, record, index) => (
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
@@ -96,7 +94,6 @@ const TokenManagement = () => {
     },
     {
       title: "Token Symbol",
-      // render: (text) => (
       render: (text) => (
         <p>
           {text?.coin_symbol === null ? "N/A" : text?.coin_symbol.toUpperCase()}
@@ -492,11 +489,8 @@ const TokenManagement = () => {
       getTokenDataFn(fromDate, toDate, SearchData, currentPage, coin_family);
     })();
   }, [
-    // TokenData,
     currentPage,
-    // viewData,
     dispatch,
-    // TokenId,
     getTokenTableData,
     perPage,
     filterAddedBy,

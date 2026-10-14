@@ -197,7 +197,6 @@ function Alchemy() {
     {
       title: "Source Address",
       dataIndex: "from_adrs",
-      // key: "from_adrs",
       render: (text, record) =>
         text ? (
           <Tooltip title={<p>{text === null ? "N/A" : text}</p>}>
@@ -259,7 +258,6 @@ function Alchemy() {
     {
       title: "Destination Address",
       dataIndex: "to_adrs",
-      // key: "to_adrs",
 
       render: (text, record) =>
         text ? (
@@ -322,7 +320,6 @@ function Alchemy() {
     {
       title: "Transaction Hash  ",
       dataIndex: "tx_id",
-      // key: "block_hash",
       render: (text, record) =>
         text ? (
           <Tooltip title={<p>{text === null ? "N/A" : text || "N/A"}</p>}>
@@ -382,7 +379,6 @@ function Alchemy() {
     {
       title: "Transaction Status",
       dataIndex: "status",
-      // key: "status",
       render: (text) => {
         let style;
         if (text == "completed") {
@@ -410,7 +406,6 @@ function Alchemy() {
     {
       title: "Date and Time",
       dataIndex: "created_at",
-      // key: "created_at",
       render: (text) => (
         <p>
           {text === null

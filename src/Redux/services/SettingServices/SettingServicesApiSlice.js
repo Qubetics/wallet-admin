@@ -139,12 +139,7 @@ export const SettingServicesSlice = apiSlice.injectEndpoints({
       },
     }),
 
-    //         url: '/request_list',
-    //         method: 'POST',
-    //         body: params,
 
-    //         url: '/allow_swap',
-    //         method: 'POST',
 
   }),
 });

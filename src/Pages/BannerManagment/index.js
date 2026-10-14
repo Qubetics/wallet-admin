@@ -390,8 +390,6 @@ const BannerManagement = () => {
     },
     {
       title: "Banner Image",
-      // dataIndex: "image_path",
-      // key: "image_path",
       render: (text) => (
         <div>
           {text?.image_path ? (
@@ -473,7 +471,6 @@ const BannerManagement = () => {
         <Button
           className="btn mr10"
           type="primary"
-          // danger
           onClick={(e) => {
             confirm({
               title: (

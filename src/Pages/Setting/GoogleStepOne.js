@@ -4,9 +4,7 @@ import { Input, Modal, Button, Spin } from "antd";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  // logout,
   set2FaStatus,
-  // setAuthentication,
 } from "../../Redux/slice/userSlice";
 import * as yup from "yup";
 import { ToastContainer, toast } from "react-toastify";

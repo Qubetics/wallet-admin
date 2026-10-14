@@ -97,7 +97,6 @@ export default function SelectTokenComponent() {
 
   const createReferralTokenAccounts = async (
     selectedToken,
-    // referralProvider,
     referrerPubKey
   ) => {
     const provider = new AnchorProvider(

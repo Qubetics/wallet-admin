@@ -38,21 +38,6 @@ export const TokenManagementApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body:{...data},
       }),
-      /*async onQueryStarted(args, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-           
-        } catch (error) {
-           
-          if (error.error.status == 408) { 
-            setTimeout(() => {
-              localStorage.clear();
-              window.location.reload();
-            }, 1000);
-          }
-
-        }
-      },*/
     }),
     NativeTokenList: builder.query({
       query: (params) => ({

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Spin, Table, Switch, Pagination, Button, Dropdown, Image, Modal } from 'antd';
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
-  // useGetTransactionsRequestMutation,
   useActionEnableDisableMutation,
   useSwapActionMutation,
   useGetDefaultTokenListMutation,
@@ -10,8 +9,6 @@ import {
 } from "../../Redux/services/TransactionsDetail/TransactionsDetailApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // setRequestList,
-  // setRequestListMeta,
   setDefaultTokenList,
   setDefaultTokenMeta,
 } from "../../Redux/slice/TransactionRequestSlice";
@@ -289,36 +286,26 @@ function DefaultTokenManagement() {
   const read_columns = [
     {
       title: "S.No.",
-      // dataIndex: data.index,
-      // key: data.index,
       render: (item, record, index) => (
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
     },
     {
       title: "Token Name",
-      // dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text) => <p>{text?.coin_name ? text.coin_name : "N/A"}</p>,
     },
     {
       title: "Token Symbol",
-      // dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text) => (
         <p>{text?.coin_symbol ? text.coin_symbol.toUpperCase() : "N/A"}</p>
       ),
     },
     {
       title: "Token Type",
-      // dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text) => <p>{text?.token_type ? text?.token_type : "Coin"}</p>,
     },
     {
       title: "Image",
-      // dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text) =>
         text.coin_image ? (
           <Image
@@ -382,7 +369,6 @@ function DefaultTokenManagement() {
     },
     {
       title: <p style={{ textAlign: "center", marginBottom: "0" }}>Order</p>,
-      // dataIndex: "rank",
       key: "rank",
       render: (text, record) => (
         <p>
@@ -394,36 +380,26 @@ function DefaultTokenManagement() {
   const write_columns = [
     {
       title: "S.No.",
-      // dataIndex: data.index,
-      // key: data.index,
       render: (item, record, index) => (
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
     },
     {
       title: "Token Name",
-      // dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text) => <p>{text?.coin_name ? text.coin_name : "N/A"}</p>,
     },
     {
       title: "Token Symbol",
-      // dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text) => (
         <p>{text?.coin_symbol ? text.coin_symbol.toUpperCase() : "N/A"}</p>
       ),
     },
     {
       title: "Token Type",
-      // dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text) => <p>{text?.token_type ? text?.token_type : "Coin"}</p>,
     },
     {
       title: "Image",
-      // dataIndex: "coin_data",
-      // key: "coin_data",
       render: (text) =>
         text.coin_image ? (
           <Image
@@ -487,7 +463,6 @@ function DefaultTokenManagement() {
     },
     {
       title: <p style={{ textAlign: "center", marginBottom: "0" }}>Order</p>,
-      // dataIndex: "rank",
       key: "rank",
       render: (text, record) => (
         <p>
@@ -540,14 +515,6 @@ function DefaultTokenManagement() {
             <Dropdown
               menu={{
                 items: [
-                  //   key: "1",
-                  //   value: record,
-                  //   label: "Active",
-                  //   disabled:
-                  //   key: "2",
-                  //   value: record,
-                  //   label: "Inactive",
-                  //   disabled:
                   {
                     key: "3",
                     value: record,

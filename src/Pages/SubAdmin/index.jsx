@@ -95,8 +95,6 @@ const SubAdminManagement = () => {
   const columns = [
     {
       title: "S.No.",
-      // dataIndex:data.index,
-      // key: data.index,
       render: (item, record, index) => (
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
@@ -141,8 +139,6 @@ const SubAdminManagement = () => {
   const write_columns = [
     {
       title: "S.No.",
-      // dataIndex:data.index,
-      // key: data.index,
       render: (item, record, index) => (
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),

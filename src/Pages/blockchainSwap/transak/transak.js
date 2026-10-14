@@ -184,15 +184,12 @@ function Transak() {
 
     {
       title: "Fiat Currency Name ",
-      // dataIndex: "amount",
-      // key: "amount",
       render: (text) => <p>USD</p>,
     },
 
     {
       title: "Destination Address",
       dataIndex: "to_adrs",
-      // key: "to_adrs",
 
       render: (text, record) => (
         <Tooltip title={<p>{text === null ? "N/A" : text}</p>}>
@@ -243,7 +240,6 @@ function Transak() {
     {
       title: "Transaction Hash  ",
       dataIndex: "tx_id",
-      // key: "block_hash",
       render: (text, record) => (
         <Tooltip title={<p>{text === null ? "N/A" : text || "N/A"}</p>}>
           <div>
@@ -306,7 +302,6 @@ function Transak() {
     {
       title: "Transaction Status",
       dataIndex: "status",
-      // key: "status",
       render: (text) => {
         let style;
         if (text == "completed") {
@@ -332,7 +327,6 @@ function Transak() {
     {
       title: "Date and Time",
       dataIndex: "created_at",
-      // key: "created_at",
       render: (text) => (
         <p>
           {text === null

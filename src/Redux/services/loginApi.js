@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CONFIG } from "../../common/constant/constant";
 import { generateRandomNumber } from "../../Helper/EncDec";
 
-//       baseUrl,
 
 export const loginApi = createApi({
   reducerPath: "loginApi",
@@ -18,7 +17,6 @@ export const loginApi = createApi({
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
           "app-version": "1",
-          // "Authorization": "dfadsfasf",
           Authorization: "",
           "aw-api-auth": generateRandomNumber(), 
         },

@@ -754,7 +754,6 @@ export const getOrCreateATAInstruction = async (
     }
     return [toAccount, undefined];
   } catch (e) {
-    /* handle error */
     console.error("Error::getOrCreateATAInstruction", e);
     throw e;
   }

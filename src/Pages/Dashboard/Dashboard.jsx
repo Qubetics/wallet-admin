@@ -72,8 +72,6 @@ function Dashboard() {
   const columns = [
     {
       title: "S.No.",
-      // dataIndex:data.index,
-      // key: data.index,
       render: (item, record, index) => (
         <>{currentPage > 1 ? (currentPage - 1) * 10 + index + 1 : index + 1}</>
       ),
@@ -81,7 +79,6 @@ function Dashboard() {
     {
       title: " Token Name",
       dataIndex: "coin_data",
-      // key: 'coin_data',
       render: (text) => <p>{text?.coin_name}</p>,
     },
     {
@@ -191,7 +188,6 @@ function Dashboard() {
     {
       title: "Transaction Hash  ",
       dataIndex: "tx_id",
-      // key: "block_hash",
       render: (text, record) => (
         <Tooltip title={<p>{text === null ? "N/A" : text}</p>}>
           <div

@@ -62,9 +62,6 @@ function Sidebar({ collapsedState }) {
           menux?.length > 0 &&
             menux?.map((value, index) => {
               let item = {};
-              //         "swap"
-              //         "SWFTC"
-              //         "blockchainswap"
                 item = {
                   key: value.id.toString(),
                   label: value.name,
@@ -86,25 +83,6 @@ function Sidebar({ collapsedState }) {
           user_permission_data?.length > 0 &&
             user_permission_data?.map((value, index) => {
               let item = {};
-              //       value?.menu_list_data?.name,
-              //       "revenue",
-              //       [
-              //             value?.menu_list_data?.name,
-              //             "swap",
-              //             "On chain Swap"
-              //           "swap"
-              //             value?.menu_list_data?.name,
-              //             "SWFTC",
-              //             "Cross chain Swap"
-              //           "SWFTC"
-              //             value?.menu_list_data?.name,
-              //             "spritz",
-              //             "Banking"
-              //           "spritz"
-              //             value?.menu_list_data?.name,
-              //             "blockchainswap",
-              //             "On/Off Ramp"
-              //           "blockchainswap"
                 item = {
                   key: value?.menu_list_data?.id.toString(),
                   label: value?.menu_list_data?.name === 'Commission' ? 'Revenue' : value?.menu_list_data?.name,
@@ -166,12 +144,7 @@ function Sidebar({ collapsedState }) {
           navigate(redirectPath);
         }
       } else {
-        //     path == "swap" ||
-        //     path == "SWFTC" ||
-        //     path == "spritz" ||
 
-        //       key: path,
-        //       value: name,
           let keys = isExist[0].menu_list_data?.id?.toString();
           let vals = isExist[0].menu_list_data?.name;
           dispatch(

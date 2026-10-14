@@ -101,8 +101,6 @@ const Announcement = () => {
       let submitted_data = {
         title: data.title,
         message: data.message,
-        // is_scheduled: data.type,
-        // ip_address: IpData?.ip,
       };
       const enc = await encryption(JSON.stringify(submitted_data));
       const securedData = { dataString: enc };

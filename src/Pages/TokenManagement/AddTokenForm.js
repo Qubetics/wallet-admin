@@ -73,9 +73,6 @@ yup
       ),
       value: 2,
     },
-    //   key: "key2",
-    //   label: (
-    //   value: 3,
     {
       key: "key3",
       label: (

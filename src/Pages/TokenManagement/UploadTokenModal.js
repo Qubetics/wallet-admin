@@ -19,7 +19,6 @@ const UploadTokenModal = ({
       <Modal
         className="modeldesign"
         title={editTokenTitle}
-        //   children: "Submit",
         cancelButtonProps={{
           children: "cancel",
         }}

@@ -50,11 +50,8 @@ function App() {
     dispatch(logout({ navigate: navigate }));
   };
   useIdleTimer({
-    // onPresenceChange,
-    // onPrompt,
     _onIdle,
     _onActive,
-    // onAction,
     timeout: 1000 * 60 * 15, // 1000  60  1=1 mniute
     promptBeforeIdle: 0,
     events: [

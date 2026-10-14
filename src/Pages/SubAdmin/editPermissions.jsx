@@ -135,7 +135,6 @@ const EditPermissionsForm = ({
     <div>
       <Modal
         title="Edit"
-        //   children: "Submit",
         cancelButtonProps={{
           children: "cancel",
         }}

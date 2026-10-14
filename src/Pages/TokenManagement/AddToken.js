@@ -7,7 +7,6 @@ const AddToken = ({ modal2Open, handleAddTokenCancel }) => {
     <div>
       <Modal
         title={<span style={{color:'#080707'}}>Add tokens</span>}
-        //   children: "Submit",
         cancelButtonProps={{
           children: "cancel",
         }}

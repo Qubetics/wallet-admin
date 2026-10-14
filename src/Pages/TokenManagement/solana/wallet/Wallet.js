@@ -11,11 +11,6 @@ const Wallet = () => {
 
   return (
     <WalletMultiButton
-    //   "copy-address": "Copy address",
-    //   copied: "Copied",
-    //   disconnect: "Disconnect",
-    //   "has-wallet": "Connect",
-    //   "no-wallet": "Select Wallet",
     >
       {connected ? 'Disconnect Wallet' : 'Connect Wallet'}
     </WalletMultiButton>

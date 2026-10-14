@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CONFIG } from "../../common/constant/constant";
 
-//       baseUrl,
 
 export const loginApi = createApi({
   reducerPath: "loginApi",
@@ -16,7 +15,6 @@ export const loginApi = createApi({
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
-          // "Authorization": "dfadsfasf",
           Authorization: "",
         },
       }),

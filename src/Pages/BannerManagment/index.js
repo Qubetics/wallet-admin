@@ -293,8 +293,6 @@ const BannerManagement = () => {
     },
     {
       title: "Banner Image",
-      // dataIndex: "image_path",
-      // key: "image_path",
       render: (text) => (
         <div>
           {text?.image_path ? (
